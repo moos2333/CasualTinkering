@@ -1,0 +1,31 @@
+{
+  "textures": {
+    "layer0": "casualtinkering:items/tools/circular_saw/handle1",
+    "layer1": "casualtinkering:items/tools/circular_saw/handle2",
+    "layer2": "casualtinkering:items/tools/circular_saw/head2",
+    "layer3": "casualtinkering:items/tools/circular_saw/head1",
+    "broken1": "casualtinkering:items/tools/circular_saw/head_broken"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 90, -90, 55 ],
+      "translation": [ 0, 0.0, 0.5 ],
+      "scale": [ 1.7, 1.7, 1.7 ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [ -90, 90, -55 ],
+      "translation": [ 0, 0.0, 0.5 ],
+      "scale": [ 1.7, 1.7, 1.7 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, -100, -70 ],
+      "translation": [ 0.0, 4.0, 0.5 ],
+      "scale": [ 1.0, 1.0, 1.0 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, 100, 70 ],
+      "translation": [ 0.0, 4.0, 0.5 ],
+      "scale": [ 1.0, 1.0, 1.0 ]
+    }
+  }
+}
