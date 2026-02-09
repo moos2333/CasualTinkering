@@ -145,6 +145,7 @@ public class CircularSaw extends Hatchet {
         data.speed = 1.0f + (head1.miningspeed * 0.8f) + (head2.miningspeed * 0.6f);
         data.durability = (int) (head1.durability + (head2.durability * 0.5f));
         data.durability *= handle.modifier;
+        data.harvestLevel = head2.harvestLevel;
 
         return data;
     }
