@@ -2,8 +2,8 @@
   "textures": {
     "layer0": "casualtinkering:items/tools/circular_saw/handle1",
     "layer1": "casualtinkering:items/tools/circular_saw/handle2",
-    "layer3": "casualtinkering:items/tools/circular_saw/head2",
     "layer2": "casualtinkering:items/tools/circular_saw/head1",
+    "layer3": "casualtinkering:items/tools/circular_saw/head2",
     "broken1": "casualtinkering:items/tools/circular_saw/head_broken"
   },
   "display": {
