@@ -2,6 +2,9 @@ package com.npstra.casualtinkering.tools;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
@@ -22,13 +25,14 @@ import slimeknights.tconstruct.tools.TinkerTools;
 import slimeknights.tconstruct.tools.tools.Hatchet;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CircularSaw extends Hatchet {
 
     public CircularSaw() {
         super(PartMaterialType.handle(TinkerTools.toughToolRod),
                 PartMaterialType.extra(TinkerTools.toughBinding),
-                PartMaterialType.head(TinkerTools.largeSwordBlade),
+                PartMaterialType.head(TinkerTools.largePlate),
                 PartMaterialType.head(TinkerTools.panHead));
         addCategory(Category.WEAPON);
         addCategory(Category.HARVEST);
@@ -89,47 +93,44 @@ public class CircularSaw extends Hatchet {
     private void performSweepAttack(ItemStack stack, World world, EntityPlayer player) {
         float radius = 4.0f;
         float halfAngle = (float) Math.toRadians(45.0f);
-
         Vec3d playerPos = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3d lookVec = player.getLookVec();
-
-        AxisAlignedBB aabb = new AxisAlignedBB(
-                playerPos.x - radius, playerPos.y - radius, playerPos.z - radius,
-                playerPos.x + radius, playerPos.y + radius, playerPos.z + radius
-        );
-
+        AxisAlignedBB aabb = new AxisAlignedBB(playerPos.x - radius, playerPos.y - radius, playerPos.z - radius, playerPos.x + radius, playerPos.y + radius, playerPos.z + radius);
         List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb);
-        boolean hitAny = false;
-
+        List<EntityLivingBase> targets = new java.util.ArrayList<>();
         for (EntityLivingBase target : entities) {
-            if (target == player || target instanceof EntityPlayer) {
-                continue;
-            }
-
+            if (target == player || target instanceof EntityPlayer) continue;
             Vec3d targetPos = new Vec3d(target.posX, target.posY + target.height * 0.5, target.posZ);
             Vec3d toTarget = targetPos.subtract(playerPos);
             double distance = toTarget.length();
-
-            if (distance > radius || distance < 0.5) {
-                continue;
-            }
-
+            if (distance > radius || distance < 0.5) continue;
             toTarget = toTarget.normalize();
             double dot = lookVec.dotProduct(toTarget);
             double angle = Math.acos(MathHelper.clamp(dot, -1.0, 1.0));
-
-            if (angle <= halfAngle) {
-                if (ToolHelper.attackEntity(stack, this, player, target)) {
-                    hitAny = true;
-                }
-            }
+            if (angle <= halfAngle) targets.add(target);
         }
-
+        if (targets.isEmpty()) return;
+        targets.sort((e1, e2) -> Double.compare(e1.getDistanceSq(player), e2.getDistanceSq(player)));
+        boolean hitAny = false;
+        EntityLivingBase primary = targets.get(0);
+        if (ToolHelper.attackEntity(stack, this, player, primary, null, true)) hitAny = true;
+        if (targets.size() > 1) {
+            UUID speedUUID = UUID.fromString("a1b2c3d4-e5f6-7890-1234-567890abcdef");
+            UUID damageUUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
+            AttributeModifier speedModifier = new AttributeModifier(speedUUID, "CircularSaw speed boost", 100.0, 0);
+            AttributeModifier damageModifier = new AttributeModifier(damageUUID, "CircularSaw reduced damage", -0.67, 2);
+            IAttributeInstance speedAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+            IAttributeInstance damageAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+            speedAttr.applyModifier(speedModifier);
+            damageAttr.applyModifier(damageModifier);
+            for (int i = 1; i < targets.size(); i++) {
+                if (ToolHelper.attackEntity(stack, this, player, targets.get(i), null, true)) hitAny = true;
+            }
+            speedAttr.removeModifier(speedUUID);
+            damageAttr.removeModifier(damageUUID);
+        }
         if (hitAny) {
             player.playSound(net.minecraft.init.SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
-            if (!player.capabilities.isCreativeMode) {
-                ToolHelper.damageTool(stack, 1, player);
-            }
         }
     }
 
