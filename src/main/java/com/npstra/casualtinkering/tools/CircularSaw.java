@@ -31,7 +31,7 @@ public class CircularSaw extends Hatchet {
 
     public CircularSaw() {
         super(PartMaterialType.handle(TinkerTools.toughToolRod),
-                PartMaterialType.extra(TinkerTools.toughBinding),
+                PartMaterialType.extra(TinkerTools.toughToolRod),
                 PartMaterialType.head(TinkerTools.largePlate),
                 PartMaterialType.head(TinkerTools.panHead));
         addCategory(Category.WEAPON);
@@ -117,7 +117,7 @@ public class CircularSaw extends Hatchet {
         if (targets.size() > 1) {
             UUID speedUUID = UUID.fromString("a1b2c3d4-e5f6-7890-1234-567890abcdef");
             UUID damageUUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
-            AttributeModifier speedModifier = new AttributeModifier(speedUUID, "CircularSaw speed boost", 100.0, 0);
+            AttributeModifier speedModifier = new AttributeModifier(speedUUID, "CircularSaw speed boost", 99.0, 0);
             AttributeModifier damageModifier = new AttributeModifier(damageUUID, "CircularSaw reduced damage", -0.67, 2);
             IAttributeInstance speedAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
             IAttributeInstance damageAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
