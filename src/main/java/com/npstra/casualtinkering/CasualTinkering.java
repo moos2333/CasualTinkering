@@ -1,7 +1,6 @@
 package com.npstra.casualtinkering;
 
 import com.npstra.casualtinkering.common.CasualTinkeringCommonProxy;
-import com.npstra.casualtinkering.client.CasualTinkeringClientProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -15,7 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public class CasualTinkering {
     public static final String MODID = "casualtinkering";
     public static final String NAME = "Casual Tinkering";
-    public static final String VERSION = "0.0.5";
+    public static final String VERSION = "0.0.6";
 
     @SidedProxy(clientSide = "com.npstra.casualtinkering.client.CasualTinkeringClientProxy",
             serverSide = "com.npstra.casualtinkering.common.CasualTinkeringCommonProxy")
