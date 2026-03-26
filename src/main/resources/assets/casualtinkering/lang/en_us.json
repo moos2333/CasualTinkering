@@ -1,0 +1,9 @@
+{
+  "item.casualtinkering.circular_saw": "Circular Saw",
+  "item.casualtinkering.circular_saw.description": "A versatile tool that functions as a hand axe for woodcutting and a melee weapon. Right-click to charge a spinning attack that damages enemies in a cone.",
+  "item.casualtinkering.saw_blade": "Saw Blade",
+  "pattern.casualtinkering.saw_blade": "Saw Blade",
+  "modifier.casualtinkering.circular_saw_attack": "Sawing",
+  "modifier.casualtinkering.circular_saw_attack.flavor": "Spin to win!",
+  "modifier.casualtinkering.circular_saw_attack.description": "Right-click to charge a spinning attack that damages enemies in a cone."
+}

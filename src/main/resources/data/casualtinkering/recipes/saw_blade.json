@@ -1,0 +1,8 @@
+{
+  "type": "tconstruct:part_builder",
+  "pattern": "casualtinkering:saw_blade",
+  "cost": 8,
+  "result": {
+    "item": "casualtinkering:saw_blade"
+  }
+}

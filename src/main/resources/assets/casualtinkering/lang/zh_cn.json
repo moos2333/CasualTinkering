@@ -1,0 +1,9 @@
+{
+  "item.casualtinkering.circular_saw": "圆锯",
+  "item.casualtinkering.circular_saw.description": "多用途工具，可作为手斧砍伐木材，也可作为近战武器。右键蓄力发动旋转攻击，对前方扇形区域内的敌人造成伤害。",
+  "item.casualtinkering.saw_blade": "锯刃",
+  "pattern.casualtinkering.saw_blade": "锯刃",
+  "modifier.casualtinkering.circular_saw_attack": "锯削",
+  "modifier.casualtinkering.circular_saw_attack.flavor": "旋转制胜！",
+  "modifier.casualtinkering.circular_saw_attack.description": "右键蓄力，对前方扇形区域内的敌人造成伤害。"
+}

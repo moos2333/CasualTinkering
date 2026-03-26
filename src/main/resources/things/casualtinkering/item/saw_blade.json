@@ -1,0 +1,6 @@
+{
+  "type": "tconstruct:tool_part",
+  "name": "saw_blade",
+  "stat_type": "tconstruct:head",
+  "model": "casualtinkering:item/saw_blade"
+}

@@ -1,0 +1,38 @@
+{
+  "loader": "tconstruct:tool",
+  "parent": "forge:item/default-tool",
+  "textures": {
+    "handle1": "casualtinkering:item/tool/circular_saw/handle1",
+    "handle2": "casualtinkering:item/tool/circular_saw/handle2",
+    "head1":   "casualtinkering:item/tool/circular_saw/head1",
+    "head2":   "casualtinkering:item/tool/circular_saw/head2"
+  },
+  "parts": [
+    { "name": "handle1", "index": 0 },
+    { "name": "handle2", "index": 1 },
+    { "name": "head1",   "index": 2 },
+    { "name": "head2",   "index": 3 }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [ 90, -90, 55 ],
+      "translation": [ 0, 0.0, 0.5 ],
+      "scale": [ 1.7, 1.7, 1.7 ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [ -270, 90, -55 ],
+      "translation": [ 0, 0.0, 0.5 ],
+      "scale": [ 1.7, 1.7, 1.7 ]
+    },
+    "firstperson_righthand": {
+      "rotation": [ 0, -100, -70 ],
+      "translation": [ 0.0, 4.0, 0.5 ],
+      "scale": [ 1.0, 1.0, 1.0 ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [ 0, 100, 70 ],
+      "translation": [ 0.0, 4.0, 0.5 ],
+      "scale": [ 1.0, 1.0, 1.0 ]
+    }
+  }
+}
