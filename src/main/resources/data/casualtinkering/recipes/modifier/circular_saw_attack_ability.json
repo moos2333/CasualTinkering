@@ -1,15 +1,9 @@
 {
   "type": "tconstruct:modifier",
   "inputs": [
-    {
-      "tag": "casualtinkering:saw_blade"
-    },
-    {
-      "item": "minecraft:netherite_ingot"
-    },
-    {
-      "item": "minecraft:comparator"
-    }
+    { "tag": "casualtinkering:saw_blades" },
+    { "item": "minecraft:netherite_ingot" },
+    { "item": "minecraft:comparator" }
   ],
   "tools": {
     "tag": "tconstruct:modifiable/melee"
@@ -17,8 +11,6 @@
   "slots": {
     "abilities": 1
   },
-  "result": {
-    "modifier": "casualtinkering:circular_saw_attack",
-    "level": 1
-  }
+  "result": "casualtinkering:circular_saw_attack",
+  "level": 1
 }
