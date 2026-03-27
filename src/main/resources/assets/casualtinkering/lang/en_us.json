@@ -5,5 +5,6 @@
   "pattern.casualtinkering.saw_blade": "Saw Blade",
   "modifier.casualtinkering.circular_saw_attack": "Sawing",
   "modifier.casualtinkering.circular_saw_attack.flavor": "Spin to win!",
-  "modifier.casualtinkering.circular_saw_attack.description": "Right-click to charge a spinning attack that damages enemies in a cone."
+  "modifier.casualtinkering.circular_saw_attack.description": "Right-click to charge a spinning attack that damages enemies in a cone.",
+  "item.casualtinkering.saw_blade_gold_cast": "Saw Blade Gold Cast"
 }

@@ -72,6 +72,7 @@ dependencies {
     implementation fg.deobf("curse.maven:tinkers-construct-74072:7449219")
     implementation fg.deobf("curse.maven:json-things-541617:6931396")
     implementation fg.deobf("curse.maven:mantle-74924:7563777")
+    runtimeOnly fg.deobf("curse.maven:jei-238222:7391695")
 }
 
 tasks.named('processResources', ProcessResources).configure {

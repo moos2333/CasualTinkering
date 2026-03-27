@@ -1,0 +1,8 @@
+{
+  "type": "tconstruct:table_casting_material",
+  "cast": {
+    "tag": "casualtinkering:casts/saw_blade"
+  },
+  "item_cost": 8,
+  "result": "casualtinkering:saw_blade"
+}

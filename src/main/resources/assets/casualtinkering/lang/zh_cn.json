@@ -5,5 +5,6 @@
   "pattern.casualtinkering.saw_blade": "锯刃",
   "modifier.casualtinkering.circular_saw_attack": "锯削",
   "modifier.casualtinkering.circular_saw_attack.flavor": "旋转制胜！",
-  "modifier.casualtinkering.circular_saw_attack.description": "右键蓄力，对前方扇形区域内的敌人造成伤害。"
+  "modifier.casualtinkering.circular_saw_attack.description": "右键蓄力，对前方扇形区域内的敌人造成伤害。",
+  "item.casualtinkering.saw_blade_gold_cast": "锯刃金质铸模"
 }

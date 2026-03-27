@@ -87,7 +87,6 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
         if (entity.level().isClientSide || !(entity instanceof Player player)) return;
         if (!modifier.matches(activeModifier.getId())) return;
 
-        // 确保最后一次攻击也会在松开时触发
         int currentTick = player.tickCount;
         Integer lastTick = LAST_ATTACK_TICK.get(player.getId());
         if (lastTick == null || currentTick - lastTick >= 1) {

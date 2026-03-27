@@ -1,0 +1,10 @@
+{
+  "type": "tconstruct:part_builder",
+  "pattern": "casualtinkering:saw_blade",
+  "pattern_item": [
+    { "tag": "tconstruct:patterns/default" },
+    { "item": "casualtinkering:saw_blade_gold_cast" }
+  ],
+  "cost": 8,
+  "result": { "item": "casualtinkering:saw_blade" }
+}

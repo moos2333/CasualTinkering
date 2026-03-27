@@ -7,8 +7,7 @@
       "tic_materials": [
         "tconstruct:ui_render#head",
         "tconstruct:ui_render#handle",
-        "tconstruct:ui_render#extra",
-        "tconstruct:ui_render#large"
+        "tconstruct:ui_render#extra"
       ]
     }
   },
