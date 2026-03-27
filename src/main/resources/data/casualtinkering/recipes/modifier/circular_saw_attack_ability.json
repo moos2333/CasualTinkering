@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:modifier",
   "inputs": [
-    { "tag": "casualtinkering:saw_blades" },
+    { "tag": "casualtinkering:saw_blade" },
     { "item": "minecraft:netherite_ingot" },
     { "item": "minecraft:comparator" }
   ],
