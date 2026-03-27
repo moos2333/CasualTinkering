@@ -13,8 +13,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.Mth;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
+import slimeknights.tconstruct.library.modifiers.ModifierHooks;
 import slimeknights.tconstruct.library.modifiers.hook.interaction.GeneralInteractionModifierHook;
 import slimeknights.tconstruct.library.modifiers.hook.interaction.InteractionSource;
+import slimeknights.tconstruct.library.modifiers.hook.interaction.UsingToolModifierHook;
+import slimeknights.tconstruct.library.module.ModuleHookMap.Builder;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
 import slimeknights.tconstruct.library.tools.helper.ToolAttackUtil;
 import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
@@ -24,21 +27,34 @@ import slimeknights.tconstruct.library.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CircularSawAttackModifier extends Modifier implements GeneralInteractionModifierHook {
+public class CircularSawAttackModifier extends Modifier implements GeneralInteractionModifierHook, UsingToolModifierHook {
+
+    private static final Map<Integer, Integer> LAST_ATTACK_TICK = new HashMap<>();
+
+    @Override
+    protected void registerHooks(Builder builder) {
+        builder.addHook(this, ModifierHooks.GENERAL_INTERACT, ModifierHooks.TOOL_USING);
+    }
 
     @Override
     public InteractionResult onToolUse(IToolStackView tool, ModifierEntry modifier, Player player, InteractionHand hand, InteractionSource source) {
-        player.startUsingItem(hand);
-        return InteractionResult.SUCCESS;
+        if (!tool.isBroken() && source == InteractionSource.RIGHT_CLICK) {
+            float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
+            attackSpeed = Mth.clamp(attackSpeed, 1.0f, 4.0f);
+            float drawTime = 1.0f / attackSpeed;
+            GeneralInteractionModifierHook.startUsingWithDrawtime(tool, modifier.getId(), player, hand, drawTime);
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
     }
 
     @Override
     public int getUseDuration(IToolStackView tool, ModifierEntry modifier) {
-        float speed = tool.getStats().get(ToolStats.ATTACK_SPEED);
-        speed = Mth.clamp(speed, 1.0f, 4.0f);
-        return (int)(20.0f / speed);
+        return 72000;
     }
 
     @Override
@@ -50,12 +66,34 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
     public void onUsingTick(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int timeLeft) {
         if (entity.level().isClientSide || !(entity instanceof Player player)) return;
 
-        int maxUse = getUseDuration(tool, modifier);
-        int useDuration = maxUse - timeLeft;
-        if (useDuration >= maxUse * 0.9f) {
-            performSweepAttack(tool, player);
-            player.stopUsingItem();
+        int currentTick = player.tickCount;
+        Integer lastTick = LAST_ATTACK_TICK.get(player.getId());
+        if (lastTick == null) {
+            LAST_ATTACK_TICK.put(player.getId(), currentTick);
+            return;
         }
+
+        float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
+        attackSpeed = Mth.clamp(attackSpeed, 1.0f, 4.0f);
+        int intervalTicks = (int)(20.0f / attackSpeed);
+        if (currentTick - lastTick >= intervalTicks) {
+            performSweepAttack(tool, player);
+            LAST_ATTACK_TICK.put(player.getId(), currentTick);
+        }
+    }
+
+    @Override
+    public void beforeReleaseUsing(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int useDuration, int timeLeft, ModifierEntry activeModifier) {
+        if (entity.level().isClientSide || !(entity instanceof Player player)) return;
+        if (!modifier.matches(activeModifier.getId())) return;
+
+        // 确保最后一次攻击也会在松开时触发
+        int currentTick = player.tickCount;
+        Integer lastTick = LAST_ATTACK_TICK.get(player.getId());
+        if (lastTick == null || currentTick - lastTick >= 1) {
+            performSweepAttack(tool, player);
+        }
+        LAST_ATTACK_TICK.remove(player.getId());
     }
 
     private void performSweepAttack(IToolStackView tool, Player player) {
