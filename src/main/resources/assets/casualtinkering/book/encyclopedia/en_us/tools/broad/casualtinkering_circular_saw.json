@@ -1,0 +1,21 @@
+{
+  "tool.casualtinkering.circular_saw": {
+    "text": [
+      {
+        "text": "The circular saw is a versatile tool that functions as a hand axe for woodcutting and a melee weapon."
+      },
+      {
+        "text": "Right-click to charge a spinning attack that damages enemies in a cone. Attack speed affects the attack frequency. The Sawing modifier grants this ability.",
+        "paragraph": true
+      }
+    ],
+    "properties": [
+      "+4.5 Base Attack Damage",
+      "140% Attack Multiplier",
+      "0.95 Attack Speed",
+      "200% Durability",
+      "Sawing I",
+      "Padded I"
+    ]
+  }
+}

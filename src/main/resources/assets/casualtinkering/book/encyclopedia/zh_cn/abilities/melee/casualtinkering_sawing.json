@@ -1,0 +1,13 @@
+{
+  "modifier_id": "casualtinkering:circular_saw_attack",
+  "text": [
+    {
+      "text": "按住右键持续攻击前方4格半径，90度扇形范围内敌人，攻击频率受攻速影响。"
+    }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "最高1级",
+    "需要1个能力槽"
+  ]
+}

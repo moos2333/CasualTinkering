@@ -1,0 +1,13 @@
+{
+  "modifier_id": "casualtinkering:circular_saw_attack",
+  "text": [
+    {
+      "text": "Hold right-click to continuously attack enemies within a 4-block radius in a 90-degree cone in front of you. Attack speed affects the frequency."
+    }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Max 1 level",
+    "Requires 1 ability slot"
+  ]
+}
