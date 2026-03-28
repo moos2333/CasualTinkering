@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "casualtinkering:item/saw_blade_sand_cast"
+  }
+}
