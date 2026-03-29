@@ -10,11 +10,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnData {
-    private static final Logger LOGGER = LogManager.getLogger("EntityMagicSword");
     private EntityLivingBase target;
     private EntityLivingBase shooter;
     private float damage;
@@ -25,7 +22,6 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
         super(world);
         setSize(0.5F, 0.5F);
         ticksAlive = 0;
-        LOGGER.info("EntityMagicSword constructed on side: {}", world.isRemote ? "CLIENT" : "SERVER");
     }
 
     public EntityMagicSword(World world, EntityLivingBase shooter, EntityLivingBase target, float damage, double posX, double posY, double posZ) {
@@ -140,6 +136,5 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
         if (targetId != -1) {
             target = (EntityLivingBase) world.getEntityByID(targetId);
         }
-        LOGGER.info("EntityMagicSword readSpawnData on side: {} at ({},{},{})", world.isRemote ? "CLIENT" : "SERVER", x, y, z);
     }
 }

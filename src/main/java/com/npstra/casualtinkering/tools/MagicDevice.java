@@ -22,14 +22,11 @@ import slimeknights.tconstruct.library.utils.EntityUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 import slimeknights.tconstruct.tools.TinkerTools;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Random;
 
 public class MagicDevice extends SwordCore {
-    private static final Logger LOGGER = LogManager.getLogger("MagicDevice");
     public static final float DURABILITY_MODIFIER = 1.0F;
     private static final float MAGIC_DAMAGE_RATIO = 0.1F;
 
@@ -69,8 +66,6 @@ public class MagicDevice extends SwordCore {
         float totalDamage = ToolHelper.getActualAttack(stack);
         float magicDamage = totalDamage * 0.5F;
         Random rand = world.rand;
-
-        LOGGER.info("Creating magic swords for target: {} at ({},{},{})", target.getName(), target.posX, target.posY, target.posZ);
 
         for (int i = 0; i < 2; i++) {
             double angle = rand.nextDouble() * 2 * Math.PI;
