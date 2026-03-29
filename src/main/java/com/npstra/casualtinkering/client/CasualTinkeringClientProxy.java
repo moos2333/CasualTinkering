@@ -16,5 +16,12 @@ public class CasualTinkeringClientProxy extends CasualTinkeringCommonProxy {
             info.addSlotPosition(33 - 18, 42 - 18);
             TinkerRegistryClient.addToolBuilding(info);
         }
+        if (CasualTinkeringRegister.magicdevice != null) {
+            ToolBuildGuiInfo info = new ToolBuildGuiInfo(CasualTinkeringRegister.magicdevice);
+            info.addSlotPosition(33 - 20 - 1, 42 + 20);
+            info.addSlotPosition(33 + 20 - 5, 42 - 20 + 4);
+            info.addSlotPosition(33 - 2 - 1, 42 + 2);
+            TinkerRegistryClient.addToolBuilding(info);
+        }
     }
 }

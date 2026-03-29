@@ -1,5 +1,6 @@
 {
   "textures": {
-    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_knockback"
+    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_knockback",
+    "magicdevice": "casualtinkering:items/tools/magicdevice/mod_knockback"
   }
 }

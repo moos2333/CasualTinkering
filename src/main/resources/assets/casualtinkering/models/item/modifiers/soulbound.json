@@ -1,5 +1,6 @@
 {
   "textures": {
-    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_soulbound"
+    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_soulbound",
+    "magicdevice": "casualtinkering:items/tools/magicdevice/mod_soulbound"
   }
 }

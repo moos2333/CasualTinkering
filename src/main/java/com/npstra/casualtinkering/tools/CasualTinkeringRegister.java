@@ -18,6 +18,7 @@ import static slimeknights.tconstruct.common.ModelRegisterUtil.registerModifierM
 @Mod.EventBusSubscriber
 public class CasualTinkeringRegister {
     public static ToolCore circularSaw;
+    public static ToolCore magicdevice;
 
     @SideOnly(Side.CLIENT)
     private static void registerModifierModels() {
@@ -46,6 +47,10 @@ public class CasualTinkeringRegister {
         circularSaw = new CircularSaw();
         event.getRegistry().register(circularSaw);
         TinkerRegistry.registerToolForgeCrafting(circularSaw);
+
+        magicdevice = new MagicDevice();
+        event.getRegistry().register(magicdevice);
+        TinkerRegistry.registerToolCrafting(magicdevice);
     }
 
     @SideOnly(Side.CLIENT)
@@ -53,6 +58,10 @@ public class CasualTinkeringRegister {
     public static void registerModels(ModelRegistryEvent event) {
         if (circularSaw != null) {
             ModelRegisterUtil.registerToolModel(circularSaw);
+            registerModifierModels();
+        }
+        if (magicdevice != null) {
+            ModelRegisterUtil.registerToolModel(magicdevice);
             registerModifierModels();
         }
     }

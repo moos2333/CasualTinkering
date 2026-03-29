@@ -1,0 +1,10 @@
+{
+  "loader": "tconstruct:tool",
+  "parent": "forge:item/default",
+  "textures": {
+    "layer0": "casualtinkering:items/tools/magicdevice/handle",
+    "layer1": "casualtinkering:items/tools/magicdevice/blade",
+    "layer2": "casualtinkering:items/tools/magicdevice/pan",
+    "broken1": "casualtinkering:items/tools/magicdevice/broken_blade"
+  }
+}

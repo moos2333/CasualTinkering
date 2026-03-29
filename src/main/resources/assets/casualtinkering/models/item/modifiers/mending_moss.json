@@ -1,5 +1,6 @@
 {
   "textures": {
-    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_mending_moss"
+    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_mending_moss",
+    "magicdevice": "casualtinkering:items/tools/magicdevice/mod_mending_moss"
   }
 }

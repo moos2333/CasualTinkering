@@ -1,5 +1,6 @@
 {
   "textures": {
-    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_silk"
+    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_silk",
+    "magicdevice": "casualtinkering:items/tools/magicdevice/mod_silk"
   }
 }

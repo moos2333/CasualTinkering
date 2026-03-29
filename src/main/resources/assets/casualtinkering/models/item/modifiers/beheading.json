@@ -1,5 +1,6 @@
 {
   "textures": {
-    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_beheading"
+    "circular_saw": "casualtinkering:items/tools/circular_saw/mod_beheading",
+    "magicdevice": "casualtinkering:items/tools/magicdevice/mod_beheading"
   }
 }
