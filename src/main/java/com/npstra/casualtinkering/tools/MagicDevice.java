@@ -29,6 +29,8 @@ import com.npstra.casualtinkering.entity.EntityMagicSword;
 
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber
 public class MagicDevice extends SwordCore {
@@ -189,6 +191,9 @@ public class MagicDevice extends SwordCore {
 
     @Mod.EventBusSubscriber
     public static class CoopHandler {
+        private static final ConcurrentHashMap<UUID, Long> LAST_ATTACK_TIME = new ConcurrentHashMap<>();
+        private static final long ATTACK_COOLDOWN_MS = 200;
+
         @SubscribeEvent
         public static void onLivingHurt(LivingHurtEvent event) {
             if (event.getEntity().world.isRemote) return;
@@ -196,6 +201,14 @@ public class MagicDevice extends SwordCore {
             if (!(event.getSource().getTrueSource() instanceof EntityPlayer)) return;
 
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+
+            long currentTime = System.currentTimeMillis();
+            Long lastTime = LAST_ATTACK_TIME.get(player.getUniqueID());
+            if (lastTime != null && currentTime - lastTime < ATTACK_COOLDOWN_MS) {
+                return;
+            }
+            LAST_ATTACK_TIME.put(player.getUniqueID(), currentTime);
+
             ItemStack offhand = player.getHeldItemOffhand();
             if (offhand.isEmpty() || !(offhand.getItem() instanceof MagicDevice)) return;
 
@@ -207,7 +220,7 @@ public class MagicDevice extends SwordCore {
 
             MagicDevice device = (MagicDevice) offhand.getItem();
             float totalDamage = ToolHelper.getActualAttack(offhand);
-            float magicDamage = totalDamage * 0.5F;
+            float magicDamage = totalDamage * 0.25F;
 
             Random rand = player.world.rand;
             double angle = rand.nextDouble() * 2 * Math.PI;
