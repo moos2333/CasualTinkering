@@ -48,6 +48,9 @@ public class MagicDevice extends SwordCore {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        if (hand == EnumHand.OFF_HAND) {
+            return new ActionResult<>(EnumActionResult.FAIL, player.getHeldItem(hand));
+        }
         ItemStack stack = player.getHeldItem(hand);
         player.setActiveHand(hand);
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
