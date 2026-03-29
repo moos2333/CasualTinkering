@@ -6,6 +6,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -38,7 +39,7 @@ public class EntityMagicSword extends Entity
         double distance = MathHelper.sqrt(dx * dx + dy * dy + dz * dz);
         if (distance > 0.0D)
         {
-            double speed = 1.0D;
+            double speed = 0.8D;
             motionX = dx / distance * speed;
             motionY = dy / distance * speed;
             motionZ = dz / distance * speed;
@@ -72,7 +73,7 @@ public class EntityMagicSword extends Entity
 
             move(MoverType.SELF, motionX, motionY, motionZ);
 
-            if (getDistanceSq(target) < 1.0D)
+            if (this.getEntityBoundingBox().intersects(target.getEntityBoundingBox()))
             {
                 attackTarget();
                 setDead();

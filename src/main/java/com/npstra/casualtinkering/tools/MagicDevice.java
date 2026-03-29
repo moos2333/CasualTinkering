@@ -74,12 +74,12 @@ public class MagicDevice extends SwordCore
         for (int i = 0; i < 2; i++)
         {
             double angle = rand.nextDouble() * 2 * Math.PI;
-            double radius = 1.5;
+            double radius = 2.0;
             double offsetX = radius * Math.cos(angle);
             double offsetZ = radius * Math.sin(angle);
             double x = target.posX + offsetX;
             double z = target.posZ + offsetZ;
-            double y = target.posY + 1.2;
+            double y = target.posY + 1.5;
             EntityMagicSword sword = new EntityMagicSword(world, player, (EntityLivingBase) target, magicDamage, x, y, z);
             world.spawnEntity(sword);
         }
@@ -144,12 +144,12 @@ public class MagicDevice extends SwordCore
                     float magicDamage = totalDamage * 0.5F;
                     Random rand = player.world.rand;
                     double angle = rand.nextDouble() * 2 * Math.PI;
-                    double radius = 1.5;
+                    double radius = 2.0;
                     double offsetX = radius * Math.cos(angle);
                     double offsetZ = radius * Math.sin(angle);
                     double x = entity.posX + offsetX;
                     double z = entity.posZ + offsetZ;
-                    double y = entity.posY + 1.2;
+                    double y = entity.posY + 1.5;
                     EntityMagicSword sword = new EntityMagicSword(player.world, player, (EntityLivingBase) entity, magicDamage, x, y, z);
                     player.world.spawnEntity(sword);
                 }
