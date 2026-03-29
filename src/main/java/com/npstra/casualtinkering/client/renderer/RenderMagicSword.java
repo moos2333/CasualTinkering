@@ -45,7 +45,7 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
         float pitch = (float) (Math.atan2(motionY, MathHelper.sqrt(motionX * motionX + motionZ * motionZ)) * 180.0 / Math.PI);
 
         GlStateManager.rotate(yaw + 90.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-pitch, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-pitch + 90.0F, 1.0F, 0.0F, 0.0F);
         GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
 
         this.itemRenderer.renderItem(this.swordStack, ItemCameraTransforms.TransformType.NONE);

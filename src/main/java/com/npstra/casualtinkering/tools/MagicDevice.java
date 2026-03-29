@@ -10,6 +10,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import slimeknights.tconstruct.library.materials.HandleMaterialStats;
 import slimeknights.tconstruct.library.materials.HeadMaterialStats;
 import slimeknights.tconstruct.library.materials.Material;
@@ -26,6 +29,7 @@ import com.npstra.casualtinkering.entity.EntityMagicSword;
 import java.util.List;
 import java.util.Random;
 
+@Mod.EventBusSubscriber
 public class MagicDevice extends SwordCore {
     public static final float DURABILITY_MODIFIER = 1.0F;
     private static final float MAGIC_DAMAGE_RATIO = 0.1F;
@@ -180,5 +184,37 @@ public class MagicDevice extends SwordCore {
         data.durability *= DURABILITY_MODIFIER;
 
         return data;
+    }
+
+    @Mod.EventBusSubscriber
+    public static class CoopHandler {
+        @SubscribeEvent
+        public static void onLivingHurt(LivingHurtEvent event) {
+            if (event.getEntity().world.isRemote) return;
+            if (!(event.getSource().getTrueSource() instanceof EntityPlayer)) return;
+
+            EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+            ItemStack offhand = player.getHeldItemOffhand();
+            if (offhand.isEmpty() || !(offhand.getItem() instanceof MagicDevice)) return;
+
+            ItemStack mainhand = player.getHeldItemMainhand();
+            if (mainhand.isEmpty()) return;
+
+            MagicDevice device = (MagicDevice) offhand.getItem();
+            float totalDamage = ToolHelper.getActualAttack(offhand);
+            float magicDamage = totalDamage * 0.5F;
+
+            Random rand = player.world.rand;
+            double angle = rand.nextDouble() * 2 * Math.PI;
+            double radius = 2.0;
+            double offsetX = radius * Math.cos(angle);
+            double offsetZ = radius * Math.sin(angle);
+            double x = event.getEntity().posX + offsetX;
+            double z = event.getEntity().posZ + offsetZ;
+            double y = event.getEntity().posY + 1.5;
+
+            EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z);
+            player.world.spawnEntity(sword);
+        }
     }
 }
