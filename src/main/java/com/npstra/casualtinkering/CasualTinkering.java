@@ -27,7 +27,7 @@ public class CasualTinkering {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        EntityRegistry.registerModEntity(new ResourceLocation("constructumepoch", "magic_sword"), EntityMagicSword.class, "magic_sword", 0, this, 64, 10, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(CasualTinkering.MODID, "magic_sword"), EntityMagicSword.class, "magic_sword", 0, this, 64, 10, true);
     }
 
     @Mod.EventHandler
