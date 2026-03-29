@@ -27,13 +27,13 @@ public class CasualTinkering {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        EntityRegistry.registerModEntity(new ResourceLocation(CasualTinkering.MODID, "magic_sword"), EntityMagicSword.class, "magic_sword", 0, this, 64, 10, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "magic_sword"), EntityMagicSword.class, "magic_sword", 0, this, 64, 10, true);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.initToolGuis();
-        RenderingRegistry.registerEntityRenderingHandler(EntityMagicSword.class, RenderMagicSword::new);
+        proxy.registerRenderers();
     }
 
     @Mod.EventHandler

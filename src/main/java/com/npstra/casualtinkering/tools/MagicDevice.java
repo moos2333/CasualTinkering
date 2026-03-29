@@ -22,17 +22,18 @@ import slimeknights.tconstruct.library.utils.EntityUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 import slimeknights.tconstruct.tools.TinkerTools;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Random;
 
-public class MagicDevice extends SwordCore
-{
+public class MagicDevice extends SwordCore {
+    private static final Logger LOGGER = LogManager.getLogger("MagicDevice");
     public static final float DURABILITY_MODIFIER = 1.0F;
     private static final float MAGIC_DAMAGE_RATIO = 0.1F;
 
-    public MagicDevice()
-    {
+    public MagicDevice() {
         super(PartMaterialType.handle(TinkerTools.toolRod),
                 PartMaterialType.head(TinkerTools.swordBlade),
                 PartMaterialType.head(TinkerTools.panHead));
@@ -42,16 +43,14 @@ public class MagicDevice extends SwordCore
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         player.setActiveHand(hand);
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int timeLeft)
-    {
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int timeLeft) {
         if (world.isRemote) return;
 
         int useTime = getMaxItemUseDuration(stack) - timeLeft;
@@ -71,8 +70,9 @@ public class MagicDevice extends SwordCore
         float magicDamage = totalDamage * 0.5F;
         Random rand = world.rand;
 
-        for (int i = 0; i < 2; i++)
-        {
+        LOGGER.info("Creating magic swords for target: {} at ({},{},{})", target.getName(), target.posX, target.posY, target.posZ);
+
+        for (int i = 0; i < 2; i++) {
             double angle = rand.nextDouble() * 2 * Math.PI;
             double radius = 2.0;
             double offsetX = radius * Math.cos(angle);
@@ -84,8 +84,7 @@ public class MagicDevice extends SwordCore
             world.spawnEntity(sword);
         }
 
-        if (player instanceof EntityPlayer && !((EntityPlayer) player).isCreative())
-        {
+        if (player instanceof EntityPlayer && !((EntityPlayer) player).isCreative()) {
             ToolHelper.damageTool(stack, 1, player);
         }
 
@@ -93,53 +92,43 @@ public class MagicDevice extends SwordCore
     }
 
     @Override
-    public int getMaxItemUseDuration(ItemStack stack)
-    {
+    public int getMaxItemUseDuration(ItemStack stack) {
         return 72000;
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack stack)
-    {
+    public EnumAction getItemUseAction(ItemStack stack) {
         return EnumAction.BOW;
     }
 
     @Override
-    public float damagePotential()
-    {
+    public float damagePotential() {
         return 1.0F;
     }
 
     @Override
-    public double attackSpeed()
-    {
+    public double attackSpeed() {
         return 1.8D;
     }
 
     @Override
-    public int[] getRepairParts()
-    {
+    public int[] getRepairParts() {
         return new int[]{1, 2};
     }
 
     @Override
-    public float getRepairModifierForPart(int index)
-    {
+    public float getRepairModifierForPart(int index) {
         return index == 1 || index == 2 ? 0.5F : 1.0F;
     }
 
     @Override
-    public boolean dealDamage(ItemStack stack, EntityLivingBase player, Entity entity, float damage)
-    {
+    public boolean dealDamage(ItemStack stack, EntityLivingBase player, Entity entity, float damage) {
         boolean hit;
-        if (player instanceof EntityPlayer)
-        {
+        if (player instanceof EntityPlayer) {
             hit = dealMagicDamage(DamageSource.causePlayerDamage((EntityPlayer) player), entity, damage);
-            if (hit && !player.world.isRemote && entity instanceof EntityLivingBase)
-            {
+            if (hit && !player.world.isRemote && entity instanceof EntityLivingBase) {
                 EntityPlayer thePlayer = (EntityPlayer) player;
-                if (thePlayer.getCooledAttackStrength(0.0F) == 1.0F)
-                {
+                if (thePlayer.getCooledAttackStrength(0.0F) == 1.0F) {
                     float totalDamage = ToolHelper.getActualAttack(stack);
                     float magicDamage = totalDamage * 0.5F;
                     Random rand = player.world.rand;
@@ -154,23 +143,19 @@ public class MagicDevice extends SwordCore
                     player.world.spawnEntity(sword);
                 }
             }
-        }
-        else
-        {
+        } else {
             hit = dealMagicDamage(DamageSource.causeMobDamage(player), entity, damage);
         }
         return hit;
     }
 
-    private boolean dealMagicDamage(DamageSource source, Entity target, float damage)
-    {
+    private boolean dealMagicDamage(DamageSource source, Entity target, float damage) {
         float normalDamage = damage * (1.0F - MAGIC_DAMAGE_RATIO);
         float magicDamage = damage * MAGIC_DAMAGE_RATIO;
 
         boolean hit = target.attackEntityFrom(source, normalDamage);
 
-        if (hit && target instanceof EntityLivingBase)
-        {
+        if (hit && target instanceof EntityLivingBase) {
             EntityLivingBase targetLiving = (EntityLivingBase) target;
             int hurtResistantTime = targetLiving.hurtResistantTime;
             float lastDamage = targetLiving.lastDamage;
@@ -187,8 +172,7 @@ public class MagicDevice extends SwordCore
     }
 
     @Override
-    public ToolNBT buildTagData(List<Material> materials)
-    {
+    public ToolNBT buildTagData(List<Material> materials) {
         HandleMaterialStats handle = materials.get(0).getStatsOrUnknown(MaterialTypes.HANDLE);
         HeadMaterialStats blade = materials.get(1).getStatsOrUnknown(MaterialTypes.HEAD);
         HeadMaterialStats disk = materials.get(2).getStatsOrUnknown(MaterialTypes.HEAD);
