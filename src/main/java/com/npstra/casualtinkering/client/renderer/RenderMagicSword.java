@@ -31,7 +31,7 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
 
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
-        GlStateManager.scale(0.5F, 0.5F, 0.5F);
+        GlStateManager.scale(0.8F, 0.8F, 0.8F);
         GlStateManager.disableLighting();
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();
@@ -41,12 +41,12 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
         float motionX = (float) entity.motionX;
         float motionY = (float) entity.motionY;
         float motionZ = (float) entity.motionZ;
-        float yaw = (float) (Math.atan2(motionZ, motionX) * 180.0 / Math.PI) - 90.0F;
+        float yaw = (float) (Math.atan2(motionZ, motionX) * 180.0 / Math.PI);
         float pitch = (float) (Math.atan2(motionY, MathHelper.sqrt(motionX * motionX + motionZ * motionZ)) * 180.0 / Math.PI);
 
-        GlStateManager.rotate(yaw, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(pitch, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(90.0F, 0.0F, 0.0F, 1.0F);
+        GlStateManager.rotate(yaw + 90.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-pitch, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
 
         this.itemRenderer.renderItem(this.swordStack, ItemCameraTransforms.TransformType.NONE);
 
