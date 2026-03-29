@@ -1,4 +1,4 @@
 item.casual_tinkering.circular_saw.name=圆锯
 item.casual_tinkering.circular_saw.desc=重型伐木工具，带有旋转锯片。蓄力后发动前方扇形范围的横扫攻击。\n右键：蓄力并发动范围攻击，按住右键持续发动
 item.casualtinkering.magicdevice.name=魔导具
-item.casualtinkering.magicdevice.desc=一种蕴含神秘力量的武器，能通过蓄力召唤魔法剑进行远程打击。\n右键蓄力1.5秒后，在瞄准的目标周围召唤两把魔法剑，每把造成面板伤害50%的魔法伤害。\n主手攻击命中时若攻击指示器为满，也会额外生成一把魔法剑。\n将魔导具置于副手时，主手攻击命中生物将自动生成一把魔法剑协同攻击。\n魔法剑可穿透护甲，且不会触发敌人的无敌帧连锁反应。
+item.casualtinkering.magicdevice.desc=一种蕴含神秘力量的武器，能召唤魔法剑进行协同攻击。\n右键：蓄力召唤魔法剑进行中近程打击。\n全力攻击：生成魔法剑。\n副手：使用剑类武器攻击时将召唤魔法剑协同攻击。

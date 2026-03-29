@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -191,6 +192,7 @@ public class MagicDevice extends SwordCore {
         @SubscribeEvent
         public static void onLivingHurt(LivingHurtEvent event) {
             if (event.getEntity().world.isRemote) return;
+            if (event.getSource().getDamageType().equals("magic_sword")) return;
             if (!(event.getSource().getTrueSource() instanceof EntityPlayer)) return;
 
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
@@ -199,6 +201,9 @@ public class MagicDevice extends SwordCore {
 
             ItemStack mainhand = player.getHeldItemMainhand();
             if (mainhand.isEmpty()) return;
+
+            boolean isSword = mainhand.getItem() instanceof ItemSword || mainhand.getItem() instanceof SwordCore;
+            if (!isSword) return;
 
             MagicDevice device = (MagicDevice) offhand.getItem();
             float totalDamage = ToolHelper.getActualAttack(offhand);
