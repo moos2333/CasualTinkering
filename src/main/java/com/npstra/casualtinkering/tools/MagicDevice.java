@@ -74,10 +74,10 @@ public class MagicDevice extends SwordCore {
         if (!(target instanceof EntityLivingBase)) return;
 
         float totalDamage = ToolHelper.getActualAttack(stack);
-        float magicDamage = totalDamage * 0.5F;
+        float magicDamage = totalDamage * 0.35F;
         Random rand = world.rand;
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             double angle = rand.nextDouble() * 2 * Math.PI;
             double radius = 2.0;
             double offsetX = radius * Math.cos(angle);
