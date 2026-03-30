@@ -135,7 +135,7 @@ public class MagicDevice extends SwordCore {
                 EntityPlayer thePlayer = (EntityPlayer) player;
                 if (thePlayer.getCooledAttackStrength(0.0F) == 1.0F) {
                     float totalDamage = ToolHelper.getActualAttack(stack);
-                    float magicDamage = totalDamage * 0.25F;
+                    float magicDamage = totalDamage * 0.33F;
                     Random rand = player.world.rand;
                     double angle = rand.nextDouble() * 2 * Math.PI;
                     double radius = 2.0;
@@ -186,7 +186,7 @@ public class MagicDevice extends SwordCore {
         data.head(blade, disk);
         data.handle(handle);
 
-        data.attack = 1.5F + blade.attack * 0.25F + disk.attack * 0.55F;
+        data.attack = 1.5F + blade.attack * 0.25F + disk.attack * 0.6F;
         data.durability *= DURABILITY_MODIFIER;
 
         return data;
