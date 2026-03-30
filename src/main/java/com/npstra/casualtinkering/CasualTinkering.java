@@ -1,5 +1,6 @@
 package com.npstra.casualtinkering;
 
+import com.npstra.casualtinkering.init.ModEntities;
 import com.npstra.casualtinkering.init.Modifiers;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -12,5 +13,6 @@ public class CasualTinkering {
     public CasualTinkering() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         Modifiers.register(bus);
+        ModEntities.register(bus);
     }
 }

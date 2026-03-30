@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "casualtinkering:circular_saw_attack"
+    "casualtinkering:circular_saw_attack",
+    "casualtinkering:magic_sword"
   ]
 }

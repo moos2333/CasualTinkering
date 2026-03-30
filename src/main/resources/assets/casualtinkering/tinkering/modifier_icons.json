@@ -1,3 +1,4 @@
 {
-  "casualtinkering:circular_saw_attack": "casualtinkering:gui/modifiers/sawing"
+  "casualtinkering:circular_saw_attack": "casualtinkering:gui/modifiers/sawing",
+  "casualtinkering:magic_sword": "casualtinkering:gui/modifiers/magic_sword"
 }
