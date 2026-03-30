@@ -2,3 +2,5 @@ item.casual_tinkering.circular_saw.name=Circular Saw
 item.casual_tinkering.circular_saw.desc=A heavy woodcutting tool with a spinning blade. Charges up to unleash a wide sweeping attack.\nRight Click: Charge and unleash area attack
 item.casualtinkering.magicdevice.name=Magic Device
 item.casualtinkering.magicdevice.desc=A weapon imbued with arcane power, capable of summoning magical swords to assist in combat.\nRight-click: Charge to conjure magical swords for a mid-range strike.\nOff-hand: Main-hand sword strikes call forth a magic sword.\nFull attack: Summons an additional sword.
+modifier.auto_device.name=Auto Device
+modifier.auto_device.desc=§oSet and forget!§r\nAutomatically strikes nearby hostile mobs when in main hand.
