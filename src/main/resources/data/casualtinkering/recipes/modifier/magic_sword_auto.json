@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:modifier",
   "inputs": [
-    { "tag": "tconstruct:blades" },
+    { "item": "tconstruct:small_blade" },
     { "item": "minecraft:clock" },
     { "item": "minecraft:diamond" }
   ],
