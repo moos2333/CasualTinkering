@@ -4,6 +4,7 @@ import com.npstra.casualtinkering.CasualTinkering;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.init.ModEntities;
 import com.npstra.casualtinkering.init.Modifiers;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +14,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import slimeknights.tconstruct.library.modifiers.Modifier;
+import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 
@@ -36,6 +38,8 @@ public class MagicSwordCoopModifier extends Modifier {
         if (offhand.isEmpty()) return;
 
         ToolStack tool = ToolStack.from(offhand);
+        if (tool.isBroken()) return;
+
         int coopLevel = tool.getModifierLevel(Modifiers.MAGIC_SWORD_COOP.getId());
         if (coopLevel < 1 || coopLevel > 3) return;
 
@@ -79,5 +83,7 @@ public class MagicSwordCoopModifier extends Modifier {
             sword.setPos(x, y, z);
             level.addFreshEntity(sword);
         }
+
+        ToolDamageUtil.damageAnimated(tool, 1, player, InteractionHand.MAIN_HAND);
     }
 }

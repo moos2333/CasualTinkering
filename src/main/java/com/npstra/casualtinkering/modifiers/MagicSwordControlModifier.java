@@ -18,6 +18,7 @@ import slimeknights.tconstruct.library.modifiers.hook.interaction.GeneralInterac
 import slimeknights.tconstruct.library.modifiers.hook.interaction.InteractionSource;
 import slimeknights.tconstruct.library.modifiers.hook.interaction.UsingToolModifierHook;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
+import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 
@@ -56,6 +57,7 @@ public class MagicSwordControlModifier extends Modifier implements GeneralIntera
         if (entity.level().isClientSide) return;
         if (!modifier.matches(activeModifier.getId())) return;
         if (!(entity instanceof Player player)) return;
+        if (tool.isBroken()) return;
 
         int usedTicks = useDuration - timeLeft;
         if (usedTicks < 5) return;
@@ -73,6 +75,7 @@ public class MagicSwordControlModifier extends Modifier implements GeneralIntera
 
         ItemStack renderSword = new ItemStack(Items.DIAMOND_SWORD);
         MagicSwordHelper.spawnMagicSwords(player.level(), player, target, level, magicDamage, renderSword);
+        ToolDamageUtil.damageAnimated(tool, 1, player, InteractionHand.MAIN_HAND);
     }
 
     @Nullable
