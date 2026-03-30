@@ -8,5 +8,6 @@
   "modifier.casualtinkering.circular_saw_attack.description": "Right-click to charge a spinning attack that damages enemies in a cone.",
   "item.casualtinkering.saw_blade_gold_cast": "Saw Blade Gold Cast",
   "item.casualtinkering.saw_blade_sand_cast": "Saw Blade Sand Cast",
-  "item.casualtinkering.saw_blade_red_sand_cast": "Saw Blade Red Sand Cast"
+  "item.casualtinkering.saw_blade_red_sand_cast": "Saw Blade Red Sand Cast",
+  "itemGroup.casualtinkering": "Casual Tinkering"
 }

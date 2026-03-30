@@ -1,0 +1,9 @@
+{
+  "icon": "casualtinkering:circular_saw",
+  "after": ["tconstruct:tool_parts"],
+  "translation_key": "itemGroup.casualtinkering",
+  "items": [
+    "casualtinkering:saw_blade",
+    "casualtinkering:circular_saw"
+  ]
+}

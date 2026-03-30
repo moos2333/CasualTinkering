@@ -8,5 +8,6 @@
   "modifier.casualtinkering.circular_saw_attack.description": "右键蓄力，对前方扇形区域内的敌人造成伤害。",
   "item.casualtinkering.saw_blade_gold_cast": "锯刃金质铸模",
   "item.casualtinkering.saw_blade_sand_cast": "锯刃沙子铸模",
-  "item.casualtinkering.saw_blade_red_sand_cast": "锯刃红沙铸模"
+  "item.casualtinkering.saw_blade_red_sand_cast": "锯刃红沙铸模",
+  "itemGroup.casualtinkering": "随意匠作"
 }
