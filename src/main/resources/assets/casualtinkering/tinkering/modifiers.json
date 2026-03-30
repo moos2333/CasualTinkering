@@ -1,4 +1,7 @@
 {
   "casualtinkering:circular_saw_attack": "tconstruct:normal",
-  "casualtinkering:magic_sword": "tconstruct:normal"
+  "casualtinkering:magic_sword": "tconstruct:normal",
+  "casualtinkering:magic_sword_coop": "tconstruct:normal",
+  "casualtinkering:magic_sword_auto": "tconstruct:normal",
+  "casualtinkering:magic_sword_control": "tconstruct:normal"
 }

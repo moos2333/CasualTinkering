@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:modifier",
+  "inputs": [
+    { "tag": "tconstruct:blades" },
+    { "item": "minecraft:clock" },
+    { "item": "minecraft:diamond" }
+  ],
+  "level": {
+    "max": 3
+  },
+  "result": "casualtinkering:magic_sword_auto",
+  "slots": {
+    "abilities": 1
+  },
+  "tools": {
+    "tag": "tconstruct:modifiable/melee"
+  }
+}

@@ -32,11 +32,17 @@ public class MagicSwordModifier extends Modifier implements MeleeHitModifierHook
         if (player == null) return;
         if (player.getAttackStrengthScale(0.0f) < 0.999f) return;
 
-        float magicDamage = damageDealt * 0.2f;
+        int level = (int) Math.min(modifier.getEffectiveLevel(), 3);
+        if (level < 1) return;
+
+        float damagePercent = 0.2f - (level - 1) * 0.025f;
+        float magicDamage = damageDealt * damagePercent;
         if (magicDamage <= 0) return;
 
         ItemStack renderSword = new ItemStack(Items.DIAMOND_SWORD);
-        EntityMagicSword sword = new EntityMagicSword(ModEntities.MAGIC_SWORD.get(), context.getLevel(), attacker, target, magicDamage, renderSword);
-        context.getLevel().addFreshEntity(sword);
+        for (int i = 0; i < level; i++) {
+            EntityMagicSword sword = new EntityMagicSword(ModEntities.MAGIC_SWORD.get(), context.getLevel(), attacker, target, magicDamage, renderSword);
+            context.getLevel().addFreshEntity(sword);
+        }
     }
 }

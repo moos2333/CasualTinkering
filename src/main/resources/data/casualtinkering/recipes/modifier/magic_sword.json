@@ -11,6 +11,8 @@
   "slots": {
     "abilities": 1
   },
-  "result": "casualtinkering:magic_sword",
-  "level": 1
+  "level": {
+    "max": 4
+  },
+  "result": "casualtinkering:magic_sword"
 }

@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "casualtinkering:circular_saw_attack",
-    "casualtinkering:magic_sword"
+    "casualtinkering:magic_sword",
+    "casualtinkering:magic_sword_coop",
+    "casualtinkering:magic_sword_auto",
+    "casualtinkering:magic_sword_control"
   ]
 }
