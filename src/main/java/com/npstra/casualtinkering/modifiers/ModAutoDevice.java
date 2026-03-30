@@ -35,7 +35,7 @@ public class ModAutoDevice extends ModifierTrait {
     private static final Random RAND = new Random();
 
     public ModAutoDevice() {
-        super("auto_device", 0xCC64FF);
+        super("auto_device", 0xCC64FF, 1, 0);
         addRecipeMatch(new ItemCombination(1,
                 new ItemStack(Items.REPEATER),
                 new ItemStack(Items.REPEATER),
