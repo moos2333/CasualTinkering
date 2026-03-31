@@ -53,6 +53,11 @@
       "tool_actions": [ "minecraft:axe_dig", "tconstruct:shield_disable" ]
     },
     {
+      "type": "tconstruct:is_effective",
+      "predicate_type": "mantle:tag",
+      "tag": "minecraft:mineable/axe"
+    },
+    {
       "type": "tconstruct:melee_particle",
       "particle": "tconstruct:axe_attack"
     }
