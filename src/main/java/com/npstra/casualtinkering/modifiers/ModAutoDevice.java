@@ -15,7 +15,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
+import slimeknights.tconstruct.library.modifiers.ModifierNBT;
 import slimeknights.tconstruct.library.utils.TagUtil;
+import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.tools.MagicDevice;
@@ -30,12 +32,11 @@ import java.util.LinkedList;
 
 public class ModAutoDevice extends ModifierTrait {
     private static final int COOLDOWN_TICKS = 20;
-    private static final float DAMAGE_FACTOR = 0.25F;
     private static final int RADIUS = 4;
     private static final Random RAND = new Random();
 
     public ModAutoDevice() {
-        super("auto_device", 0xCC64FF, 1, 0);
+        super("auto_device", 0xCC64FF, 3, 0);
         addRecipeMatch(new ItemCombination(1,
                 new ItemStack(Items.REPEATER),
                 new ItemStack(Items.REPEATER),
@@ -49,6 +50,14 @@ public class ModAutoDevice extends ModifierTrait {
     @Override
     public boolean canApplyCustom(ItemStack stack) {
         return stack.getItem() instanceof MagicDevice;
+    }
+
+    private float getDamageFactor(int level) {
+        switch (level) {
+            case 2: return 0.4F;
+            case 3: return 0.5F;
+            default: return 0.25F;
+        }
     }
 
     @Override
@@ -77,8 +86,9 @@ public class ModAutoDevice extends ModifierTrait {
                 .min(Comparator.comparingDouble(e -> e.getDistanceSq(player)))
                 .orElse(null);
 
-        float totalDamage = ToolHelper.getActualAttack(tool);
-        float magicDamage = totalDamage * DAMAGE_FACTOR;
+        NBTTagCompound modifierTag = TinkerUtil.getModifierTag(tool, identifier);
+        int level = ModifierNBT.readInteger(modifierTag).level;
+        float magicDamage = ToolHelper.getActualAttack(tool) * getDamageFactor(level);
         if (magicDamage <= 0) return;
 
         double angle = RAND.nextDouble() * 2 * Math.PI;
@@ -94,6 +104,10 @@ public class ModAutoDevice extends ModifierTrait {
 
         tag.setLong("auto_device_last_tick", currentTick);
         TagUtil.setToolTag(tool, tag);
+
+        if (!player.isCreative()) {
+            ToolHelper.damageTool(tool, 1, player);
+        }
     }
 
     private static class ItemCombination extends RecipeMatch {
