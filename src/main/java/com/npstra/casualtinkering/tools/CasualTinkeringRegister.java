@@ -1,5 +1,6 @@
 package com.npstra.casualtinkering.tools;
 
+import com.npstra.casualtinkering.config.ModConfig;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -44,13 +45,17 @@ public class CasualTinkeringRegister {
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-        circularSaw = new CircularSaw();
-        event.getRegistry().register(circularSaw);
-        TinkerRegistry.registerToolForgeCrafting(circularSaw);
+        if (ModConfig.enableCircularSaw) {
+            circularSaw = new CircularSaw();
+            event.getRegistry().register(circularSaw);
+            TinkerRegistry.registerToolForgeCrafting(circularSaw);
+        }
 
-        magicdevice = new MagicDevice();
-        event.getRegistry().register(magicdevice);
-        TinkerRegistry.registerToolCrafting(magicdevice);
+        if (ModConfig.enableMagicDevice) {
+            magicdevice = new MagicDevice();
+            event.getRegistry().register(magicdevice);
+            TinkerRegistry.registerToolCrafting(magicdevice);
+        }
     }
 
     @SideOnly(Side.CLIENT)
