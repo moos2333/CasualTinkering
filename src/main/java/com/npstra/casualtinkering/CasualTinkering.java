@@ -1,12 +1,10 @@
 package com.npstra.casualtinkering;
 
-import com.npstra.casualtinkering.client.renderer.RenderMagicSword;
 import com.npstra.casualtinkering.common.CasualTinkeringCommonProxy;
 import com.npstra.casualtinkering.config.ModConfig;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.modifiers.ModAutoDevice;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -21,7 +19,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 public class CasualTinkering {
     public static final String MODID = "casualtinkering";
     public static final String NAME = "Casual Tinkering";
-    public static final String VERSION = "0.1.4";
+    public static final String VERSION = "0.1.5";
 
     @SidedProxy(clientSide = "com.npstra.casualtinkering.client.CasualTinkeringClientProxy",
             serverSide = "com.npstra.casualtinkering.common.CasualTinkeringCommonProxy")

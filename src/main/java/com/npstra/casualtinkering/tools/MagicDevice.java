@@ -7,6 +7,8 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -23,6 +25,7 @@ import slimeknights.tconstruct.library.tinkering.PartMaterialType;
 import slimeknights.tconstruct.library.tools.SwordCore;
 import slimeknights.tconstruct.library.tools.ToolNBT;
 import slimeknights.tconstruct.library.utils.EntityUtil;
+import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 import slimeknights.tconstruct.tools.TinkerTools;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
@@ -59,24 +62,20 @@ public class MagicDevice extends SwordCore {
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int timeLeft) {
         if (world.isRemote) return;
-
         int useTime = getMaxItemUseDuration(stack) - timeLeft;
         if (useTime < 30) return;
-
         float range = 8.0F;
         Vec3d eye = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
         Vec3d look = player.getLook(1.0F);
         RayTraceResult mop = EntityUtil.raytraceEntity(player, eye, look, range, true);
         if (mop == null || mop.typeOfHit != RayTraceResult.Type.ENTITY) return;
-
         Entity target = mop.entityHit;
         if (target == player) return;
         if (!(target instanceof EntityLivingBase)) return;
-
         float totalDamage = ToolHelper.getActualAttack(stack);
         float magicDamage = totalDamage * 0.35F;
         Random rand = world.rand;
-
+        String bladeMaterialId = extractBladeMaterial(stack);
         for (int i = 0; i < 3; i++) {
             double angle = rand.nextDouble() * 2 * Math.PI;
             double radius = 2.0;
@@ -85,14 +84,12 @@ public class MagicDevice extends SwordCore {
             double x = target.posX + offsetX;
             double z = target.posZ + offsetZ;
             double y = target.posY + 1.5;
-            EntityMagicSword sword = new EntityMagicSword(world, player, (EntityLivingBase) target, magicDamage, x, y, z);
+            EntityMagicSword sword = new EntityMagicSword(world, player, (EntityLivingBase) target, magicDamage, x, y, z, bladeMaterialId);
             world.spawnEntity(sword);
         }
-
         if (player instanceof EntityPlayer && !((EntityPlayer) player).isCreative()) {
             ToolHelper.damageTool(stack, 1, player);
         }
-
         world.playSound(null, player.getPosition(), SoundEvents.ENTITY_PLAYER_ATTACK_STRONG, SoundCategory.PLAYERS, 1.0F, 1.0F);
     }
 
@@ -144,7 +141,8 @@ public class MagicDevice extends SwordCore {
                     double x = entity.posX + offsetX;
                     double z = entity.posZ + offsetZ;
                     double y = entity.posY + 1.5;
-                    EntityMagicSword sword = new EntityMagicSword(player.world, player, (EntityLivingBase) entity, magicDamage, x, y, z);
+                    String bladeMaterialId = extractBladeMaterial(stack);
+                    EntityMagicSword sword = new EntityMagicSword(player.world, player, (EntityLivingBase) entity, magicDamage, x, y, z, bladeMaterialId);
                     player.world.spawnEntity(sword);
                 }
             }
@@ -157,22 +155,17 @@ public class MagicDevice extends SwordCore {
     private boolean dealMagicDamage(DamageSource source, Entity target, float damage) {
         float normalDamage = damage * (1.0F - MAGIC_DAMAGE_RATIO);
         float magicDamage = damage * MAGIC_DAMAGE_RATIO;
-
         boolean hit = target.attackEntityFrom(source, normalDamage);
-
         if (hit && target instanceof EntityLivingBase) {
             EntityLivingBase targetLiving = (EntityLivingBase) target;
             int hurtResistantTime = targetLiving.hurtResistantTime;
             float lastDamage = targetLiving.lastDamage;
-
             targetLiving.hurtResistantTime = 0;
             targetLiving.lastDamage = 0;
             targetLiving.attackEntityFrom(source.setDamageBypassesArmor().setMagicDamage(), magicDamage);
-
             targetLiving.hurtResistantTime = Math.max(hurtResistantTime, targetLiving.hurtResistantTime);
             targetLiving.lastDamage = Math.max(lastDamage, targetLiving.lastDamage);
         }
-
         return hit;
     }
 
@@ -181,15 +174,22 @@ public class MagicDevice extends SwordCore {
         HandleMaterialStats handle = materials.get(0).getStatsOrUnknown(MaterialTypes.HANDLE);
         HeadMaterialStats blade = materials.get(1).getStatsOrUnknown(MaterialTypes.HEAD);
         HeadMaterialStats disk = materials.get(2).getStatsOrUnknown(MaterialTypes.HEAD);
-
         ToolNBT data = new ToolNBT();
         data.head(blade, disk);
         data.handle(handle);
-
         data.attack = 1.5F + blade.attack * 0.25F + disk.attack * 0.6F;
         data.durability *= DURABILITY_MODIFIER;
-
         return data;
+    }
+
+    private String extractBladeMaterial(ItemStack stack) {
+        String bladeMaterialId = "manyullyn";
+        NBTTagCompound root = TagUtil.getTagSafe(stack);
+        NBTTagList materialsTagList = TagUtil.getBaseMaterialsTagList(root);
+        if (materialsTagList.tagCount() > 1) {
+            bladeMaterialId = materialsTagList.getStringTagAt(1);
+        }
+        return bladeMaterialId;
     }
 
     @Mod.EventBusSubscriber
@@ -202,29 +202,20 @@ public class MagicDevice extends SwordCore {
             if (event.getEntity().world.isRemote) return;
             if (event.getSource().getDamageType().equals("magic_sword")) return;
             if (!(event.getSource().getTrueSource() instanceof EntityPlayer)) return;
-
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
-
             long currentTime = System.currentTimeMillis();
             Long lastTime = LAST_ATTACK_TIME.get(player.getUniqueID());
-            if (lastTime != null && currentTime - lastTime < ATTACK_COOLDOWN_MS) {
-                return;
-            }
+            if (lastTime != null && currentTime - lastTime < ATTACK_COOLDOWN_MS) return;
             LAST_ATTACK_TIME.put(player.getUniqueID(), currentTime);
-
             ItemStack offhand = player.getHeldItemOffhand();
             if (offhand.isEmpty() || !(offhand.getItem() instanceof MagicDevice)) return;
-
             ItemStack mainhand = player.getHeldItemMainhand();
             if (mainhand.isEmpty()) return;
-
             boolean isSword = mainhand.getItem() instanceof ItemSword || mainhand.getItem() instanceof SwordCore;
             if (!isSword) return;
-
             MagicDevice device = (MagicDevice) offhand.getItem();
             float totalDamage = ToolHelper.getActualAttack(offhand);
             float magicDamage = totalDamage * 0.33F;
-
             Random rand = player.world.rand;
             double angle = rand.nextDouble() * 2 * Math.PI;
             double radius = 2.0;
@@ -233,8 +224,8 @@ public class MagicDevice extends SwordCore {
             double x = event.getEntity().posX + offsetX;
             double z = event.getEntity().posZ + offsetZ;
             double y = event.getEntity().posY + 1.5;
-
-            EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z);
+            String bladeMaterialId = device.extractBladeMaterial(offhand);
+            EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z, bladeMaterialId);
             player.world.spawnEntity(sword);
         }
     }
