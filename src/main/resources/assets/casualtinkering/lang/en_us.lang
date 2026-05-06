@@ -4,3 +4,5 @@ item.casualtinkering.magicdevice.name=Magic Device
 item.casualtinkering.magicdevice.desc=Magic Device is a mid-range weapon that summons magical swords for coordinated attacks.\nRight-click: Charge to summon magical swords for mid-range strikes.\nOff-hand: When attacking with a sword in main hand, summons magical swords to assist.\nFull charge attack: Summons magical swords.
 modifier.auto_device.name=Auto Device
 modifier.auto_device.desc=§oSet and forget!§r\nAutomatically strikes nearby hostile mobs when in main hand.
+modifier.precision_sawing.name=Precision Sawing
+modifier.precision_sawing.desc=§oFine sawing!§r\nLogs that can be processed into planks drop as planks instead.

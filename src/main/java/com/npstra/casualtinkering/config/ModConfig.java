@@ -31,4 +31,8 @@ public class ModConfig {
     @Config.Comment("Enable or disable the Auto Device modifier")
     @Config.RequiresMcRestart
     public static boolean enableAutoDevice = true;
+
+    @Config.Comment("Enable or disable the Precision Sawing modifier")
+    @Config.RequiresMcRestart
+    public static boolean enablePrecisionSawing = true;
 }
