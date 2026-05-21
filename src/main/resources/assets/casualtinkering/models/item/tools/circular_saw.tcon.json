@@ -4,7 +4,7 @@
     "layer1": "casualtinkering:items/tools/circular_saw/handle2",
     "layer2": "casualtinkering:items/tools/circular_saw/head1",
     "layer3": "casualtinkering:items/tools/circular_saw/head2",
-    "broken1": "casualtinkering:items/tools/circular_saw/head_broken"
+    "broken3": "casualtinkering:items/tools/circular_saw/head_broken"
   },
   "display": {
     "thirdperson_righthand": {
