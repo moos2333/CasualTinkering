@@ -1,0 +1,14 @@
+{
+  "loader": "tconstruct:tool",
+  "parent": "forge:item/default-tool",
+  "textures": {
+    "handle": "casualtinkering:item/tool/throwing_knife/handle",
+    "head1":  "casualtinkering:item/tool/throwing_knife/blade1",
+    "head2":  "casualtinkering:item/tool/throwing_knife/blade2"
+  },
+  "parts": [
+    { "name": "handle", "index": 0 },
+    { "name": "head1",  "index": 1 },
+    { "name": "head2",  "index": 2 }
+  ]
+}

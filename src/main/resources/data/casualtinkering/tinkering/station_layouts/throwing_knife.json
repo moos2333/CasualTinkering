@@ -1,0 +1,38 @@
+{
+  "translation_key": "item.casualtinkering.throwing_knife",
+  "icon": {
+    "item": "casualtinkering:throwing_knife",
+    "nbt": {
+      "tic_display": true,
+      "tic_materials": [
+        "tconstruct:ui_render#handle",
+        "tconstruct:ui_render#head",
+        "tconstruct:ui_render#head"
+      ]
+    }
+  },
+  "sortIndex": 10,
+  "input_slots": [
+    {
+      "icon": "tconstruct:arrow_shaft",
+      "translation_key": "item.tconstruct.arrow_shaft",
+      "x": 15,
+      "y": 64,
+      "filter": { "item": "tconstruct:arrow_shaft" }
+    },
+    {
+      "icon": "tconstruct:arrow_head",
+      "translation_key": "item.tconstruct.arrow_head",
+      "x": 55,
+      "y": 24,
+      "filter": { "item": "tconstruct:arrow_head" }
+    },
+    {
+      "icon": "tconstruct:arrow_head",
+      "translation_key": "item.tconstruct.arrow_head",
+      "x": 35,
+      "y": 44,
+      "filter": { "item": "tconstruct:arrow_head" }
+    }
+  ]
+}

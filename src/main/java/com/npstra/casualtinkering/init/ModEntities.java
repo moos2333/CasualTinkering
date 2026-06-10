@@ -2,6 +2,7 @@ package com.npstra.casualtinkering.init;
 
 import com.npstra.casualtinkering.CasualTinkering;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
+import com.npstra.casualtinkering.entity.ThrownKnife;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -19,6 +20,13 @@ public class ModEntities {
                     .clientTrackingRange(64)
                     .updateInterval(1)
                     .build(new ResourceLocation(CasualTinkering.MODID, "magic_sword").toString()));
+
+    public static final RegistryObject<EntityType<ThrownKnife>> THROWN_KNIFE = ENTITIES.register("thrown_knife",
+            () -> EntityType.Builder.<ThrownKnife>of(ThrownKnife::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(20)
+                    .build(new ResourceLocation(CasualTinkering.MODID, "thrown_knife").toString()));
 
     public static void register(IEventBus bus) {
         ENTITIES.register(bus);

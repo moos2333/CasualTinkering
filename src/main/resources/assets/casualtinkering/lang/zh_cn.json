@@ -26,5 +26,7 @@
   "modifier.casualtinkering.thermal_ray.flavor": "聚焦液态火焰的能量",
   "modifier.casualtinkering.thermal_ray.description": "消耗高温流体发射毁灭性光束。连续射击10次后过热。",
   "modifier.thermal_ray.overheat": "武器过热！",
-  "modifier.thermal_ray.no_fuel": "燃料不足！"
+  "modifier.thermal_ray.no_fuel": "燃料不足！",
+  "item.casualtinkering.throwing_knife": "飞刀",
+  "item.casualtinkering.throwing_knife.description": "飞刀是一种基础属性较差但部件更多的投掷武器。\n命中方块后可回收。"
 }

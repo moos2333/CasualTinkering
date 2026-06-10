@@ -26,5 +26,7 @@
   "modifier.casualtinkering.thermal_ray.flavor": "Focused energy from liquid fire",
   "modifier.casualtinkering.thermal_ray.description": "Consumes hot fluids to fire a devastating beam. Overheats after 10 shots.",
   "modifier.thermal_ray.overheat": "Weapon overheated!",
-  "modifier.thermal_ray.no_fuel": "Insufficient fuel!"
+  "modifier.thermal_ray.no_fuel": "Insufficient fuel!",
+  "item.casualtinkering.throwing_knife": "Throwing Knife",
+  "item.casualtinkering.throwing_knife.description": "A throwing weapon with modest base stats but more component parts.\nSticks in blocks for retrieval."
 }
