@@ -1,5 +1,5 @@
 {
-  "casualtinkering:circular_saw_attack": "casualtinkering:gui/modifiers/sawing",
+  "casualtinkering:circular_saw_attack": ["casualtinkering:gui/modifiers/sawing", "tconstruct:gui/modifiers/plus"],
   "casualtinkering:magic_sword": "casualtinkering:gui/modifiers/magic_sword",
   "casualtinkering:magic_sword_coop": ["casualtinkering:gui/modifiers/magic_sword", "tconstruct:gui/modifiers/plus"],
   "casualtinkering:magic_sword_auto": ["casualtinkering:gui/modifiers/magic_sword", "tconstruct:gui/modifiers/tier"],
