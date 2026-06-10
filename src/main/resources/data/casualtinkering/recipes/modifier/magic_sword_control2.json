@@ -3,12 +3,17 @@
   "inputs": [
     { "item": "tconstruct:small_blade" },
     { "item": "minecraft:compass" },
-    { "item": "minecraft:diamond" }
+    { "item": "minecraft:diamond" },
+    { "item": "minecraft:diamond" },
+    { "item": "minecraft:compass" }
   ],
-  "level": 1,
+  "level": {
+    "min": 2,
+    "max": 3
+  },
   "result": "casualtinkering:magic_sword_control",
   "slots": {
-    "abilities": 1
+    "upgrades": 1
   },
   "tools": {
     "tag": "tconstruct:modifiable/melee"
