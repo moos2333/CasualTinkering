@@ -1,0 +1,16 @@
+{
+  "type": "tconstruct:modifier",
+  "conditions": [],
+  "inputs": [
+    { "item": "minecraft:nether_bricks" },
+    { "item": "minecraft:dispenser" },
+    { "item": "minecraft:nether_bricks" },
+    { "item": "minecraft:blaze_rod" },
+    { "item": "minecraft:magma_block" }
+  ],
+  "tools": { "tag": "tconstruct:modifiable/melee/primary" },
+  "slots": { "abilities": 2 },
+  "allow_crystal": false,
+  "result": "casualtinkering:thermal_ray",
+  "level": 1
+}

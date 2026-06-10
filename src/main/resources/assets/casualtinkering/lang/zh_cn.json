@@ -21,5 +21,10 @@
   "item.casualtinkering.saw_blade_gold_cast": "锯刃金质铸模",
   "item.casualtinkering.saw_blade_sand_cast": "锯刃沙子铸模",
   "item.casualtinkering.saw_blade_red_sand_cast": "锯刃红沙铸模",
-  "itemGroup.casualtinkering": "随意匠作"
+  "itemGroup.casualtinkering": "随意匠作",
+  "modifier.casualtinkering.thermal_ray": "热射线",
+  "modifier.casualtinkering.thermal_ray.flavor": "聚焦液态火焰的能量",
+  "modifier.casualtinkering.thermal_ray.description": "消耗高温流体发射毁灭性光束。连续射击10次后过热。",
+  "modifier.thermal_ray.overheat": "武器过热！",
+  "modifier.thermal_ray.no_fuel": "燃料不足！"
 }

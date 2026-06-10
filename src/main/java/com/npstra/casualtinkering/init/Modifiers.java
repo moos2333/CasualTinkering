@@ -19,6 +19,8 @@ public class Modifiers {
 
     public static final StaticModifier<MagicSwordCoopModifier> MAGIC_SWORD_COOP = MODIFIERS.register("magic_sword_coop", MagicSwordCoopModifier::new);
 
+    public static final StaticModifier<ThermalRayModifier> THERMAL_RAY = MODIFIERS.register("thermal_ray", ThermalRayModifier::new);
+
     public static void register(IEventBus bus) {
         MODIFIERS.register(bus);
     }

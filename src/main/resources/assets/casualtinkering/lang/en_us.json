@@ -21,5 +21,10 @@
   "item.casualtinkering.saw_blade_gold_cast": "Saw Blade Gold Cast",
   "item.casualtinkering.saw_blade_sand_cast": "Saw Blade Sand Cast",
   "item.casualtinkering.saw_blade_red_sand_cast": "Saw Blade Red Sand Cast",
-  "itemGroup.casualtinkering": "Casual Tinkering"
+  "itemGroup.casualtinkering": "Casual Tinkering",
+  "modifier.casualtinkering.thermal_ray": "Thermal Ray",
+  "modifier.casualtinkering.thermal_ray.flavor": "Focused energy from liquid fire",
+  "modifier.casualtinkering.thermal_ray.description": "Consumes hot fluids to fire a devastating beam. Overheats after 10 shots.",
+  "modifier.thermal_ray.overheat": "Weapon overheated!",
+  "modifier.thermal_ray.no_fuel": "Insufficient fuel!"
 }

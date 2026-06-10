@@ -3,5 +3,6 @@
   "casualtinkering:magic_sword": "casualtinkering:gui/modifiers/magic_sword",
   "casualtinkering:magic_sword_coop": ["casualtinkering:gui/modifiers/magic_sword", "tconstruct:gui/modifiers/plus"],
   "casualtinkering:magic_sword_auto": ["casualtinkering:gui/modifiers/magic_sword", "tconstruct:gui/modifiers/tier"],
-  "casualtinkering:magic_sword_control": ["casualtinkering:gui/modifiers/magic_sword", "tconstruct:gui/modifiers/book"]
+  "casualtinkering:magic_sword_control": ["casualtinkering:gui/modifiers/magic_sword", "tconstruct:gui/modifiers/book"],
+  "casualtinkering:thermal_ray": ["casualtinkering:gui/modifiers/thermal_ray", "tconstruct:gui/modifiers/plus"]
 }

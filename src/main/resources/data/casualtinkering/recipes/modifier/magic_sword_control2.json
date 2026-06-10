@@ -16,6 +16,6 @@
     "upgrades": 1
   },
   "tools": {
-    "tag": "tconstruct:modifiable/melee"
+    "tag": "tconstruct:modifiable/melee/primary"
   }
 }
