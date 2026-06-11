@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -17,9 +18,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import slimeknights.tconstruct.library.materials.*;
+import slimeknights.tconstruct.library.modifiers.ModifierNBT;
 import slimeknights.tconstruct.library.tinkering.Category;
 import slimeknights.tconstruct.library.tinkering.PartMaterialType;
 import slimeknights.tconstruct.library.tools.ToolNBT;
+import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 import slimeknights.tconstruct.tools.TinkerTools;
 import slimeknights.tconstruct.tools.tools.Hatchet;
@@ -90,6 +93,19 @@ public class CircularSaw extends Hatchet {
         }
     }
 
+    private float getSweepDamageModifier(ItemStack stack) {
+        int level = 0;
+        NBTTagCompound tag = TinkerUtil.getModifierTag(stack, "overclock");
+        if (tag != null && tag.getSize() > 0) {
+            level = ModifierNBT.readInteger(tag).level;
+        }
+        if (level <= 0) return -0.67f;
+        float total = 0.33f;
+        float[] extra = {0.17f, 0.14f, 0.11f};
+        for (int i = 0; i < level && i < extra.length; i++) total += extra[i];
+        return total - 1.0f;
+    }
+
     private void performSweepAttack(ItemStack stack, World world, EntityPlayer player) {
         float radius = 4.0f;
         float halfAngle = (float) Math.toRadians(45.0f);
@@ -118,7 +134,7 @@ public class CircularSaw extends Hatchet {
             UUID speedUUID = UUID.fromString("a1b2c3d4-e5f6-7890-1234-567890abcdef");
             UUID damageUUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
             AttributeModifier speedModifier = new AttributeModifier(speedUUID, "CircularSaw speed boost", 99.0, 0);
-            AttributeModifier damageModifier = new AttributeModifier(damageUUID, "CircularSaw reduced damage", -0.67, 2);
+            AttributeModifier damageModifier = new AttributeModifier(damageUUID, "CircularSaw reduced damage", getSweepDamageModifier(stack), 2);
             IAttributeInstance speedAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
             IAttributeInstance damageAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
             speedAttr.applyModifier(speedModifier);

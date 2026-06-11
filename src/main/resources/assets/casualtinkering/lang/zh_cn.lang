@@ -6,3 +6,5 @@ modifier.auto_device.name=自动装置
 modifier.auto_device.desc=§o自动制导！§r\n在主手时，魔导具会自动攻击周围的敌人。
 modifier.precision_sawing.name=精密锯削
 modifier.precision_sawing.desc=§o精密切削！§r\n砍伐原木会直接掉落加工好的木板。
+modifier.overclock.name=超频
+modifier.overclock.desc=§o可能引发卡顿！§r\n提高横扫攻击时对副目标造成的伤害。

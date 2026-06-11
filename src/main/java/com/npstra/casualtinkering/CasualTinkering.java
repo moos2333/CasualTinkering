@@ -4,6 +4,7 @@ import com.npstra.casualtinkering.common.CasualTinkeringCommonProxy;
 import com.npstra.casualtinkering.config.ModConfig;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.modifiers.ModAutoDevice;
+import com.npstra.casualtinkering.modifiers.ModOverclock;
 import com.npstra.casualtinkering.modifiers.ModPrecisionSawing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
@@ -20,7 +21,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 public class CasualTinkering {
     public static final String MODID = "casualtinkering";
     public static final String NAME = "Casual Tinkering";
-    public static final String VERSION = "0.1.6";
+    public static final String VERSION = "0.1.8";
 
     @SidedProxy(clientSide = "com.npstra.casualtinkering.client.CasualTinkeringClientProxy",
             serverSide = "com.npstra.casualtinkering.common.CasualTinkeringCommonProxy")
@@ -34,6 +35,9 @@ public class CasualTinkering {
         }
         if (ModConfig.enablePrecisionSawing) {
             new ModPrecisionSawing();
+        }
+        if (ModConfig.enableOverclock) {
+            new ModOverclock();
         }
     }
 

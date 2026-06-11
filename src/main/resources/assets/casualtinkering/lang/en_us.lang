@@ -6,3 +6,5 @@ modifier.auto_device.name=Auto Device
 modifier.auto_device.desc=§oSet and forget!§r\nAutomatically strikes nearby hostile mobs when in main hand.
 modifier.precision_sawing.name=Precision Sawing
 modifier.precision_sawing.desc=§oFine sawing!§r\nLogs that can be processed into planks drop as planks instead.
+modifier.overclock.name=Overclock
+modifier.overclock.desc=§oMay cause lag!§r\nIncreases damage dealt to secondary targets during sweeping attacks.

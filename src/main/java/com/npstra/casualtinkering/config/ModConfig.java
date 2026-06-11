@@ -35,4 +35,8 @@ public class ModConfig {
     @Config.Comment("Enable or disable the Precision Sawing modifier")
     @Config.RequiresMcRestart
     public static boolean enablePrecisionSawing = true;
+
+    @Config.Comment("Enable or disable the Overclock modifier")
+    @Config.RequiresMcRestart
+    public static boolean enableOverclock = true;
 }
