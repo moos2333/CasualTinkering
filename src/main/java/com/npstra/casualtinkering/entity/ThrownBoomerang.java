@@ -23,7 +23,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import slimeknights.tconstruct.library.modifiers.hook.ranged.ScheduledProjectileTaskModifierHook;
-import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
@@ -153,15 +152,6 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
             if (hurt && this.knockback > 0 && target instanceof LivingEntity living) {
                 Vec3 motion = this.getDeltaMovement().normalize();
                 living.knockback(this.knockback, -motion.x, -motion.z);
-            }
-            if (!this.tool.isBroken()) {
-                LivingEntity attacker = this.getOwner() instanceof LivingEntity ? (LivingEntity) this.getOwner() : null;
-                boolean broken = ToolDamageUtil.damage(this.tool, 1, attacker, this.toolStack);
-                this.tool = ToolStack.from(this.toolStack);
-                this.entityData.set(STACK, this.toolStack);
-                if (broken || this.tool.isBroken()) {
-                    this.returning = true;
-                }
             }
         }
         this.returning = true;
