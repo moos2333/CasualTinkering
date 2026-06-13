@@ -16,12 +16,14 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import slimeknights.tconstruct.library.modifiers.hook.ranged.ScheduledProjectileTaskModifierHook;
+import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
@@ -39,10 +41,9 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
     private float knockback;
     private Schedule tasks = Schedule.EMPTY;
     private boolean returning = false;
-    private double totalDistance = 0.0;
-    private double maxDistance = 16.0;
     private double initialSpeed = 0.0;
     private int life = 0;
+    private static final int MAX_LIFE = 30;
 
     public ThrownBoomerang(EntityType<? extends ThrownBoomerang> type, Level level) {
         super(type, level);
@@ -57,14 +58,12 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.tool = tool;
         this.damage = (float) tool.getStats().get(ToolStats.ATTACK_DAMAGE);
         this.knockback = (float) tool.getStats().get(ToolStats.KNOCKBACK_RESISTANCE) * 0.5f;
-        float finalSpeed = velocity;
-        this.initialSpeed = finalSpeed;
-        this.maxDistance = 16.0;
+        this.initialSpeed = velocity;
         Vec3 pos = shooter.getEyePosition();
         this.setPos(pos.x, pos.y - 0.1, pos.z);
         this.entityData.set(STACK, toolStack);
         this.entityData.set(WATER_INERTIA, 0.8f);
-        this.shootFromRotation(shooter, shooter.getXRot(), shooter.getYRot(), 0.0f, finalSpeed, inaccuracy);
+        this.shootFromRotation(shooter, shooter.getXRot(), shooter.getYRot(), 0.0f, velocity, inaccuracy);
         this.setNoGravity(true);
         this.noCulling = true;
     }
@@ -95,19 +94,8 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
             this.discard();
             return;
         }
-        double dx = this.getX() - this.xOld;
-        double dy = this.getY() - this.yOld;
-        double dz = this.getZ() - this.zOld;
-        this.totalDistance += Math.sqrt(dx * dx + dy * dy + dz * dz);
-        double slowStart = this.maxDistance * 0.75;
-        if (!this.returning) {
-            if (this.totalDistance >= this.maxDistance) {
-                this.returning = true;
-            } else if (this.totalDistance > slowStart) {
-                double progress = (this.totalDistance - slowStart) / (this.maxDistance - slowStart);
-                double mult = 1.0 - progress * 0.5;
-                this.setDeltaMovement(this.getDeltaMovement().scale(mult));
-            }
+        if (!this.returning && this.life > MAX_LIFE) {
+            this.returning = true;
         }
         HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, e -> e != this.getOwner());
         if (hit.getType() != HitResult.Type.MISS) {
@@ -166,6 +154,20 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
                 Vec3 motion = this.getDeltaMovement().normalize();
                 living.knockback(this.knockback, -motion.x, -motion.z);
             }
+            ToolDamageUtil.damage(this.tool, 1, this.getOwner() instanceof LivingEntity ? (LivingEntity) this.getOwner() : null, this.toolStack);
+            this.entityData.set(STACK, this.toolStack);
+            if (this.tool.isBroken()) {
+                if (this.getOwner() instanceof Player owner) {
+                    ItemStack broken = this.toolStack.copy();
+                    if (!owner.getInventory().add(broken)) {
+                        owner.drop(broken, false);
+                    }
+                } else {
+                    this.spawnAtLocation(this.toolStack);
+                }
+                this.discard();
+                return;
+            }
         }
         this.returning = true;
     }
@@ -176,8 +178,6 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         tag.put("stack", this.toolStack.save(new CompoundTag()));
         tag.putFloat("water_inertia", this.entityData.get(WATER_INERTIA));
         tag.putBoolean("returning", this.returning);
-        tag.putDouble("totalDistance", this.totalDistance);
-        tag.putDouble("maxDistance", this.maxDistance);
         tag.putDouble("initialSpeed", this.initialSpeed);
         tag.putInt("life", this.life);
         if (!this.tasks.isEmpty()) {
@@ -194,8 +194,6 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         }
         this.entityData.set(WATER_INERTIA, tag.getFloat("water_inertia"));
         this.returning = tag.getBoolean("returning");
-        this.totalDistance = tag.getDouble("totalDistance");
-        this.maxDistance = tag.getDouble("maxDistance");
         this.initialSpeed = tag.getDouble("initialSpeed");
         this.life = tag.getInt("life");
         if (tag.contains("tasks")) {
@@ -208,8 +206,6 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         buffer.writeItem(this.toolStack);
         buffer.writeFloat(this.entityData.get(WATER_INERTIA));
         buffer.writeBoolean(this.returning);
-        buffer.writeDouble(this.totalDistance);
-        buffer.writeDouble(this.maxDistance);
         buffer.writeDouble(this.initialSpeed);
         buffer.writeInt(this.life);
     }
@@ -219,8 +215,6 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.setStack(additionalData.readItem());
         this.entityData.set(WATER_INERTIA, additionalData.readFloat());
         this.returning = additionalData.readBoolean();
-        this.totalDistance = additionalData.readDouble();
-        this.maxDistance = additionalData.readDouble();
         this.initialSpeed = additionalData.readDouble();
         this.life = additionalData.readInt();
         this.tool = ToolStack.from(this.toolStack);
