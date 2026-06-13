@@ -5,6 +5,7 @@
     "magic_sword_auto": "#00FFFF",
     "magic_sword_coop": "#00FFFF",
     "magic_sword_control": "#00FFFF",
-    "thermal_ray": "#FFA500"
+    "thermal_ray": "#FFA500",
+    "boomerang": "#FFFF00"
   }
 }

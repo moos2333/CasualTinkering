@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:modifier",
+  "inputs": [
+    { "item": "minecraft:ender_pearl" },
+    { "item": "minecraft:feather" },
+    { "item": "minecraft:iron_ingot" }
+  ],
+  "tools": { "tag": "tconstruct:modifiable/melee/primary" },
+  "slots": { "abilities": 2 },
+  "result": "casualtinkering:boomerang",
+  "level": 1
+}

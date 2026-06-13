@@ -28,5 +28,8 @@
   "modifier.thermal_ray.overheat": "Weapon overheated!",
   "modifier.thermal_ray.no_fuel": "Insufficient fuel!",
   "item.casualtinkering.throwing_knife": "Throwing Knife",
-  "item.casualtinkering.throwing_knife.description": "A throwing weapon with modest base stats but more component parts.\nSticks in blocks for retrieval."
+  "item.casualtinkering.throwing_knife.description": "A throwing weapon with modest base stats but more component parts.\nSticks in blocks for retrieval.",
+  "modifier.casualtinkering.boomerang": "Boomerang",
+  "modifier.casualtinkering.boomerang.flavor": "Comes back to you!",
+  "modifier.casualtinkering.boomerang.description": "Right-click to throw the weapon; it will return after a short flight, dealing damage on hit."
 }

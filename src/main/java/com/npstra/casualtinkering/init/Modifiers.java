@@ -21,6 +21,8 @@ public class Modifiers {
 
     public static final StaticModifier<ThermalRayModifier> THERMAL_RAY = MODIFIERS.register("thermal_ray", ThermalRayModifier::new);
 
+    public static final StaticModifier<BoomerangModifier> BOOMERANG = MODIFIERS.register("boomerang", BoomerangModifier::new);
+
     public static void register(IEventBus bus) {
         MODIFIERS.register(bus);
     }

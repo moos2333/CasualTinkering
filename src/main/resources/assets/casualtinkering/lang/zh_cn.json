@@ -28,5 +28,8 @@
   "modifier.thermal_ray.overheat": "武器过热！",
   "modifier.thermal_ray.no_fuel": "燃料不足！",
   "item.casualtinkering.throwing_knife": "飞刀",
-  "item.casualtinkering.throwing_knife.description": "飞刀是一种基础属性较差但部件更多的投掷武器。\n命中方块后可回收。"
+  "item.casualtinkering.throwing_knife.description": "飞刀是一种基础属性较差但部件更多的投掷武器。\n命中方块后可回收。",
+  "modifier.casualtinkering.boomerang": "飞旋",
+  "modifier.casualtinkering.boomerang.flavor": "去去就回！",
+  "modifier.casualtinkering.boomerang.description": "右键蓄力投掷武器，它会飞行一段距离后返回，命中时造成伤害。"
 }
