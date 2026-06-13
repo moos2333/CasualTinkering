@@ -4,6 +4,7 @@
   "translation_key": "itemGroup.casualtinkering",
   "items": [
     "casualtinkering:saw_blade",
-    "casualtinkering:circular_saw"
+    "casualtinkering:circular_saw",
+    "casualtinkering:throwing_knife"
   ]
 }
