@@ -33,7 +33,7 @@ public class ModEntities {
             () -> EntityType.Builder.<ThrownBoomerang>of(ThrownBoomerang::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
                     .clientTrackingRange(4)
-                    .updateInterval(20)
+                    .updateInterval(1)
                     .build(new ResourceLocation(CasualTinkering.MODID, "thrown_boomerang").toString()));
 
     public static void register(IEventBus bus) {

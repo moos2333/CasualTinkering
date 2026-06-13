@@ -16,7 +16,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -58,7 +57,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.tool = tool;
         this.damage = (float) tool.getStats().get(ToolStats.ATTACK_DAMAGE);
         this.knockback = (float) tool.getStats().get(ToolStats.KNOCKBACK_RESISTANCE) * 0.5f;
-        float finalSpeed = velocity * 0.35f;
+        float finalSpeed = velocity;
         this.initialSpeed = finalSpeed;
         this.maxDistance = 16.0;
         Vec3 pos = shooter.getEyePosition();
@@ -119,7 +118,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
             Vec3 toTarget = target.subtract(this.position());
             double dist = toTarget.length();
             if (dist > 1.2) {
-                double speed = Math.max(0.25, this.initialSpeed * 0.6);
+                double speed = Math.max(0.8, this.initialSpeed * 0.6);
                 this.setDeltaMovement(toTarget.normalize().scale(speed));
             } else {
                 ItemStack toGive = this.toolStack.copy();
