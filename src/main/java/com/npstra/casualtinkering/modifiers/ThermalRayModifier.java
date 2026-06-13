@@ -30,6 +30,7 @@ import slimeknights.tconstruct.library.modifiers.hook.interaction.InventoryTickM
 import slimeknights.tconstruct.library.modifiers.modules.build.StatBoostModule;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.capability.fluid.ToolTankHelper;
+import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ModDataNBT;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
@@ -149,6 +150,8 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
             if (fluid.isEmpty()) ToolTankHelper.TANK_HELPER.setFluid(tool, FluidStack.EMPTY);
             else ToolTankHelper.TANK_HELPER.setFluid(tool, fluid);
         }
+
+        ToolDamageUtil.damage(tool, 1, player, player.getMainHandItem());
 
         float baseDamage = tool.getStats().get(ToolStats.ATTACK_DAMAGE);
         if (baseDamage <= 0) baseDamage = 1.0f;
