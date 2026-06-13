@@ -65,18 +65,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.setPos(pos.x, pos.y - 0.1, pos.z);
         this.entityData.set(STACK, toolStack);
         this.entityData.set(WATER_INERTIA, 0.8f);
-        // 手动计算速度方向（基于玩家朝向）
-        float yaw = shooter.getYRot() * (float) Math.PI / 180.0F;
-        float pitch = shooter.getXRot() * (float) Math.PI / 180.0F;
-        double x = -Math.sin(yaw) * Math.cos(pitch);
-        double y = -Math.sin(pitch);
-        double z = Math.cos(yaw) * Math.cos(pitch);
-        this.setDeltaMovement(x * finalSpeed, y * finalSpeed, z * finalSpeed);
-        // 设置初始旋转
-        this.setYRot(shooter.getYRot());
-        this.setXRot(shooter.getXRot());
-        this.yRotO = this.getYRot();
-        this.xRotO = this.getXRot();
+        this.shootFromRotation(shooter, shooter.getXRot(), shooter.getYRot(), 0.0f, finalSpeed, inaccuracy);
         this.setNoGravity(true);
         this.noCulling = true;
     }
@@ -130,7 +119,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
             Vec3 toTarget = target.subtract(this.position());
             double dist = toTarget.length();
             if (dist > 1.2) {
-                double speed = Math.max(0.3, this.initialSpeed * 0.4);
+                double speed = Math.max(0.25, this.initialSpeed * 0.6);
                 this.setDeltaMovement(toTarget.normalize().scale(speed));
             } else {
                 ItemStack toGive = this.toolStack.copy();
@@ -147,29 +136,38 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
             this.discard();
             return;
         }
+        Vec3 movement = this.getDeltaMovement();
+        this.setPos(this.getX() + movement.x, this.getY() + movement.y, this.getZ() + movement.z);
+        this.updateRotation();
         float reduction = this.isInWater() ? this.entityData.get(WATER_INERTIA) : 0.99f;
-        this.setDeltaMovement(this.getDeltaMovement().scale(reduction));
+        this.setDeltaMovement(movement.scale(reduction));
         if (!this.tasks.isEmpty()) {
             ScheduledProjectileTaskModifierHook.checkSchedule(this.tool, this.toolStack, this, null, this.tasks);
         }
-        super.tick();
+    }
+
+    protected void updateRotation() {
+        Vec3 vec3 = this.getDeltaMovement();
+        double d0 = vec3.horizontalDistance();
+        this.setXRot((float) (Math.atan2(vec3.y, d0) * 180.0 / Math.PI));
+        this.setYRot((float) (Math.atan2(vec3.x, vec3.z) * 180.0 / Math.PI));
+        this.xRotO = this.getXRot();
+        this.yRotO = this.getYRot();
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {
-        Entity target = result.getEntity();
-        if (target == this.getOwner()) return;
-        DamageSource source = this.damageSources().thrown(this, this.getOwner());
-        boolean hurt = target.hurt(source, this.damage);
-        if (hurt && this.knockback > 0 && target instanceof LivingEntity living) {
-            Vec3 motion = this.getDeltaMovement().normalize();
-            living.knockback(this.knockback, -motion.x, -motion.z);
+    protected void onHit(HitResult hit) {
+        if (hit.getType() == HitResult.Type.ENTITY) {
+            EntityHitResult entityHit = (EntityHitResult) hit;
+            Entity target = entityHit.getEntity();
+            if (target == this.getOwner()) return;
+            DamageSource source = this.damageSources().thrown(this, this.getOwner());
+            boolean hurt = target.hurt(source, this.damage);
+            if (hurt && this.knockback > 0 && target instanceof LivingEntity living) {
+                Vec3 motion = this.getDeltaMovement().normalize();
+                living.knockback(this.knockback, -motion.x, -motion.z);
+            }
         }
-        this.returning = true;
-    }
-
-    @Override
-    protected void onHitBlock(BlockHitResult result) {
         this.returning = true;
     }
 
