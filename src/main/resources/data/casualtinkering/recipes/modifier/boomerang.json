@@ -6,7 +6,7 @@
     { "item": "minecraft:iron_ingot" }
   ],
   "tools": { "tag": "tconstruct:modifiable/melee/primary" },
-  "slots": { "abilities": 2 },
+  "slots": { "abilities": 1 },
   "result": "casualtinkering:boomerang",
   "level": 1
 }

@@ -154,19 +154,14 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
                 Vec3 motion = this.getDeltaMovement().normalize();
                 living.knockback(this.knockback, -motion.x, -motion.z);
             }
-            ToolDamageUtil.damage(this.tool, 1, this.getOwner() instanceof LivingEntity ? (LivingEntity) this.getOwner() : null, this.toolStack);
-            this.entityData.set(STACK, this.toolStack);
-            if (this.tool.isBroken()) {
-                if (this.getOwner() instanceof Player owner) {
-                    ItemStack broken = this.toolStack.copy();
-                    if (!owner.getInventory().add(broken)) {
-                        owner.drop(broken, false);
-                    }
-                } else {
-                    this.spawnAtLocation(this.toolStack);
+            if (!this.tool.isBroken()) {
+                LivingEntity attacker = this.getOwner() instanceof LivingEntity ? (LivingEntity) this.getOwner() : null;
+                boolean broken = ToolDamageUtil.damage(this.tool, 1, attacker, this.toolStack);
+                this.tool = ToolStack.from(this.toolStack);
+                this.entityData.set(STACK, this.toolStack);
+                if (broken || this.tool.isBroken()) {
+                    this.returning = true;
                 }
-                this.discard();
-                return;
             }
         }
         this.returning = true;
