@@ -58,7 +58,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.tool = tool;
         this.damage = (float) tool.getStats().get(ToolStats.ATTACK_DAMAGE);
         this.knockback = (float) tool.getStats().get(ToolStats.KNOCKBACK_RESISTANCE) * 0.5f;
-        float finalSpeed = velocity * 0.5f;
+        float finalSpeed = velocity * 0.35f;
         this.initialSpeed = finalSpeed;
         this.maxDistance = 16.0;
         Vec3 pos = shooter.getEyePosition();
