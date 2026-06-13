@@ -41,13 +41,27 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
     private static final float BASE_DAMAGE_MULTIPLIER = 1.5f;
     private static final int OVERHEAT_THRESHOLD = 10;
     private static final int OVERHEAT_TICKS = 100;
-    private static final int CHARGE_DURATION_TICKS = 30;
     private static final float MAX_TEMP_BONUS = 1.5f;
     private static final int BASE_TEMP = 1000;
 
     private static final ResourceLocation KEY_OVERHEATED = new ResourceLocation("casualtinkering", "thermal_ray_overheated");
     private static final ResourceLocation KEY_OVERHEAT_TICKS = new ResourceLocation("casualtinkering", "thermal_ray_overheat_ticks");
     private static final ResourceLocation KEY_SHOTS = new ResourceLocation("casualtinkering", "thermal_ray_shots");
+
+    private int getChargeTicks(IToolStackView tool) {
+        float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
+        if (attackSpeed >= 3.0f) return 20;
+        if (attackSpeed <= 0.5f) return 45;
+        float ticks;
+        if (attackSpeed >= 2.0f) {
+            ticks = 30 - (attackSpeed - 2.0f) * 10;
+        } else if (attackSpeed >= 1.0f) {
+            ticks = 40 - (attackSpeed - 1.0f) * 10;
+        } else {
+            ticks = 45 - (attackSpeed - 0.5f) * 10;
+        }
+        return Math.round(ticks);
+    }
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
@@ -69,7 +83,8 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
             if (player.level().isClientSide) player.displayClientMessage(Component.translatable("modifier.thermal_ray.no_fuel").withStyle(ChatFormatting.RED), true);
             return InteractionResult.FAIL;
         }
-        GeneralInteractionModifierHook.startUsingWithDrawtime(tool, modifier.getId(), player, hand, CHARGE_DURATION_TICKS / 20f);
+        int chargeTicks = getChargeTicks(tool);
+        GeneralInteractionModifierHook.startUsingWithDrawtime(tool, modifier.getId(), player, hand, chargeTicks / 20f);
         return InteractionResult.SUCCESS;
     }
 
@@ -87,13 +102,16 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
     public void onUsingTick(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player) || entity.level().isClientSide) return;
         int usedTicks = getUseDuration(tool, modifier) - timeLeft;
-        if (usedTicks >= CHARGE_DURATION_TICKS) player.releaseUsingItem();
+        int chargeTicks = getChargeTicks(tool);
+        if (usedTicks >= chargeTicks) player.releaseUsingItem();
     }
 
     @Override
     public void beforeReleaseUsing(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int useDuration, int timeLeft, ModifierEntry activeModifier) {
         if (entity.level().isClientSide || !modifier.matches(activeModifier.getId()) || !(entity instanceof Player player)) return;
-        if ((useDuration - timeLeft) >= CHARGE_DURATION_TICKS) executeShot(tool, player);
+        int usedTicks = useDuration - timeLeft;
+        int chargeTicks = getChargeTicks(tool);
+        if (usedTicks >= chargeTicks) executeShot(tool, player);
     }
 
     @Override

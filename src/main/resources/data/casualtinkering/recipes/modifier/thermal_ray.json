@@ -10,7 +10,6 @@
   ],
   "tools": { "tag": "tconstruct:modifiable/melee/primary" },
   "slots": { "abilities": 2 },
-  "allow_crystal": false,
   "result": "casualtinkering:thermal_ray",
   "level": 1
 }
