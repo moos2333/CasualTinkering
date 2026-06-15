@@ -15,6 +15,7 @@
   "slots": {
     "upgrades": 1
   },
+  "allow_crystal": false,
   "tools": {
     "tag": "tconstruct:modifiable/melee"
   }

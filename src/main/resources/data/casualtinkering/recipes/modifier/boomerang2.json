@@ -10,5 +10,6 @@
   "tools": { "tag": "tconstruct:modifiable/melee/primary" },
   "slots": { "abilities": 1 },
   "result": "casualtinkering:boomerang",
+  "allow_crystal": false,
   "level": 2
 }
