@@ -19,6 +19,7 @@ import slimeknights.tconstruct.library.modifiers.hook.interaction.InteractionSou
 import slimeknights.tconstruct.library.modifiers.hook.interaction.UsingToolModifierHook;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.helper.ModifierUtil;
+import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 import com.npstra.casualtinkering.entity.ThrownBoomerang;
@@ -84,6 +85,15 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
         if (used < required) return;
         ItemStack stack = player.getMainHandItem();
         if (stack.isEmpty() || stack != player.getUseItem()) return;
+
+        if (!player.getAbilities().instabuild) {
+            boolean broken = ToolDamageUtil.damage(tool, 1, player, stack);
+            if (broken) {
+                player.playSound(SoundEvents.ITEM_BREAK, 1.0f, 1.0f);
+                return;
+            }
+        }
+
         Level level = player.level();
         float velocity = ConditionalStatModifierHook.getModifiedStat(tool, player, ToolStats.VELOCITY);
         float inaccuracy = ModifierUtil.getInaccuracy(tool, player);
