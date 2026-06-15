@@ -114,11 +114,13 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
                 double speed = Math.max(0.8, this.initialSpeed * 0.6);
                 this.setDeltaMovement(toTarget.normalize().scale(speed));
             } else {
-                ItemStack toGive = this.toolStack.copy();
-                if (owner.getInventory().add(toGive)) {
-                    toGive.shrink(1);
-                } else {
-                    owner.drop(toGive, false);
+                if (!owner.getAbilities().instabuild) {
+                    ItemStack toGive = this.toolStack.copy();
+                    if (owner.getInventory().add(toGive)) {
+                        toGive.shrink(1);
+                    } else {
+                        owner.drop(toGive, false);
+                    }
                 }
                 this.discard();
                 return;
