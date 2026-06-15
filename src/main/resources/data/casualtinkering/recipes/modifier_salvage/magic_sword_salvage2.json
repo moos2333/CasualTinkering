@@ -1,0 +1,7 @@
+{
+  "type": "tconstruct:modifier_salvage",
+  "tools": { "tag": "tconstruct:modifiable/melee/primary" },
+  "modifier": "casualtinkering:magic_sword",
+  "level": { "min": 2, "max": 3 },
+  "slots": { "upgrades": 1 }
+}

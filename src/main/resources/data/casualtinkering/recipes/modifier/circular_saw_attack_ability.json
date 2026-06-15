@@ -6,7 +6,7 @@
     { "item": "minecraft:comparator" }
   ],
   "tools": {
-    "tag": "tconstruct:modifiable/melee"
+    "tag": "tconstruct:modifiable/melee/primary"
   },
   "slots": {
     "abilities": 1
