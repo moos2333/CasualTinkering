@@ -1,0 +1,46 @@
+{
+  "translation_key": "item.casualtinkering.heat_ray_gun",
+  "icon": {
+    "item": "casualtinkering:heat_ray_gun",
+    "nbt": {
+      "tic_display": true,
+      "tic_materials": [
+        "tconstruct:ui_render#head",
+        "tconstruct:ui_render#handle",
+        "tconstruct:ui_render#extra",
+        "tconstruct:ui_render#large"
+      ]
+    }
+  },
+  "sortIndex": 0,
+  "input_slots": [
+    {
+      "icon": "tconstruct:tough_handle",
+      "translation_key": "item.tconstruct.tough_handle",
+      "x": 55,
+      "y": 64,
+      "filter": { "item": "tconstruct:tough_handle" }
+    },
+    {
+      "icon": "tconstruct:tool_handle",
+      "translation_key": "item.tconstruct.tool_handle",
+      "x": 55,
+      "y": 44,
+      "filter": { "item": "tconstruct:tool_handle" }
+    },
+    {
+      "icon": "tconstruct:large_plate",
+      "translation_key": "item.tconstruct.large_plate",
+      "x": 35,
+      "y": 44,
+      "filter": { "item": "tconstruct:large_plate" }
+    },
+    {
+      "icon": "tconstruct:adze_head",
+      "translation_key": "item.tconstruct.adze_head",
+      "x": 15,
+      "y": 24,
+      "filter": { "item": "tconstruct:adze_head" }
+    }
+  ]
+}

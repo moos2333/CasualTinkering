@@ -7,6 +7,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +24,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import slimeknights.tconstruct.library.modifiers.hook.ranged.ScheduledProjectileTaskModifierHook;
+import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
+import slimeknights.tconstruct.library.tools.helper.ToolAttackUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
@@ -33,6 +36,7 @@ import com.npstra.casualtinkering.init.ModEntities;
 public class ThrownBoomerang extends Projectile implements ToolProjectile, IEntityAdditionalSpawnData {
     private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(ThrownBoomerang.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Float> WATER_INERTIA = SynchedEntityData.defineId(ThrownBoomerang.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> INHERIT_TRAITS = SynchedEntityData.defineId(ThrownBoomerang.class, EntityDataSerializers.BOOLEAN);
 
     private ItemStack toolStack = ItemStack.EMPTY;
     private IToolStackView tool;
@@ -50,7 +54,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.noCulling = true;
     }
 
-    public ThrownBoomerang(Level level, Player shooter, ItemStack stack, IToolStackView tool, float velocity, float inaccuracy) {
+    public ThrownBoomerang(Level level, Player shooter, ItemStack stack, IToolStackView tool, float velocity, float inaccuracy, boolean inheritTraits) {
         super(ModEntities.THROWN_BOOMERANG.get(), level);
         this.setOwner(shooter);
         this.toolStack = stack.copy();
@@ -62,6 +66,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.setPos(pos.x, pos.y - 0.1, pos.z);
         this.entityData.set(STACK, toolStack);
         this.entityData.set(WATER_INERTIA, 0.8f);
+        this.entityData.set(INHERIT_TRAITS, inheritTraits);
         this.shootFromRotation(shooter, shooter.getXRot(), shooter.getYRot(), 0.0f, velocity, inaccuracy);
         this.setNoGravity(true);
         this.noCulling = true;
@@ -76,6 +81,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
     protected void defineSynchedData() {
         this.entityData.define(STACK, ItemStack.EMPTY);
         this.entityData.define(WATER_INERTIA, 0.8f);
+        this.entityData.define(INHERIT_TRAITS, false);
     }
 
     @Override
@@ -147,9 +153,23 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
             EntityHitResult entityHit = (EntityHitResult) hit;
             Entity target = entityHit.getEntity();
             if (target == this.getOwner()) return;
-            DamageSource source = this.damageSources().thrown(this, this.getOwner());
-            boolean hurt = target.hurt(source, this.damage);
-            if (hurt && this.knockback > 0 && target instanceof LivingEntity living) {
+            boolean inherit = this.entityData.get(INHERIT_TRAITS);
+            if (inherit && this.getOwner() instanceof Player player) {
+                ItemStack originalMain = player.getMainHandItem();
+                player.setItemInHand(InteractionHand.MAIN_HAND, this.toolStack);
+                ToolAttackContext context = ToolAttackContext.attacker(player)
+                        .target(target)
+                        .hand(InteractionHand.MAIN_HAND)
+                        .baseDamage(this.damage)
+                        .cooldown(1.0f)
+                        .projectile(this)
+                        .build();
+                ToolAttackUtil.performAttack(this.tool, context);
+                player.setItemInHand(InteractionHand.MAIN_HAND, originalMain);
+            } else {
+                target.hurt(this.damageSources().thrown(this, this.getOwner()), this.damage);
+            }
+            if (this.knockback > 0 && target instanceof LivingEntity living) {
                 Vec3 motion = this.getDeltaMovement().normalize();
                 living.knockback(this.knockback, -motion.x, -motion.z);
             }
@@ -165,6 +185,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         tag.putBoolean("returning", this.returning);
         tag.putDouble("initialSpeed", this.initialSpeed);
         tag.putInt("life", this.life);
+        tag.putBoolean("inheritTraits", this.entityData.get(INHERIT_TRAITS));
         if (!this.tasks.isEmpty()) {
             tag.put("tasks", this.tasks.serialize());
         }
@@ -181,6 +202,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.returning = tag.getBoolean("returning");
         this.initialSpeed = tag.getDouble("initialSpeed");
         this.life = tag.getInt("life");
+        this.entityData.set(INHERIT_TRAITS, tag.getBoolean("inheritTraits"));
         if (tag.contains("tasks")) {
             this.tasks = Schedule.deserialize(tag.getList("tasks", 10));
         }
@@ -193,6 +215,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         buffer.writeBoolean(this.returning);
         buffer.writeDouble(this.initialSpeed);
         buffer.writeInt(this.life);
+        buffer.writeBoolean(this.entityData.get(INHERIT_TRAITS));
     }
 
     @Override
@@ -202,6 +225,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.returning = additionalData.readBoolean();
         this.initialSpeed = additionalData.readDouble();
         this.life = additionalData.readInt();
+        this.entityData.set(INHERIT_TRAITS, additionalData.readBoolean());
         this.tool = ToolStack.from(this.toolStack);
     }
 

@@ -19,7 +19,6 @@ import slimeknights.tconstruct.library.modifiers.hook.interaction.InteractionSou
 import slimeknights.tconstruct.library.modifiers.hook.interaction.UsingToolModifierHook;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.helper.ModifierUtil;
-import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 import com.npstra.casualtinkering.entity.ThrownBoomerang;
@@ -46,14 +45,15 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
 
     private int getChargeTicks(IToolStackView tool) {
         float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
-        if (attackSpeed >= 2.0f) {
-            return BASE_CHARGE_TICKS;
-        } else if (attackSpeed <= 0.5f) {
-            return BASE_CHARGE_TICKS * 4;
+        if (attackSpeed >= 2.0f) return 10;
+        if (attackSpeed <= 0.5f) return 40;
+        float ticks;
+        if (attackSpeed >= 1.0f) {
+            ticks = 20 - (attackSpeed - 1.0f) * 10;
         } else {
-            float ratio = (2.0f - attackSpeed) / 1.5f;
-            return BASE_CHARGE_TICKS + (int) (BASE_CHARGE_TICKS * 3 * ratio);
+            ticks = 30 - (attackSpeed - 0.5f) * 10;
         }
+        return (int) ticks;
     }
 
     @Override
@@ -69,8 +69,7 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
     @Override
     public void onUsingTick(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player) || entity.level().isClientSide) return;
-        int total = getUseDuration(tool, modifier);
-        int used = total - timeLeft;
+        int used = getUseDuration(tool, modifier) - timeLeft;
         int required = getChargeTicks(tool);
         if (used >= required) {
             player.releaseUsingItem();
@@ -85,19 +84,11 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
         if (used < required) return;
         ItemStack stack = player.getMainHandItem();
         if (stack.isEmpty() || stack != player.getUseItem()) return;
-
-        // 消耗1点耐久
-        boolean broken = ToolDamageUtil.damage(tool, 1, player, stack);
-        if (broken) {
-            // 工具已损坏，无法投掷，播放损坏音效
-            player.playSound(SoundEvents.ITEM_BREAK, 1.0f, 1.0f);
-            return;
-        }
-
         Level level = player.level();
         float velocity = ConditionalStatModifierHook.getModifiedStat(tool, player, ToolStats.VELOCITY);
         float inaccuracy = ModifierUtil.getInaccuracy(tool, player);
-        ThrownBoomerang boomerang = new ThrownBoomerang(level, player, stack, tool, velocity, inaccuracy);
+        boolean inheritTraits = modifier.getLevel() >= 2;
+        ThrownBoomerang boomerang = new ThrownBoomerang(level, player, stack, tool, velocity, inaccuracy, inheritTraits);
         level.addFreshEntity(boomerang);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIDENT_THROW, SoundSource.PLAYERS, 1f, 1f);
         player.getCooldowns().addCooldown(stack.getItem(), 10);

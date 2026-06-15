@@ -5,6 +5,8 @@
   "items": [
     "casualtinkering:saw_blade",
     "casualtinkering:circular_saw",
-    "casualtinkering:throwing_knife"
+    "casualtinkering:throwing_knife",
+    "casualtinkering:boomerang",
+    "casualtinkering:heat_ray_gun"
   ]
 }

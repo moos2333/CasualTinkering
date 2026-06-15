@@ -31,5 +31,9 @@
   "item.casualtinkering.throwing_knife.description": "飞刀是一种基础属性较差但部件更多的投掷武器。\n命中方块后可回收。",
   "modifier.casualtinkering.boomerang": "飞旋",
   "modifier.casualtinkering.boomerang.flavor": "去去就回！",
-  "modifier.casualtinkering.boomerang.description": "右键蓄力投掷武器，它会飞行一段距离后返回，命中时造成伤害。"
+  "modifier.casualtinkering.boomerang.description": "右键投掷武器，飞行一段距离后返回，高等级下掷出的武器将应用工具特性。",
+  "item.casualtinkering.boomerang": "回力镖",
+  "item.casualtinkering.boomerang.description": "一种平衡的投掷武器，脱手后总会回到使用者手中。兼备近战与远程能力。\n右击：投掷——击中敌人、方块或飞行一小段距离后自动返回。",
+  "item.casualtinkering.heat_ray_gun": "热射线枪",
+  "item.casualtinkering.heat_ray_gun.description": "一种高科技能量武器，消耗高温流体发射毁灭性光束。\n右键蓄力射击，连续射击10次后会过热。"
 }

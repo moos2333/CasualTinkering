@@ -31,5 +31,9 @@
   "item.casualtinkering.throwing_knife.description": "A throwing weapon with modest base stats but more component parts.\nSticks in blocks for retrieval.",
   "modifier.casualtinkering.boomerang": "Boomerang",
   "modifier.casualtinkering.boomerang.flavor": "Comes back to you!",
-  "modifier.casualtinkering.boomerang.description": "Right-click to throw the weapon; it will return after a short flight, dealing damage on hit."
+  "modifier.casualtinkering.boomerang.description": "Right-click to throw the weapon; it returns after a short flight. Higher levels apply tool traits on hit.",
+  "item.casualtinkering.boomerang": "Boomerang",
+  "item.casualtinkering.boomerang.description": "A balanced throwing weapon that returns to the thrower. Effective for both melee and ranged combat.\nRight Click: Throw – returns after hitting a foe, a block, or traveling a short distance.",
+  "item.casualtinkering.heat_ray_gun": "Heat Ray Gun",
+  "item.casualtinkering.heat_ray_gun.description": "A high-tech energy weapon that consumes hot fluids to fire a devastating beam.\nCharge up with right click – overheat after 10 shots."
 }

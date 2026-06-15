@@ -1,0 +1,16 @@
+{
+  "loader": "tconstruct:tool",
+  "parent": "forge:item/default-tool",
+  "textures": {
+    "handle1": "casualtinkering:item/tool/heat_ray_gun/handle",
+    "handle2": "casualtinkering:item/tool/heat_ray_gun/plate",
+    "head1":   "casualtinkering:item/tool/heat_ray_gun/fuel_tank",
+    "head2":   "casualtinkering:item/tool/heat_ray_gun/emitter"
+  },
+  "parts": [
+    { "name": "handle1", "index": 0 },
+    { "name": "handle2", "index": 1 },
+    { "name": "head1",   "index": 2 },
+    { "name": "head2",   "index": 3 }
+  ]
+}

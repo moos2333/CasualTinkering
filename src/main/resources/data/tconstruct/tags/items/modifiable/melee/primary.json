@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "casualtinkering:circular_saw"
+    "casualtinkering:circular_saw",
+    "casualtinkering:boomerang",
+    "casualtinkering:heat_ray_gun"
   ]
 }
