@@ -2,5 +2,5 @@
   "type": "tconstruct:tool_building",
   "result": "casualtinkering:throwing_knife",
   "result_count": 8,
-  "slot_layout": "tconstruct:thrown_ammo"
+  "slot_layout": "casualtinkering:throwing_knife"
 }
