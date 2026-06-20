@@ -1,0 +1,16 @@
+{
+  "modifier": "auto_device",
+  "text": [
+    {
+      "text": "使用红石中继器和拉杆可以让你的魔导具获得自动攻击能力"
+    }
+  ],
+  "effects": [
+    "自动召唤魔法剑攻击周围敌对生物",
+    "魔法剑伤害随等级提高",
+    "多个等级"
+  ],
+  "demoTool": [
+    "casualtinkering:magicdevice"
+  ]
+}

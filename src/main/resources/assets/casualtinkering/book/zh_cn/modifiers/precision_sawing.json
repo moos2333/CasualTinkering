@@ -1,0 +1,16 @@
+{
+  "modifier": "precision_sawing",
+  "text": [
+    {
+      "text": "添加一些指针无疑会让砍伐工作更高效"
+    }
+  ],
+  "effects": [
+    "砍伐原木时掉落木板",
+    "相比直接分解收获更多",
+    "只能强化一次"
+  ],
+  "demoTool": [
+    "casualtinkering:circular_saw"
+  ]
+}

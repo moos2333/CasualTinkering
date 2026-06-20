@@ -1,0 +1,20 @@
+{
+  "tool": "magicdevice",
+  "text": [
+    {
+      "text": "Magic Device is a special mid-range weapon that summons magical swords for coordinated attacks."
+    },
+    {
+      "text": "\n"
+    },
+    {
+      "text": "Summons magical swords when specific conditions are met."
+    }
+  ],
+  "properties": [
+    "Summons magical swords under certain conditions",
+    "On left-click attack",
+    "When in off-hand while main hand holds a sword",
+    "After right-click charging"
+  ]
+}

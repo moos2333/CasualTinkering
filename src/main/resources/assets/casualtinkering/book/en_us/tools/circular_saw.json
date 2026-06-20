@@ -1,0 +1,18 @@
+{
+  "tool": "circular_saw",
+  "text": [
+    {
+      "text": "A heavy woodcutting tool with a spinning blade. Charges up to unleash a wide sweeping attack."
+    },
+    {
+      "text": "\n"
+    },
+    {
+      "text": "Right-click to charge and unleash an area-of-effect sweep in front of you."
+    }
+  ],
+  "properties": [
+    "Requires a Tool Station",
+    "Right-click: Charge and release for area damage"
+  ]
+}

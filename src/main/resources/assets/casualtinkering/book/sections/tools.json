@@ -1,0 +1,12 @@
+[
+  {
+    "name": "circular_saw",
+    "type": "tool",
+    "data": "tools/circular_saw.json"
+  },
+  {
+    "name": "magicdevice",
+    "type": "tool",
+    "data": "tools/magicdevice.json"
+  }
+]

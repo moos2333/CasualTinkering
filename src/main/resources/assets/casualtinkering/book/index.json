@@ -1,0 +1,10 @@
+[
+  {
+    "name": "tools",
+    "data": "sections/tools.json"
+  },
+  {
+    "name": "modifiers",
+    "data": "sections/modifiers.json"
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "modifier": "overclock",
+  "text": [
+    {
+      "text": "Using a Redstone Comparator enhances the circular saw's sweeping attack capability."
+    }
+  ],
+  "effects": [
+    "Increases damage to secondary targets on right-click sweep attacks",
+    "Damage bonus scales with level",
+    "Multiple levels"
+  ],
+  "demoTool": [
+    "casualtinkering:circular_saw"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "modifier": "precision_sawing",
+  "text": [
+    {
+      "text": "Adding some pointers will undoubtedly make logging more efficient."
+    }
+  ],
+  "effects": [
+    "Logs drop planks when chopped",
+    "Yields more than regular processing",
+    "Single level"
+  ],
+  "demoTool": [
+    "casualtinkering:circular_saw"
+  ]
+}

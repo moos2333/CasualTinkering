@@ -1,0 +1,16 @@
+{
+  "modifier": "overclock",
+  "text": [
+    {
+      "text": "使用红石比较器可以增强圆锯的横扫攻击能力"
+    }
+  ],
+  "effects": [
+    "增强右键攻击对次要目标的伤害",
+    "伤害加成随等级提高",
+    "多个等级"
+  ],
+  "demoTool": [
+    "casualtinkering:circular_saw"
+  ]
+}

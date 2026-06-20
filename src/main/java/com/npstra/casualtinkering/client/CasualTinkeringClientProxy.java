@@ -7,7 +7,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import slimeknights.mantle.client.book.repository.FileRepository;
 import slimeknights.tconstruct.library.TinkerRegistryClient;
+import slimeknights.tconstruct.library.book.TinkerBook;
 import slimeknights.tconstruct.library.client.ToolBuildGuiInfo;
 import com.npstra.casualtinkering.tools.CasualTinkeringRegister;
 
@@ -34,5 +36,8 @@ public class CasualTinkeringClientProxy extends CasualTinkeringCommonProxy {
     @Override
     public void registerRenderers() {
         Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityMagicSword.class, new RenderMagicSword(Minecraft.getMinecraft().getRenderManager()));
+    }
+    public void registerBookPages() {
+        TinkerBook.INSTANCE.addRepository(new FileRepository("casualtinkering:book"));
     }
 }

@@ -1,0 +1,16 @@
+{
+  "modifier": "auto_device",
+  "text": [
+    {
+      "text": "Using a Redstone Repeater and a Lever grants your magic device the ability to automatically attack."
+    }
+  ],
+  "effects": [
+    "Automatically summons magic swords to attack nearby hostile mobs",
+    "Magic sword damage increases with each level",
+    "Multiple levels"
+  ],
+  "demoTool": [
+    "casualtinkering:magicdevice"
+  ]
+}
