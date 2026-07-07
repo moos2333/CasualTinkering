@@ -215,7 +215,8 @@ public class MagicDevice extends SwordCore {
             if (!isSword) return;
             MagicDevice device = (MagicDevice) offhand.getItem();
             float totalDamage = ToolHelper.getActualAttack(offhand);
-            float magicDamage = totalDamage * 0.33F;
+            float mainDamage = event.getAmount();
+            float magicDamage = totalDamage * 0.33F + mainDamage * 0.1F;
             Random rand = player.world.rand;
             double angle = rand.nextDouble() * 2 * Math.PI;
             double radius = 2.0;
