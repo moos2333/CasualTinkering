@@ -39,4 +39,7 @@ public class ModConfig {
     @Config.Comment("Enable or disable the Overclock modifier")
     @Config.RequiresMcRestart
     public static boolean enableOverclock = true;
+
+    @Config.Comment("Allow Circular Saw's sweep attack to damage other players (PVP). Defaults to true.")
+    public static boolean allowCircularSawPvP = true;
 }
