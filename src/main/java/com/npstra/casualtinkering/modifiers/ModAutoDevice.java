@@ -79,7 +79,7 @@ public class ModAutoDevice extends ModifierTrait {
 
         AxisAlignedBB aabb = new AxisAlignedBB(player.getPosition()).grow(RADIUS);
         List<EntityLivingBase> targets = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb,
-                e -> (e instanceof IMob || e.getRevengeTarget() == player));
+                e -> e != player && (e instanceof IMob || e.getRevengeTarget() == player));
 
         if (targets.isEmpty()) return;
 
