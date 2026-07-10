@@ -63,9 +63,9 @@ public class ModAutoDevice extends ModifierTrait {
         if (world.isRemote) return;
         if (!(entity instanceof EntityPlayer)) return;
         if (ToolHelper.isBroken(tool)) return;
-        if (!isSelected) return;
 
         EntityPlayer player = (EntityPlayer) entity;
+        if (player.getHeldItemMainhand() != tool) return;
         if (player.isHandActive()) return;
 
         NBTTagCompound tag = TagUtil.getToolTag(tool);
