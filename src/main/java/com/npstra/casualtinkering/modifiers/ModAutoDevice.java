@@ -23,7 +23,6 @@ import slimeknights.tconstruct.library.utils.ToolHelper;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.tools.MagicDevice;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -35,6 +34,7 @@ public class ModAutoDevice extends ModifierTrait {
     private static final int COOLDOWN_TICKS = 20;
     private static final int RADIUS = 4;
     private static final Random RAND = new Random();
+    private static final float[] DAMAGE_FACTORS = {0.25F, 0.4F, 0.5F};
 
     public ModAutoDevice() {
         super("auto_device", 0xCC64FF, 3, 0);
@@ -54,11 +54,8 @@ public class ModAutoDevice extends ModifierTrait {
     }
 
     private float getDamageFactor(int level) {
-        switch (level) {
-            case 2: return 0.4F;
-            case 3: return 0.5F;
-            default: return 0.25F;
-        }
+        if (level >= 1 && level <= 3) return DAMAGE_FACTORS[level - 1];
+        return 0.25F;
     }
 
     @Override
@@ -83,9 +80,16 @@ public class ModAutoDevice extends ModifierTrait {
 
         if (targets.isEmpty()) return;
 
-        EntityLivingBase nearest = targets.stream()
-                .min(Comparator.comparingDouble(e -> e.getDistanceSq(player)))
-                .orElse(null);
+        EntityLivingBase nearest = null;
+        double nearestDistSq = Double.MAX_VALUE;
+        for (EntityLivingBase e : targets) {
+            double distSq = player.getDistanceSq(e);
+            if (distSq < nearestDistSq) {
+                nearestDistSq = distSq;
+                nearest = e;
+            }
+        }
+        if (nearest == null) return;
 
         NBTTagCompound modifierTag = TinkerUtil.getModifierTag(tool, identifier);
         int level = ModifierNBT.readInteger(modifierTag).level;
