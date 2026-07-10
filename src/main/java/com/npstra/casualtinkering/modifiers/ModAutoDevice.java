@@ -64,12 +64,12 @@ public class ModAutoDevice extends ModifierTrait {
     @Override
     public void onUpdate(ItemStack tool, World world, Entity entity, int itemSlot, boolean isSelected) {
         if (world.isRemote) return;
-        if (!isSelected) return;
         if (!(entity instanceof EntityPlayer)) return;
         if (ToolHelper.isBroken(tool)) return;
 
         EntityPlayer player = (EntityPlayer) entity;
-        if (player.getHeldItemOffhand() == tool) return;
+        if (player.getHeldItemMainhand().getItem() instanceof MagicDevice) return;
+        if (!isSelected && player.getHeldItemOffhand() != tool) return;
         if (player.isHandActive()) return;
 
         NBTTagCompound tag = TagUtil.getToolTag(tool);
