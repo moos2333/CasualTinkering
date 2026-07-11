@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
@@ -17,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 import slimeknights.tconstruct.library.modifiers.ModifierNBT;
+import slimeknights.tconstruct.library.tools.SwordCore;
 import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
@@ -65,7 +67,17 @@ public class ModAutoDevice extends ModifierTrait {
         if (ToolHelper.isBroken(tool)) return;
 
         EntityPlayer player = (EntityPlayer) entity;
-        if (player.getHeldItemMainhand() != tool) return;
+        ItemStack mainHand = player.getHeldItemMainhand();
+        ItemStack offHand = player.getHeldItemOffhand();
+
+        boolean inOff = offHand == tool;
+
+        if (!isSelected) return;
+
+        if (inOff) {
+            if (mainHand.getItem() instanceof ItemSword || mainHand.getItem() instanceof SwordCore) return;
+        }
+
         if (player.isHandActive()) return;
 
         NBTTagCompound tag = TagUtil.getToolTag(tool);
