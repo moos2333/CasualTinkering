@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.tools.ToolCore;
-import slimeknights.tconstruct.tools.tools.Shovel;
+import slimeknights.tconstruct.tools.harvest.TinkerHarvestTools;
 
 import java.util.Arrays;
 
@@ -33,7 +33,7 @@ public class RenderMagicLance extends Render<EntityMagicLance> {
         if (materialId == null) materialId = "manyullyn";
         Material material = TinkerRegistry.getMaterial(materialId);
         if (material == null) material = Material.UNKNOWN;
-        ToolCore shovel = new Shovel();
+        ToolCore shovel = TinkerHarvestTools.shovel;
         ItemStack stack = shovel.buildItem(Arrays.asList(material, material, material));
         if (stack.isEmpty()) return;
 
