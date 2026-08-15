@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class ModMagicLance extends ModifierTrait {
     public ModMagicLance() {
-        super("magic_lance", 0xE5C07B, 1, 0);
+        super("magic_lance", 0xADD8E6, 1, 0);
         addRecipeMatch(new ItemCombination(1,
                 new ItemStack(Items.DIAMOND_SHOVEL),
                 new ItemStack(Items.GOLD_INGOT),
