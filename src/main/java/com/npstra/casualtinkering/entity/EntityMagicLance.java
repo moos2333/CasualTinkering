@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import slimeknights.tconstruct.library.entity.EntityProjectileBase;
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.tools.ToolCore;
-import slimeknights.tconstruct.tools.tools.Shovel;
+import slimeknights.tconstruct.tools.harvest.TinkerHarvestTools;
 
 import java.util.List;
 
@@ -42,10 +42,10 @@ public class EntityMagicLance extends EntityProjectileBase {
         setPosition(posX, posY, posZ);
         Material mat = slimeknights.tconstruct.library.TinkerRegistry.getMaterial(bladeMaterialId);
         if (mat == null) mat = Material.UNKNOWN;
-        ToolCore shovel = new Shovel();
+        ToolCore shovel = TinkerHarvestTools.shovel;
         this.shovelStack = shovel.buildItem(java.util.Arrays.asList(mat, mat, mat));
         motionX = 0.0D;
-        motionY = -0.5D;
+        motionY = -0.35D;
         motionZ = 0.0D;
     }
 
@@ -174,7 +174,7 @@ public class EntityMagicLance extends EntityProjectileBase {
         }
         Material mat = slimeknights.tconstruct.library.TinkerRegistry.getMaterial(bladeMaterialId);
         if (mat == null) mat = Material.UNKNOWN;
-        ToolCore shovel = new Shovel();
+        ToolCore shovel = TinkerHarvestTools.shovel;
         this.shovelStack = shovel.buildItem(java.util.Arrays.asList(mat, mat, mat));
     }
 
