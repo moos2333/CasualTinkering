@@ -76,17 +76,27 @@ public class MagicDevice extends SwordCore {
         float magicDamage = totalDamage * 0.35F;
         Random rand = world.rand;
         String bladeMaterialId = extractBladeMaterial(stack);
+
+        boolean fromPlayer = rand.nextBoolean();
+
         for (int i = 0; i < 3; i++) {
             double angle = rand.nextDouble() * 2 * Math.PI;
             double radius = 2.0;
             double offsetX = radius * Math.cos(angle);
             double offsetZ = radius * Math.sin(angle);
-            double x = target.posX + offsetX;
-            double z = target.posZ + offsetZ;
+            double x, z;
+            if (fromPlayer) {
+                x = player.posX + offsetX * 0.75;
+                z = player.posZ + offsetZ * 0.75;
+            } else {
+                x = target.posX + offsetX;
+                z = target.posZ + offsetZ;
+            }
             double y = target.posY + 1.5;
             EntityMagicSword sword = new EntityMagicSword(world, player, (EntityLivingBase) target, magicDamage, x, y, z, bladeMaterialId);
             world.spawnEntity(sword);
         }
+
         if (player instanceof EntityPlayer && !((EntityPlayer) player).isCreative()) {
             ToolHelper.damageTool(stack, 1, player);
         }
