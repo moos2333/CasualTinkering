@@ -10,5 +10,9 @@
   {
     "type": "modifier",
     "data": "modifiers/precision_sawing.json"
+  },
+  {
+    "type": "modifier",
+    "data": "modifiers/magic_lance.json"
   }
 ]

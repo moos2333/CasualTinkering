@@ -1,0 +1,17 @@
+{
+  "modifier": "magic_lance",
+  "text": [
+    {
+      "text": "These magically infused items have caused a remarkable change in your Magic Device."
+    }
+  ],
+  "effects": [
+    "Right-click attack is replaced by summoning a Magic Lance",
+    "The lance deals high damage and area splash",
+    "Damage benefits from certain tool traits",
+    "Can only be applied once"
+  ],
+  "demoTool": [
+    "casualtinkering:magicdevice"
+  ]
+}

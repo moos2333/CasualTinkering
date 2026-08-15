@@ -1,0 +1,17 @@
+{
+  "modifier": "magic_lance",
+  "text": [
+    {
+      "text": "这些富有魔力的物品使你的魔导具发生了惊人变化"
+    }
+  ],
+  "effects": [
+    "右键攻击变化为召唤魔法枪攻击",
+    "魔法枪造成较高伤害与范围溅射",
+    "伤害受益于部分工具特性",
+    "只能强化一次"
+  ],
+  "demoTool": [
+    "casualtinkering:magicdevice"
+  ]
+}
