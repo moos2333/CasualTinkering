@@ -40,9 +40,9 @@ public class RenderMagicLance extends Render<EntityMagicLance> {
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.scale(0.6F, 0.6F, 0.6F);
-        GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(entity.ticksExisted * 10.0F % 360.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.disableLighting();
+        GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
         this.itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.NONE);
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
