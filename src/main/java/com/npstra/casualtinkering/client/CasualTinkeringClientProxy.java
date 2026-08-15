@@ -1,10 +1,11 @@
 package com.npstra.casualtinkering.client;
 
+import com.npstra.casualtinkering.client.renderer.RenderMagicLance;
 import com.npstra.casualtinkering.client.renderer.RenderMagicSword;
 import com.npstra.casualtinkering.common.CasualTinkeringCommonProxy;
+import com.npstra.casualtinkering.entity.EntityMagicLance;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import slimeknights.mantle.client.book.repository.FileRepository;
@@ -36,6 +37,7 @@ public class CasualTinkeringClientProxy extends CasualTinkeringCommonProxy {
     @Override
     public void registerRenderers() {
         Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityMagicSword.class, new RenderMagicSword(Minecraft.getMinecraft().getRenderManager()));
+        Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityMagicLance.class, new RenderMagicLance(Minecraft.getMinecraft().getRenderManager()));
     }
     public void registerBookPages() {
         TinkerBook.INSTANCE.addRepository(new FileRepository("casualtinkering:book"));

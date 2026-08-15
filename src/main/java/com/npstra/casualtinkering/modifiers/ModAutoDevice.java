@@ -116,7 +116,7 @@ public class ModAutoDevice extends ModifierTrait {
         double y = nearest.posY + 1.5;
 
         String bladeMaterialId = extractBladeMaterial(tool);
-        EntityMagicSword sword = new EntityMagicSword(world, player, nearest, magicDamage, x, y, z, bladeMaterialId);
+        EntityMagicSword sword = new EntityMagicSword(world, player, nearest, magicDamage, x, y, z, bladeMaterialId, false);
         world.spawnEntity(sword);
 
         tag.setLong("auto_device_last_tick", currentTick);

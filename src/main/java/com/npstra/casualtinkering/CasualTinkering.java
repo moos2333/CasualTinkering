@@ -3,8 +3,10 @@ package com.npstra.casualtinkering;
 import com.npstra.casualtinkering.client.CasualTinkeringClientProxy;
 import com.npstra.casualtinkering.common.CasualTinkeringCommonProxy;
 import com.npstra.casualtinkering.config.ModConfig;
+import com.npstra.casualtinkering.entity.EntityMagicLance;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.modifiers.ModAutoDevice;
+import com.npstra.casualtinkering.modifiers.ModMagicLance;
 import com.npstra.casualtinkering.modifiers.ModOverclock;
 import com.npstra.casualtinkering.modifiers.ModPrecisionSawing;
 import net.minecraft.util.ResourceLocation;
@@ -24,7 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class CasualTinkering {
     public static final String MODID = "casualtinkering";
     public static final String NAME = "Casual Tinkering";
-    public static final String VERSION = "0.1.11";
+    public static final String VERSION = "0.1.14";
 
     @SidedProxy(clientSide = "com.npstra.casualtinkering.client.CasualTinkeringClientProxy",
             serverSide = "com.npstra.casualtinkering.common.CasualTinkeringCommonProxy")
@@ -33,6 +35,7 @@ public class CasualTinkering {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         EntityRegistry.registerModEntity(new ResourceLocation(MODID, "magic_sword"), EntityMagicSword.class, "magic_sword", 0, this, 64, 10, true);
+        EntityRegistry.registerModEntity(new ResourceLocation(MODID, "magic_lance"), EntityMagicLance.class, "magic_lance", 1, this, 64, 10, true);
         if (ModConfig.enableAutoDevice) {
             new ModAutoDevice();
         }
@@ -41,6 +44,9 @@ public class CasualTinkering {
         }
         if (ModConfig.enableOverclock) {
             new ModOverclock();
+        }
+        if (ModConfig.enableMagicLance) {
+            new ModMagicLance();
         }
     }
 

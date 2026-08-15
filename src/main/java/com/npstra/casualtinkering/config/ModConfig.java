@@ -40,6 +40,10 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean enableOverclock = true;
 
+    @Config.Comment("Enable or disable the Magic Lance modifier")
+    @Config.RequiresMcRestart
+    public static boolean enableMagicLance = true;
+
     @Config.Comment("Allow Circular Saw's sweep attack to damage other players (PVP). Defaults to true.")
     public static boolean allowCircularSawPvP = true;
 }

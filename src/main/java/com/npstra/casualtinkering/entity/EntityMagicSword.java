@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnData {
@@ -18,6 +19,7 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
     private int ticksAlive;
     private static final int MAX_TICKS = 100;
     private String bladeMaterialId = "manyullyn";
+    private boolean direct;
 
     public EntityMagicSword(World world) {
         super(world);
@@ -25,12 +27,13 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
         ticksAlive = 0;
     }
 
-    public EntityMagicSword(World world, EntityLivingBase shooter, EntityLivingBase target, float damage, double posX, double posY, double posZ, String bladeMaterialId) {
+    public EntityMagicSword(World world, EntityLivingBase shooter, EntityLivingBase target, float damage, double posX, double posY, double posZ, String bladeMaterialId, boolean direct) {
         this(world);
         this.shooter = shooter;
         this.target = target;
         this.damage = damage;
         this.bladeMaterialId = bladeMaterialId;
+        this.direct = direct;
         setPosition(posX, posY, posZ);
         double dx = target.posX - posX;
         double dy = target.posY + target.height / 2.0D - posY;
@@ -42,10 +45,30 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
             motionY = dy / distance * speed;
             motionZ = dz / distance * speed;
         }
+        if (direct) {
+            updateRotationToTarget();
+        }
     }
 
     public String getBladeMaterialId() {
         return bladeMaterialId;
+    }
+
+    public boolean isDirect() {
+        return direct;
+    }
+
+    private void updateRotationToTarget() {
+        if (target != null && target.isEntityAlive()) {
+            double dx = target.posX - this.posX;
+            double dy = target.posY + target.height * 0.5 - this.posY;
+            double dz = target.posZ - this.posZ;
+            double dist = MathHelper.sqrt(dx * dx + dz * dz);
+            float yaw = (float) (Math.atan2(dz, dx) * 180.0 / Math.PI) - 90.0F;
+            float pitch = (float) (-Math.atan2(dy, dist) * 180.0 / Math.PI);
+            this.rotationYaw = yaw;
+            this.rotationPitch = pitch;
+        }
     }
 
     @Override
@@ -59,7 +82,12 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
             setDead();
             return;
         }
-        if (!world.isRemote) {
+        if (world.isRemote) {
+            if (direct) {
+                updateRotationToTarget();
+            }
+            move(MoverType.SELF, motionX, motionY, motionZ);
+        } else {
             if (target == null || !target.isEntityAlive()) {
                 setDead();
                 return;
@@ -69,8 +97,6 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
                 attackTarget();
                 setDead();
             }
-        } else {
-            move(MoverType.SELF, motionX, motionY, motionZ);
         }
     }
 
@@ -87,8 +113,8 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
                 source = DamageSource.causeMobDamage(shooter).setDamageBypassesArmor().setMagicDamage();
             }
             target.attackEntityFrom(source, damage);
-            target.hurtResistantTime = hurtResistantTime;
-            target.lastDamage = lastDamage;
+            target.hurtResistantTime = Math.max(hurtResistantTime, target.hurtResistantTime);
+            target.lastDamage = Math.max(lastDamage, target.lastDamage);
         }
     }
 
@@ -109,9 +135,8 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
         buffer.writeDouble(motionX);
         buffer.writeDouble(motionY);
         buffer.writeDouble(motionZ);
-        byte[] bytes = bladeMaterialId.getBytes(java.nio.charset.StandardCharsets.UTF_8);
-        buffer.writeInt(bytes.length);
-        buffer.writeBytes(bytes);
+        ByteBufUtils.writeUTF8String(buffer, bladeMaterialId);
+        buffer.writeBoolean(direct);
     }
 
     @Override
@@ -125,12 +150,13 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
         motionX = buffer.readDouble();
         motionY = buffer.readDouble();
         motionZ = buffer.readDouble();
-        int len = buffer.readInt();
-        byte[] bytes = new byte[len];
-        buffer.readBytes(bytes);
-        bladeMaterialId = new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+        bladeMaterialId = ByteBufUtils.readUTF8String(buffer);
         setPosition(x, y, z);
         if (shooterId != -1) shooter = (EntityLivingBase) world.getEntityByID(shooterId);
         if (targetId != -1) target = (EntityLivingBase) world.getEntityByID(targetId);
+        direct = buffer.readBoolean();
+        if (direct) {
+            updateRotationToTarget();
+        }
     }
 }

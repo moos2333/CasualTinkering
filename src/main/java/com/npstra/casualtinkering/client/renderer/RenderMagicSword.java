@@ -37,6 +37,7 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
         ToolCore broadsword = TinkerMeleeWeapons.broadSword;
         ItemStack broadswordStack = broadsword.buildItem(Arrays.asList(material, material, material));
         if (broadswordStack.isEmpty()) broadswordStack = new ItemStack(net.minecraft.init.Items.DIAMOND_SWORD);
+
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.scale(0.8F, 0.8F, 0.8F);
@@ -45,15 +46,29 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        float motionX = (float) entity.motionX;
-        float motionY = (float) entity.motionY;
-        float motionZ = (float) entity.motionZ;
-        float yaw = (float) (Math.atan2(motionZ, motionX) * 180.0 / Math.PI);
-        float pitch = (float) (Math.atan2(motionY, MathHelper.sqrt(motionX * motionX + motionZ * motionZ)) * 180.0 / Math.PI);
-        GlStateManager.rotate(yaw + 90.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-pitch + 90.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
+
+        if (!entity.isDirect()) {
+            float motionX = (float) entity.motionX;
+            float motionY = (float) entity.motionY;
+            float motionZ = (float) entity.motionZ;
+            float yaw = (float) (Math.atan2(motionZ, motionX) * 180.0 / Math.PI);
+            float pitch = (float) (Math.atan2(motionY, MathHelper.sqrt(motionX * motionX + motionZ * motionZ)) * 180.0 / Math.PI);
+            GlStateManager.rotate(yaw + 90.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-pitch + 90.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
+        } else {
+            float yaw = entity.rotationYaw;
+            float pitch = entity.rotationPitch;
+            GlStateManager.rotate(-yaw, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-pitch, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
+        }
+
         this.itemRenderer.renderItem(broadswordStack, ItemCameraTransforms.TransformType.NONE);
+
         GlStateManager.disableBlend();
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();

@@ -24,10 +24,13 @@ import slimeknights.tconstruct.library.tinkering.Category;
 import slimeknights.tconstruct.library.tinkering.PartMaterialType;
 import slimeknights.tconstruct.library.tools.SwordCore;
 import slimeknights.tconstruct.library.tools.ToolNBT;
+import slimeknights.tconstruct.library.traits.ITrait;
 import slimeknights.tconstruct.library.utils.EntityUtil;
 import slimeknights.tconstruct.library.utils.TagUtil;
+import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 import slimeknights.tconstruct.tools.TinkerTools;
+import com.npstra.casualtinkering.entity.EntityMagicLance;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 
 import java.util.List;
@@ -47,6 +50,10 @@ public class MagicDevice extends SwordCore {
         addCategory(Category.WEAPON);
         setRegistryName("casualtinkering", "magicdevice");
         setTranslationKey("casualtinkering.magicdevice");
+    }
+
+    private boolean hasMagicLance(ItemStack stack) {
+        return TinkerUtil.hasModifier(TagUtil.getTagSafe(stack), "magic_lance");
     }
 
     @Override
@@ -72,29 +79,42 @@ public class MagicDevice extends SwordCore {
         Entity target = mop.entityHit;
         if (target == player) return;
         if (!(target instanceof EntityLivingBase)) return;
-        float totalDamage = ToolHelper.getActualAttack(stack);
-        float magicDamage = totalDamage * 0.35F;
-        Random rand = world.rand;
         String bladeMaterialId = extractBladeMaterial(stack);
 
-        boolean fromPlayer = rand.nextBoolean();
-
-        for (int i = 0; i < 3; i++) {
-            double angle = rand.nextDouble() * 2 * Math.PI;
-            double radius = 2.0;
-            double offsetX = radius * Math.cos(angle);
-            double offsetZ = radius * Math.sin(angle);
-            double x, z;
-            if (fromPlayer) {
-                x = player.posX + offsetX * 0.75;
-                z = player.posZ + offsetZ * 0.75;
-            } else {
-                x = target.posX + offsetX;
-                z = target.posZ + offsetZ;
+        if (!hasMagicLance(stack)) {
+            float totalDamage = ToolHelper.getActualAttack(stack);
+            float magicDamage = totalDamage * 0.35F;
+            Random rand = world.rand;
+            boolean fromPlayer = rand.nextBoolean();
+            for (int i = 0; i < 3; i++) {
+                double angle = rand.nextDouble() * 2 * Math.PI;
+                double radius = 2.0;
+                double offsetX = radius * Math.cos(angle);
+                double offsetZ = radius * Math.sin(angle);
+                double x, z;
+                boolean direct = false;
+                if (fromPlayer) {
+                    x = player.posX + offsetX * 0.75;
+                    z = player.posZ + offsetZ * 0.75;
+                    direct = true;
+                } else {
+                    x = target.posX + offsetX;
+                    z = target.posZ + offsetZ;
+                }
+                double y = target.posY + 1.5;
+                EntityMagicSword sword = new EntityMagicSword(world, player, (EntityLivingBase) target, magicDamage, x, y, z, bladeMaterialId, direct);
+                world.spawnEntity(sword);
             }
-            double y = target.posY + 1.5;
-            EntityMagicSword sword = new EntityMagicSword(world, player, (EntityLivingBase) target, magicDamage, x, y, z, bladeMaterialId);
-            world.spawnEntity(sword);
+        } else {
+            float baseDamage = ToolHelper.getActualAttack(stack);
+            float finalDamage = baseDamage;
+            List<ITrait> traits = TinkerUtil.getTraitsOrdered(stack);
+            for (ITrait trait : traits) {
+                finalDamage = trait.damage(stack, player, (EntityLivingBase) target, baseDamage, finalDamage, false);
+            }
+            EntityMagicLance lance = new EntityMagicLance(world, player, (EntityLivingBase) target, finalDamage,
+                    target.posX, target.posY + 3.0, target.posZ, bladeMaterialId);
+            world.spawnEntity(lance);
         }
 
         if (player instanceof EntityPlayer && !((EntityPlayer) player).isCreative()) {
@@ -152,7 +172,7 @@ public class MagicDevice extends SwordCore {
                     double z = entity.posZ + offsetZ;
                     double y = entity.posY + 1.5;
                     String bladeMaterialId = extractBladeMaterial(stack);
-                    EntityMagicSword sword = new EntityMagicSword(player.world, player, (EntityLivingBase) entity, magicDamage, x, y, z, bladeMaterialId);
+                    EntityMagicSword sword = new EntityMagicSword(player.world, player, (EntityLivingBase) entity, magicDamage, x, y, z, bladeMaterialId, false);
                     player.world.spawnEntity(sword);
                 }
             }
@@ -236,7 +256,7 @@ public class MagicDevice extends SwordCore {
             double z = event.getEntity().posZ + offsetZ;
             double y = event.getEntity().posY + 1.5;
             String bladeMaterialId = device.extractBladeMaterial(offhand);
-            EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z, bladeMaterialId);
+            EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z, bladeMaterialId, false);
             player.world.spawnEntity(sword);
         }
     }

@@ -8,3 +8,5 @@ modifier.precision_sawing.name=Precision Sawing
 modifier.precision_sawing.desc=§oFine sawing!§r\nLogs that can be processed into planks drop as planks instead.
 modifier.overclock.name=Overclock
 modifier.overclock.desc=§oMay cause lag!§r\nIncreases damage dealt to secondary targets during sweeping attacks.
+modifier.magic_lance.name=Magic Lance
+modifier.magic_lance.desc=§oWhoosh—Thud!§r\nCharged right-click summons a falling lance that deals area damage.

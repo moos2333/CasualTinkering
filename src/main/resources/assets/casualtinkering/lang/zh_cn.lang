@@ -8,3 +8,5 @@ modifier.precision_sawing.name=精密锯削
 modifier.precision_sawing.desc=§o精密切削！§r\n砍伐原木会直接掉落加工好的木板。
 modifier.overclock.name=超频
 modifier.overclock.desc=§o可能引发卡顿！§r\n提高横扫攻击时对副目标造成的伤害。
+modifier.magic_lance.name=魔法枪
+modifier.magic_lance.desc=§o咻——咚！§r\n右键蓄力召唤从天而降的魔法枪，造成范围伤害。
