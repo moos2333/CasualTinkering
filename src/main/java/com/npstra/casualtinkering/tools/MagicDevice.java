@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -50,6 +51,11 @@ public class MagicDevice extends SwordCore {
         addCategory(Category.WEAPON);
         setRegistryName("casualtinkering", "magicdevice");
         setTranslationKey("casualtinkering.magicdevice");
+    }
+
+    @Override
+    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
+        return EntityEquipmentSlot.CHEST;
     }
 
     private boolean hasMagicLance(ItemStack stack) {
@@ -237,14 +243,22 @@ public class MagicDevice extends SwordCore {
             Long lastTime = LAST_ATTACK_TIME.get(player.getUniqueID());
             if (lastTime != null && currentTime - lastTime < ATTACK_COOLDOWN_MS) return;
             LAST_ATTACK_TIME.put(player.getUniqueID(), currentTime);
-            ItemStack offhand = player.getHeldItemOffhand();
-            if (offhand.isEmpty() || !(offhand.getItem() instanceof MagicDevice)) return;
+
+            ItemStack deviceStack = player.getHeldItemOffhand();
+            if (!(deviceStack.getItem() instanceof MagicDevice)) {
+                deviceStack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
+                if (!(deviceStack.getItem() instanceof MagicDevice)) {
+                    return;
+                }
+            }
+
             ItemStack mainhand = player.getHeldItemMainhand();
             if (mainhand.isEmpty()) return;
             boolean isSword = mainhand.getItem() instanceof ItemSword || mainhand.getItem() instanceof SwordCore;
             if (!isSword) return;
-            MagicDevice device = (MagicDevice) offhand.getItem();
-            float totalDamage = ToolHelper.getActualAttack(offhand);
+
+            MagicDevice device = (MagicDevice) deviceStack.getItem();
+            float totalDamage = ToolHelper.getActualAttack(deviceStack);
             float mainDamage = event.getAmount();
             float magicDamage = totalDamage * 0.33F + mainDamage * 0.1F;
             Random rand = player.world.rand;
@@ -255,7 +269,7 @@ public class MagicDevice extends SwordCore {
             double x = event.getEntity().posX + offsetX;
             double z = event.getEntity().posZ + offsetZ;
             double y = event.getEntity().posY + 1.5;
-            String bladeMaterialId = device.extractBladeMaterial(offhand);
+            String bladeMaterialId = device.extractBladeMaterial(deviceStack);
             EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z, bladeMaterialId, false);
             player.world.spawnEntity(sword);
         }
