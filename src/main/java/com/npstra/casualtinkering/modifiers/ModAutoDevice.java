@@ -7,6 +7,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
@@ -71,10 +72,14 @@ public class ModAutoDevice extends ModifierTrait {
         ItemStack offHand = player.getHeldItemOffhand();
 
         boolean inOff = offHand == tool;
+        boolean inChest = false;
 
-        if (!isSelected) return;
+        if (!isSelected) {
+            if (player.getItemStackFromSlot(EntityEquipmentSlot.CHEST) != tool) return;
+            inChest = true;
+        }
 
-        if (inOff) {
+        if (inOff || inChest) {
             if (mainHand.getItem() instanceof ItemSword || mainHand.getItem() instanceof SwordCore) return;
         }
 

@@ -1,7 +1,7 @@
 item.casual_tinkering.circular_saw.name=圆锯
 item.casual_tinkering.circular_saw.desc=重型伐木工具，带有旋转锯片。蓄力后发动前方扇形范围的横扫攻击。\n右键：蓄力并发动范围攻击，按住右键持续发动
 item.casualtinkering.magicdevice.name=魔导具
-item.casualtinkering.magicdevice.desc=魔导具是一种中近程武器，能召唤魔法剑进行协同攻击。\n右键：蓄力召唤魔法剑进行中近程打击。\n副手：使用剑类武器攻击时将召唤魔法剑协同攻击。\n全力打击：召唤魔法剑攻击。
+item.casualtinkering.magicdevice.desc=魔导具是一种中近程武器，能召唤魔法剑进行协同攻击。\n可装备在胸甲栏。\n右键：蓄力召唤魔法剑进行中近程打击。\n副手：使用剑类武器攻击时将召唤魔法剑协同攻击。\n全力打击：召唤魔法剑攻击。
 modifier.auto_device.name=自动装置
 modifier.auto_device.desc=§o自动制导！§r\n在主手时，魔导具会自动攻击周围的敌人。
 modifier.precision_sawing.name=精密锯削
