@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -19,9 +20,6 @@ import slimeknights.tconstruct.tools.harvest.TinkerHarvestTools;
 import java.util.List;
 
 public class EntityMagicLance extends EntityProjectileBase {
-    private static final DamageSource MAGIC_LANCE_SOURCE = new DamageSource("magic_sword")
-            .setMagicDamage()
-            .setDamageBypassesArmor();
     private float damage;
     private EntityLivingBase target;
     private ItemStack shovelStack;
@@ -92,19 +90,24 @@ public class EntityMagicLance extends EntityProjectileBase {
 
     private void applyDirectHit(EntityLivingBase target) {
         if (shootingEntity == null) return;
-        EntityLivingBase attacker = (EntityLivingBase) shootingEntity;
+        DamageSource source = new EntityDamageSource("magic_sword", shootingEntity)
+                .setMagicDamage()
+                .setDamageBypassesArmor();
         float finalDamage = damage * 1.5f;
         int oldHurt = target.hurtResistantTime;
         float oldLast = target.lastDamage;
         target.hurtResistantTime = 0;
         target.lastDamage = 0;
-        target.attackEntityFrom(MAGIC_LANCE_SOURCE, finalDamage);
+        target.attackEntityFrom(source, finalDamage);
         target.hurtResistantTime = Math.max(oldHurt, target.hurtResistantTime);
         target.lastDamage = Math.max(oldLast, target.lastDamage);
     }
 
     private void applySplashDamage(EntityLivingBase exclude) {
         if (shootingEntity == null) return;
+        DamageSource source = new EntityDamageSource("magic_sword", shootingEntity)
+                .setMagicDamage()
+                .setDamageBypassesArmor();
         AxisAlignedBB aabb = new AxisAlignedBB(posX - 1.5, posY - 0.5, posZ - 1.5,
                 posX + 1.5, posY + 0.5, posZ + 1.5);
         List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb,
@@ -116,7 +119,7 @@ public class EntityMagicLance extends EntityProjectileBase {
             float oldLast = e.lastDamage;
             e.hurtResistantTime = 0;
             e.lastDamage = 0;
-            e.attackEntityFrom(MAGIC_LANCE_SOURCE, splashDamage);
+            e.attackEntityFrom(source, splashDamage);
             e.hurtResistantTime = Math.max(oldHurt, e.hurtResistantTime);
             e.lastDamage = Math.max(oldLast, e.lastDamage);
         }
@@ -184,10 +187,18 @@ public class EntityMagicLance extends EntityProjectileBase {
     @Override
     public void readEntityFromNBT(net.minecraft.nbt.NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
+        this.damage = compound.getFloat("Damage");
+        this.bladeMaterialId = compound.getString("BladeMaterial");
+        Material mat = slimeknights.tconstruct.library.TinkerRegistry.getMaterial(bladeMaterialId);
+        if (mat == null) mat = Material.UNKNOWN;
+        ToolCore shovel = TinkerHarvestTools.shovel;
+        this.shovelStack = shovel.buildItem(java.util.Arrays.asList(mat, mat, mat));
     }
 
     @Override
     public void writeEntityToNBT(net.minecraft.nbt.NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
+        compound.setFloat("Damage", this.damage);
+        compound.setString("BladeMaterial", this.bladeMaterialId != null ? this.bladeMaterialId : "manyullyn");
     }
 }
