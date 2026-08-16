@@ -1,7 +1,7 @@
 item.casual_tinkering.circular_saw.name=Circular Saw
 item.casual_tinkering.circular_saw.desc=A heavy woodcutting tool with a spinning blade. Charges up to unleash a wide sweeping attack.\nRight Click: Charge and unleash area attack
 item.casualtinkering.magicdevice.name=Magic Device
-item.casualtinkering.magicdevice.desc=Magic Device is a mid-range weapon that summons magical swords for coordinated attacks.\nRight-click: Charge to summon magical swords for mid-range strikes.\nOff-hand: When attacking with a sword in main hand, summons magical swords to assist.\nFull charge attack: Summons magical swords.
+item.casualtinkering.magicdevice.desc=Magic Device is a mid-range weapon that summons magical swords for coordinated attacks, and can be equipped in the chestplate slot.\nRight-click: Charge to summon magical swords for mid-range strikes.\nOff-hand/Chestplate: When attacking with a sword in main hand, summons magical swords to assist.\nFull cooldown attack: Summons a magical sword on hit.
 modifier.auto_device.name=Auto Device
 modifier.auto_device.desc=§oSet and forget!§r\nAutomatically strikes nearby hostile mobs when in main hand.
 modifier.precision_sawing.name=Precision Sawing
