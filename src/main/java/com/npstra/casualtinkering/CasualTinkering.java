@@ -19,14 +19,14 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = CasualTinkering.MODID, name = CasualTinkering.NAME, version = CasualTinkering.VERSION,
+@Mod(modid = Tags.MOD_ID, name = Tags.MOD_NAME, version = Tags.VERSION,
         dependencies = "required-after:forge@[14.23.5.2855,);" +
                 "required-after:mantle@[1.12-1.3.3.55,);" +
                 "required-after:tconstruct@[1.12.2-2.13.0.183,);")
 public class CasualTinkering {
-    public static final String MODID = "casualtinkering";
-    public static final String NAME = "Casual Tinkering";
-    public static final String VERSION = "0.2.2";
+    public static final String MODID = Tags.MOD_ID;
+    public static final String NAME = Tags.MOD_NAME;
+    public static final String VERSION = Tags.VERSION;
 
     @SidedProxy(clientSide = "com.npstra.casualtinkering.client.CasualTinkeringClientProxy",
             serverSide = "com.npstra.casualtinkering.common.CasualTinkeringCommonProxy")
