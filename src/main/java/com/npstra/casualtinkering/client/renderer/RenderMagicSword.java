@@ -18,10 +18,14 @@ import slimeknights.tconstruct.library.tools.ToolCore;
 import slimeknights.tconstruct.tools.melee.TinkerMeleeWeapons;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 @SideOnly(Side.CLIENT)
 public class RenderMagicSword extends Render<EntityMagicSword> {
     private final RenderItem itemRenderer;
+    private final Map<String, ItemStack> stackCache = new WeakHashMap<>();
+    private final ItemStack fallbackStack = new ItemStack(net.minecraft.init.Items.DIAMOND_SWORD);
 
     public RenderMagicSword(RenderManager renderManager) {
         super(renderManager);
@@ -32,11 +36,15 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
     public void doRender(EntityMagicSword entity, double x, double y, double z, float entityYaw, float partialTicks) {
         if (entity == null) return;
         String materialId = entity.getBladeMaterialId();
-        Material material = TinkerRegistry.getMaterial(materialId);
-        if (material == null) material = Material.UNKNOWN;
-        ToolCore broadsword = TinkerMeleeWeapons.broadSword;
-        ItemStack broadswordStack = broadsword.buildItem(Arrays.asList(material, material, material));
-        if (broadswordStack.isEmpty()) broadswordStack = new ItemStack(net.minecraft.init.Items.DIAMOND_SWORD);
+        ItemStack stack = stackCache.get(materialId);
+        if (stack == null) {
+            Material material = TinkerRegistry.getMaterial(materialId);
+            if (material == null) material = Material.UNKNOWN;
+            ToolCore broadsword = TinkerMeleeWeapons.broadSword;
+            stack = broadsword.buildItem(Arrays.asList(material, material, material));
+            if (stack.isEmpty()) stack = fallbackStack;
+            stackCache.put(materialId, stack);
+        }
 
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y, (float) z);
@@ -67,7 +75,7 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
             GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
         }
 
-        this.itemRenderer.renderItem(broadswordStack, ItemCameraTransforms.TransformType.NONE);
+        this.itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.NONE);
 
         GlStateManager.disableBlend();
         GlStateManager.enableLighting();

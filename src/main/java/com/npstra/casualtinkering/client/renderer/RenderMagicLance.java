@@ -11,12 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.materials.Material;
-import slimeknights.tconstruct.library.tools.ToolCore;
-import slimeknights.tconstruct.tools.harvest.TinkerHarvestTools;
-
-import java.util.Arrays;
 
 @SideOnly(Side.CLIENT)
 public class RenderMagicLance extends Render<EntityMagicLance> {
@@ -29,12 +23,7 @@ public class RenderMagicLance extends Render<EntityMagicLance> {
 
     @Override
     public void doRender(EntityMagicLance entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        String materialId = entity.getBladeMaterialId();
-        if (materialId == null) materialId = "manyullyn";
-        Material material = TinkerRegistry.getMaterial(materialId);
-        if (material == null) material = Material.UNKNOWN;
-        ToolCore shovel = TinkerHarvestTools.shovel;
-        ItemStack stack = shovel.buildItem(Arrays.asList(material, material, material));
+        ItemStack stack = entity.getShovelStack();
         if (stack.isEmpty()) return;
 
         GlStateManager.pushMatrix();
