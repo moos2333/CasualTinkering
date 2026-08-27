@@ -33,6 +33,10 @@ import java.util.UUID;
 
 public class CircularSaw extends Hatchet {
 
+    private static final UUID SPEED_BOOST_UUID = UUID.fromString("a1b2c3d4-e5f6-4789-9123-4567890abcdef");
+    private static final UUID DAMAGE_REDUCTION_UUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
+    private static final float[] SWEEP_BONUS = {0.33f, 0.50f, 0.69f, 0.90f};
+
     public CircularSaw() {
         super(PartMaterialType.handle(TinkerTools.toughToolRod),
                 PartMaterialType.extra(TinkerTools.toughToolRod),
@@ -100,11 +104,8 @@ public class CircularSaw extends Hatchet {
         if (tag != null && tag.getSize() > 0) {
             level = ModifierNBT.readInteger(tag).level;
         }
-        if (level <= 0) return -0.67f;
-        float total = 0.33f;
-        float[] extra = {0.17f, 0.14f, 0.11f};
-        for (int i = 0; i < level && i < extra.length; i++) total += extra[i];
-        return total - 1.0f;
+        float bonus = SWEEP_BONUS[Math.min(level, 3)];
+        return bonus - 1.0f;
     }
 
     private void performSweepAttack(ItemStack stack, World world, EntityPlayer player) {
@@ -133,10 +134,8 @@ public class CircularSaw extends Hatchet {
         EntityLivingBase primary = targets.get(0);
         if (ToolHelper.attackEntity(stack, this, player, primary, null, true)) hitAny = true;
         if (targets.size() > 1) {
-            UUID speedUUID = UUID.fromString("a1b2c3d4-e5f6-7890-1234-567890abcdef");
-            UUID damageUUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
-            AttributeModifier speedModifier = new AttributeModifier(speedUUID, "CircularSaw speed boost", 99.0, 0);
-            AttributeModifier damageModifier = new AttributeModifier(damageUUID, "CircularSaw reduced damage", getSweepDamageModifier(stack), 2);
+            AttributeModifier speedModifier = new AttributeModifier(SPEED_BOOST_UUID, "CircularSaw speed boost", 99.0, 0);
+            AttributeModifier damageModifier = new AttributeModifier(DAMAGE_REDUCTION_UUID, "CircularSaw reduced damage", getSweepDamageModifier(stack), 2);
             IAttributeInstance speedAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
             IAttributeInstance damageAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
             speedAttr.applyModifier(speedModifier);
@@ -144,8 +143,8 @@ public class CircularSaw extends Hatchet {
             for (int i = 1; i < targets.size(); i++) {
                 if (ToolHelper.attackEntity(stack, this, player, targets.get(i), null, true)) hitAny = true;
             }
-            speedAttr.removeModifier(speedUUID);
-            damageAttr.removeModifier(damageUUID);
+            speedAttr.removeModifier(SPEED_BOOST_UUID);
+            damageAttr.removeModifier(DAMAGE_REDUCTION_UUID);
         }
         if (hitAny) {
             player.playSound(net.minecraft.init.SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
