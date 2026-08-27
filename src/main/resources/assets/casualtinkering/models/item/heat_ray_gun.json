@@ -1,6 +1,6 @@
 {
   "loader": "tconstruct:tool",
-  "parent": "forge:item/default-tool",
+  "parent": "minecraft:item/bow",
   "textures": {
     "handle1": "casualtinkering:item/tool/heat_ray_gun/handle",
     "handle2": "casualtinkering:item/tool/heat_ray_gun/plate",
