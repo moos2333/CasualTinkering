@@ -21,7 +21,6 @@ import java.util.List;
 
 public class EntityMagicLance extends EntityProjectileBase {
     private float damage;
-    private EntityLivingBase target;
     private ItemStack shovelStack;
     private String bladeMaterialId;
 
@@ -34,7 +33,6 @@ public class EntityMagicLance extends EntityProjectileBase {
     public EntityMagicLance(World world, EntityLivingBase shooter, EntityLivingBase target, float damage, double posX, double posY, double posZ, String bladeMaterialId) {
         this(world);
         this.shootingEntity = shooter;
-        this.target = target;
         this.damage = damage;
         this.bladeMaterialId = bladeMaterialId;
         setPosition(posX, posY, posZ);
@@ -66,9 +64,6 @@ public class EntityMagicLance extends EntityProjectileBase {
             return;
         }
         if (!world.isRemote) {
-            if (target != null && !target.isEntityAlive()) {
-                target = null;
-            }
             AxisAlignedBB aabb = this.getEntityBoundingBox().grow(0.5);
             List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb, e -> e != shootingEntity);
             if (!entities.isEmpty()) {
@@ -155,7 +150,6 @@ public class EntityMagicLance extends EntityProjectileBase {
     public void writeSpawnData(ByteBuf buffer) {
         super.writeSpawnData(buffer);
         buffer.writeInt(shootingEntity == null ? -1 : shootingEntity.getEntityId());
-        buffer.writeInt(target == null ? -1 : target.getEntityId());
         buffer.writeFloat(damage);
         ByteBufUtils.writeUTF8String(buffer, bladeMaterialId != null ? bladeMaterialId : "manyullyn");
     }
@@ -164,16 +158,11 @@ public class EntityMagicLance extends EntityProjectileBase {
     public void readSpawnData(ByteBuf buffer) {
         super.readSpawnData(buffer);
         int shooterId = buffer.readInt();
-        int targetId = buffer.readInt();
         damage = buffer.readFloat();
         bladeMaterialId = ByteBufUtils.readUTF8String(buffer);
         if (shooterId != -1) {
             Entity e = world.getEntityByID(shooterId);
             if (e instanceof EntityLivingBase) shootingEntity = (EntityLivingBase) e;
-        }
-        if (targetId != -1) {
-            Entity e = world.getEntityByID(targetId);
-            if (e instanceof EntityLivingBase) target = (EntityLivingBase) e;
         }
         Material mat = slimeknights.tconstruct.library.TinkerRegistry.getMaterial(bladeMaterialId);
         if (mat == null) mat = Material.UNKNOWN;
