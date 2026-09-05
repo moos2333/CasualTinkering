@@ -199,6 +199,11 @@ public class CircularSaw extends Hatchet {
     }
 
     @Override
+    public float damageCutoff() {
+        return 20.0f;
+    }
+
+    @Override
     public float knockback() {
         return 0.9f;
     }
