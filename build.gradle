@@ -69,9 +69,9 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:tinkers-construct-74072:7449219")
+    implementation fg.deobf("curse.maven:tinkers-construct-74072:8809959")
     implementation fg.deobf("curse.maven:json-things-541617:6931396")
-    implementation fg.deobf("curse.maven:mantle-74924:7563777")
+    implementation fg.deobf("curse.maven:mantle-74924:8809819")
     runtimeOnly fg.deobf("curse.maven:jei-238222:7391695")
 }
 
