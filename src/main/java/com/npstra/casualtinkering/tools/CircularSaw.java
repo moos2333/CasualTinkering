@@ -33,7 +33,7 @@ import java.util.UUID;
 
 public class CircularSaw extends Hatchet {
 
-    private static final UUID SPEED_BOOST_UUID = UUID.fromString("a1b2c3d4-e5f6-4789-9123-4567890abcdef");
+    private static final UUID SPEED_BOOST_UUID = UUID.fromString("a1b2c3d4-e5f6-4789-9123-4567890abcde");
     private static final UUID DAMAGE_REDUCTION_UUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
     private static final float[] SWEEP_BONUS = {0.33f, 0.50f, 0.69f, 0.90f};
 
