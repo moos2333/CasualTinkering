@@ -35,7 +35,7 @@ import java.util.LinkedList;
 
 public class ModAutoDevice extends ModifierTrait {
     private static final int COOLDOWN_TICKS = 20;
-    private static final int RADIUS = 4;
+    private static final int RADIUS = 6;
     private static final Random RAND = new Random();
     private static final float[] DAMAGE_FACTORS = {0.25F, 0.4F, 0.5F};
 

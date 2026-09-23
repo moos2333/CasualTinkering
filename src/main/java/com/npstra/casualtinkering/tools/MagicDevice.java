@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import slimeknights.tconstruct.library.materials.HandleMaterialStats;
 import slimeknights.tconstruct.library.materials.HeadMaterialStats;
 import slimeknights.tconstruct.library.materials.Material;
@@ -272,6 +273,11 @@ public class MagicDevice extends SwordCore {
             String bladeMaterialId = device.extractBladeMaterial(deviceStack);
             EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z, bladeMaterialId, false);
             player.world.spawnEntity(sword);
+        }
+
+        @SubscribeEvent
+        public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+            LAST_ATTACK_TIME.remove(event.player.getUniqueID());
         }
     }
 }
