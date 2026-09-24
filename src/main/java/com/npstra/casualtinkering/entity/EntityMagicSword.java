@@ -7,6 +7,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -106,12 +107,9 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
             float lastDamage = target.lastDamage;
             target.hurtResistantTime = 0;
             target.lastDamage = 0;
-            DamageSource source;
-            if (shooter instanceof EntityPlayer) {
-                source = DamageSource.causePlayerDamage((EntityPlayer) shooter).setDamageBypassesArmor().setMagicDamage();
-            } else {
-                source = DamageSource.causeMobDamage(shooter).setDamageBypassesArmor().setMagicDamage();
-            }
+            DamageSource source = new EntityDamageSource("magic_sword", shooter)
+                    .setDamageBypassesArmor()
+                    .setMagicDamage();
             target.attackEntityFrom(source, damage);
             target.hurtResistantTime = Math.max(hurtResistantTime, target.hurtResistantTime);
             target.lastDamage = Math.max(lastDamage, target.lastDamage);

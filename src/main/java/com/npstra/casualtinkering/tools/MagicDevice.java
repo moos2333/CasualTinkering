@@ -17,7 +17,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import slimeknights.tconstruct.library.materials.HandleMaterialStats;
 import slimeknights.tconstruct.library.materials.HeadMaterialStats;
 import slimeknights.tconstruct.library.materials.Material;
@@ -37,8 +36,6 @@ import com.npstra.casualtinkering.entity.EntityMagicSword;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Mod.EventBusSubscriber
 public class MagicDevice extends SwordCore {
@@ -231,8 +228,7 @@ public class MagicDevice extends SwordCore {
 
     @Mod.EventBusSubscriber
     public static class CoopHandler {
-        private static final ConcurrentHashMap<UUID, Long> LAST_ATTACK_TIME = new ConcurrentHashMap<>();
-        private static final long ATTACK_COOLDOWN_MS = 200;
+        private static final int COOP_COOLDOWN_TICKS = 10;
 
         @SubscribeEvent
         public static void onLivingHurt(LivingHurtEvent event) {
@@ -240,10 +236,6 @@ public class MagicDevice extends SwordCore {
             if (event.getSource().getDamageType().equals("magic_sword")) return;
             if (!(event.getSource().getTrueSource() instanceof EntityPlayer)) return;
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
-            long currentTime = System.currentTimeMillis();
-            Long lastTime = LAST_ATTACK_TIME.get(player.getUniqueID());
-            if (lastTime != null && currentTime - lastTime < ATTACK_COOLDOWN_MS) return;
-            LAST_ATTACK_TIME.put(player.getUniqueID(), currentTime);
 
             ItemStack deviceStack = player.getHeldItemOffhand();
             if (!(deviceStack.getItem() instanceof MagicDevice)) {
@@ -252,11 +244,14 @@ public class MagicDevice extends SwordCore {
                     return;
                 }
             }
+            if (player.getCooldownTracker().hasCooldown(deviceStack.getItem())) return;
 
             ItemStack mainhand = player.getHeldItemMainhand();
             if (mainhand.isEmpty()) return;
             boolean isSword = mainhand.getItem() instanceof ItemSword || mainhand.getItem() instanceof SwordCore;
             if (!isSword) return;
+
+            player.getCooldownTracker().setCooldown(deviceStack.getItem(), COOP_COOLDOWN_TICKS);
 
             MagicDevice device = (MagicDevice) deviceStack.getItem();
             float totalDamage = ToolHelper.getActualAttack(deviceStack);
@@ -273,11 +268,6 @@ public class MagicDevice extends SwordCore {
             String bladeMaterialId = device.extractBladeMaterial(deviceStack);
             EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z, bladeMaterialId, false);
             player.world.spawnEntity(sword);
-        }
-
-        @SubscribeEvent
-        public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-            LAST_ATTACK_TIME.remove(event.player.getUniqueID());
         }
     }
 }
