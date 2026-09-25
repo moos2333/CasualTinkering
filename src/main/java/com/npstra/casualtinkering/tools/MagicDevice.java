@@ -1,5 +1,7 @@
 package com.npstra.casualtinkering.tools;
 
+import com.npstra.casualtinkering.config.ModConfig;
+import com.npstra.casualtinkering.util.ParticlelessToolAttack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,6 +60,14 @@ public class MagicDevice extends SwordCore {
 
     private boolean hasMagicLance(ItemStack stack) {
         return TinkerUtil.hasModifier(TagUtil.getTagSafe(stack), "magic_lance");
+    }
+
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+        if (ModConfig.particlelessAttack) {
+            return ParticlelessToolAttack.attackEntity(stack, this, player, entity);
+        }
+        return super.onLeftClickEntity(stack, player, entity);
     }
 
     @Override

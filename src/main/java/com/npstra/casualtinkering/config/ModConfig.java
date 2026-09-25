@@ -46,4 +46,7 @@ public class ModConfig {
 
     @Config.Comment("Allow Circular Saw's sweep attack to damage other players (PVP). Defaults to true.")
     public static boolean allowCircularSawPvP = true;
+
+    @Config.Comment("Enable particleless attack for Circular Saw and Magic Device. When enabled, damage indicator particles are suppressed.")
+    public static boolean particlelessAttack = true;
 }

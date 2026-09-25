@@ -1,7 +1,9 @@
 package com.npstra.casualtinkering.tools;
 
 import com.npstra.casualtinkering.config.ModConfig;
+import com.npstra.casualtinkering.util.ParticlelessToolAttack;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -108,6 +110,13 @@ public class CircularSaw extends Hatchet {
         return bonus - 1.0f;
     }
 
+    private boolean attack(ItemStack stack, EntityPlayer player, EntityLivingBase target) {
+        if (ModConfig.particlelessAttack) {
+            return ParticlelessToolAttack.attackEntity(stack, this, player, target, null, true);
+        }
+        return ToolHelper.attackEntity(stack, this, player, target, null, true);
+    }
+
     private void performSweepAttack(ItemStack stack, World world, EntityPlayer player) {
         float radius = 4.0f;
         float halfAngle = (float) Math.toRadians(45.0f);
@@ -132,7 +141,7 @@ public class CircularSaw extends Hatchet {
         targets.sort((e1, e2) -> Double.compare(e1.getDistanceSq(player), e2.getDistanceSq(player)));
         boolean hitAny = false;
         EntityLivingBase primary = targets.get(0);
-        if (ToolHelper.attackEntity(stack, this, player, primary, null, true)) hitAny = true;
+        if (attack(stack, player, primary)) hitAny = true;
         if (targets.size() > 1) {
             AttributeModifier speedModifier = new AttributeModifier(SPEED_BOOST_UUID, "CircularSaw speed boost", 99.0, 0);
             AttributeModifier damageModifier = new AttributeModifier(DAMAGE_REDUCTION_UUID, "CircularSaw reduced damage", getSweepDamageModifier(stack), 2);
@@ -141,7 +150,7 @@ public class CircularSaw extends Hatchet {
             speedAttr.applyModifier(speedModifier);
             damageAttr.applyModifier(damageModifier);
             for (int i = 1; i < targets.size(); i++) {
-                if (ToolHelper.attackEntity(stack, this, player, targets.get(i), null, true)) hitAny = true;
+                if (attack(stack, player, targets.get(i))) hitAny = true;
             }
             speedAttr.removeModifier(SPEED_BOOST_UUID);
             damageAttr.removeModifier(DAMAGE_REDUCTION_UUID);
@@ -183,6 +192,14 @@ public class CircularSaw extends Hatchet {
         if (this.isInCreativeTab(tab)) {
             addDefaultSubItems(subItems);
         }
+    }
+
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) {
+        if (ModConfig.particlelessAttack) {
+            return ParticlelessToolAttack.attackEntity(stack, this, player, entity);
+        }
+        return super.onLeftClickEntity(stack, player, entity);
     }
 
     @Override
