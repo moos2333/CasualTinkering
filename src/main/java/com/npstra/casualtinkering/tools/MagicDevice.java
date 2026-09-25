@@ -66,6 +66,9 @@ public class MagicDevice extends SwordCore {
             return new ActionResult<>(EnumActionResult.FAIL, player.getHeldItem(hand));
         }
         ItemStack stack = player.getHeldItem(hand);
+        if (ToolHelper.isBroken(stack)) {
+            return new ActionResult<>(EnumActionResult.FAIL, stack);
+        }
         player.setActiveHand(hand);
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
@@ -73,6 +76,7 @@ public class MagicDevice extends SwordCore {
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase player, int timeLeft) {
         if (world.isRemote) return;
+        if (ToolHelper.isBroken(stack)) return;
         int useTime = getMaxItemUseDuration(stack) - timeLeft;
         if (useTime < 30) return;
         float range = 8.0F;
@@ -244,6 +248,7 @@ public class MagicDevice extends SwordCore {
                     return;
                 }
             }
+            if (ToolHelper.isBroken(deviceStack)) return;
             if (player.getCooldownTracker().hasCooldown(deviceStack.getItem())) return;
 
             ItemStack mainhand = player.getHeldItemMainhand();
