@@ -71,18 +71,11 @@ public class CircularSaw extends Hatchet {
     }
 
     @Override
-    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
-        if (player.getEntityWorld().isRemote || !(player instanceof EntityPlayer)) {
-            return;
+    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entity) {
+        if (!world.isRemote && entity instanceof EntityPlayer) {
+            performSweepAttack(stack, world, (EntityPlayer) entity);
         }
-
-        int timeLeft = count;
-
-        if (timeLeft <= 1) {
-            EntityPlayer entityPlayer = (EntityPlayer) player;
-            performSweepAttack(stack, player.getEntityWorld(), entityPlayer);
-            player.stopActiveHand();
-        }
+        return super.onItemUseFinish(stack, world, entity);
     }
 
     @Override
@@ -90,11 +83,9 @@ public class CircularSaw extends Hatchet {
         if (world.isRemote || !(entity instanceof EntityPlayer)) {
             return;
         }
-
         EntityPlayer player = (EntityPlayer) entity;
         int maxDuration = getMaxItemUseDuration(stack);
         int useDuration = maxDuration - timeLeft;
-
         if (useDuration >= maxDuration * 0.9f) {
             performSweepAttack(stack, world, player);
         }

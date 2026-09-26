@@ -107,7 +107,6 @@ public class EntityMagicLance extends EntityProjectileBase {
         List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb,
                 e -> e != shootingEntity && e != exclude);
         for (EntityLivingBase e : entities) {
-            if (e == shootingEntity || e == exclude) continue;
             float splashDamage = damage * 0.5f;
             int oldHurt = e.hurtResistantTime;
             float oldLast = e.lastDamage;
