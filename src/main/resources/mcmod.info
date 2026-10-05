@@ -8,5 +8,6 @@
 	"credits": "${mod_credits}",
 	"url": "${mod_url}",
 	"updateJSON": "${mod_update_json}",
-	"logoFile": "logo.png"
+	"logoFile": "logo.png",
+	"license": "MIT"
 }]
