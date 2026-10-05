@@ -11,7 +11,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -120,7 +119,7 @@ public class ModAutoDevice extends ModifierTrait {
         double z = nearest.posZ + offsetZ;
         double y = nearest.posY + 1.5;
 
-        String bladeMaterialId = extractBladeMaterial(tool);
+        String bladeMaterialId = ((MagicDevice) tool.getItem()).extractBladeMaterial(tool);
         EntityMagicSword sword = new EntityMagicSword(world, player, nearest, magicDamage, x, y, z, bladeMaterialId, false);
         world.spawnEntity(sword);
 
@@ -130,16 +129,6 @@ public class ModAutoDevice extends ModifierTrait {
         if (!player.isCreative()) {
             ToolHelper.damageTool(tool, 1, player);
         }
-    }
-
-    private String extractBladeMaterial(ItemStack stack) {
-        String bladeMaterialId = "manyullyn";
-        NBTTagCompound root = TagUtil.getTagSafe(stack);
-        NBTTagList materialsTagList = TagUtil.getBaseMaterialsTagList(root);
-        if (materialsTagList.tagCount() > 1) {
-            bladeMaterialId = materialsTagList.getStringTagAt(1);
-        }
-        return bladeMaterialId;
     }
 
     private static class ItemCombination extends RecipeMatch {

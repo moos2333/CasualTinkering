@@ -1,15 +1,15 @@
 [
   {
     "type": "modifier",
-    "data": "modifiers/auto_device.json"
-  },
-  {
-    "type": "modifier",
     "data": "modifiers/overclock.json"
   },
   {
     "type": "modifier",
     "data": "modifiers/precision_sawing.json"
+  },
+  {
+    "type": "modifier",
+    "data": "modifiers/auto_device.json"
   },
   {
     "type": "modifier",

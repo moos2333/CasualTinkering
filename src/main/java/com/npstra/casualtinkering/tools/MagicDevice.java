@@ -230,7 +230,7 @@ public class MagicDevice extends SwordCore {
         return data;
     }
 
-    private String extractBladeMaterial(ItemStack stack) {
+    public String extractBladeMaterial(ItemStack stack) {
         String bladeMaterialId = "manyullyn";
         NBTTagCompound root = TagUtil.getTagSafe(stack);
         NBTTagList materialsTagList = TagUtil.getBaseMaterialsTagList(root);
