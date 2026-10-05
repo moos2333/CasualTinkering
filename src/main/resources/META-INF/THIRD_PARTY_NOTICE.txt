@@ -1,16 +1,15 @@
-# Third-Party Notices
+Third-Party Notices
 
-This project includes code derived from the following third-party projects.
+This product includes code derived from Tinkers' Construct 2.
 
-## Tinkers' Construct 2
+Portions of ParticlelessToolAttack.java are derived from
+slimeknights.tconstruct.library.utils.ToolHelper in Tinkers' Construct 2.
+This code has been modified for use in this project.
 
-Portions of `ParticlelessToolAttack.java` are derived from `slimeknights.tconstruct.library.utils.ToolHelper` in Tinkers' Construct 2.
+Copyright (c) 2022 SlimeKnights
 
-**Copyright (c) 2022 SlimeKnights**
+Licensed under the MIT License:
 
-Licensed under the MIT License.
-
-```
 The MIT License
 Copyright (c) 2022 SlimeKnights
 
@@ -31,4 +30,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-```
