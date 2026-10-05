@@ -40,6 +40,10 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean enableOverclock = true;
 
+    @Config.Comment("Enable or disable the Magic Membrane modifier")
+    @Config.RequiresMcRestart
+    public static boolean enableMagicMembrane = true;
+
     @Config.Comment("Enable or disable the Magic Lance modifier")
     @Config.RequiresMcRestart
     public static boolean enableMagicLance = true;

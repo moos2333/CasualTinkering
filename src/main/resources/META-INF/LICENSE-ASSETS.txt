@@ -1,0 +1,21 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+Copyright (c) 2026 moos233
+
+This license applies ONLY to the original art assets created by moos233
+in this project, including but not limited to textures, models, and
+language files.
+
+It does NOT apply to:
+- The source code (licensed under Apache License 2.0)
+- Third-party assets (licensed under their original licenses)
+
+License text: https://creativecommons.org/licenses/by/4.0/
+
+You are free to share and adapt these assets, including for commercial
+purposes, provided that you give appropriate credit, link to the license,
+and indicate if changes were made.
+
+How to attribute:
+  [Asset Name] by moos233, licensed under CC BY 4.0
+  (https://creativecommons.org/licenses/by/4.0/).
+  If you modified the asset, please indicate that changes were made.

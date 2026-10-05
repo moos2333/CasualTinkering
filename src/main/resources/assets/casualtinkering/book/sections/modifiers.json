@@ -14,5 +14,9 @@
   {
     "type": "modifier",
     "data": "modifiers/magic_lance.json"
+  },
+  {
+    "type": "modifier",
+    "data": "modifiers/magic_membrane.json"
   }
 ]

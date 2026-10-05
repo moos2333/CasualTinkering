@@ -1,0 +1,15 @@
+{
+  "modifier": "magic_membrane",
+  "text": [
+    {
+      "text": "一些充满魔法的金属与皮革会让你的魔导具更加坚固"
+    }
+  ],
+  "effects": [
+    "穿戴在胸甲栏时提供减伤",
+    "多个等级"
+  ],
+  "demoTool": [
+    "casualtinkering:magicdevice"
+  ]
+}

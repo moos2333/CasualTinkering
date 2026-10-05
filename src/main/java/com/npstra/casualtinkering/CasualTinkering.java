@@ -5,10 +5,7 @@ import com.npstra.casualtinkering.common.CasualTinkeringCommonProxy;
 import com.npstra.casualtinkering.config.ModConfig;
 import com.npstra.casualtinkering.entity.EntityMagicLance;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
-import com.npstra.casualtinkering.modifiers.ModAutoDevice;
-import com.npstra.casualtinkering.modifiers.ModMagicLance;
-import com.npstra.casualtinkering.modifiers.ModOverclock;
-import com.npstra.casualtinkering.modifiers.ModPrecisionSawing;
+import com.npstra.casualtinkering.modifiers.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -47,6 +44,9 @@ public class CasualTinkering {
         }
         if (ModConfig.enableMagicLance) {
             new ModMagicLance();
+        }
+        if (ModConfig.enableMagicMembrane) {
+            new ModMagicMembrane();
         }
     }
 

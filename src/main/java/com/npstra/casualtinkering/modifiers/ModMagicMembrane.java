@@ -1,23 +1,31 @@
 package com.npstra.casualtinkering.modifiers;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import slimeknights.mantle.util.RecipeMatch;
+import slimeknights.tconstruct.library.modifiers.ModifierNBT;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
-import slimeknights.tconstruct.tools.TinkerTools;
+import slimeknights.tconstruct.library.utils.ToolBuilder;
+import com.npstra.casualtinkering.tools.MagicDevice;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.LinkedList;
 
-public class ModMagicLance extends ModifierTrait {
-    public ModMagicLance() {
-        super("magic_lance", 0xFFFF33, 1, 0);
+public class ModMagicMembrane extends ModifierTrait {
+
+    public ModMagicMembrane() {
+        super("magic_membrane", 0x00CCCC, 2, 0);
         addRecipeMatch(new ItemCombination(1,
-                new ItemStack(Items.DIAMOND_SHOVEL),
-                new ItemStack(Items.GOLD_INGOT),
-                new ItemStack(Items.GOLD_INGOT),
+                new ItemStack(Items.LEATHER),
+                new ItemStack(Items.LEATHER),
+                new ItemStack(Items.LEATHER),
                 new ItemStack(Items.GOLD_INGOT),
                 new ItemStack(Items.GOLD_INGOT)
         ));
@@ -25,7 +33,17 @@ public class ModMagicLance extends ModifierTrait {
 
     @Override
     public boolean canApplyCustom(ItemStack stack) {
-        return stack.getItem() instanceof com.npstra.casualtinkering.tools.MagicDevice;
+        return stack.getItem() instanceof MagicDevice;
+    }
+
+    @Override
+    public void applyEffect(NBTTagCompound rootCompound, NBTTagCompound modifierTag) {
+        super.applyEffect(rootCompound, modifierTag);
+        int level = ModifierNBT.readInteger(modifierTag).level;
+        int targetLevel = Math.min(level * 2, Enchantments.PROTECTION.getMaxLevel());
+        while (ToolBuilder.getEnchantmentLevel(rootCompound, Enchantments.PROTECTION) < targetLevel) {
+            ToolBuilder.addEnchantment(rootCompound, Enchantments.PROTECTION);
+        }
     }
 
     private static class ItemCombination extends RecipeMatch {
@@ -49,8 +67,8 @@ public class ModMagicLance extends ModifierTrait {
 
         @Override
         public Optional<Match> matches(NonNullList<ItemStack> stacks) {
-            List<ItemStack> found = new java.util.LinkedList<>();
-            java.util.Set<Integer> needed = new java.util.HashSet<>();
+            List<ItemStack> found = new LinkedList<>();
+            Set<Integer> needed = new HashSet<>();
             for (int i = 0; i < this.itemStacks.size(); i++) {
                 if (!this.itemStacks.get(i).isEmpty()) {
                     needed.add(i);

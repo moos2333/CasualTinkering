@@ -1,0 +1,14 @@
+Casual Tinkering
+Copyright (c) 2026 moos233
+
+The source code of this mod is licensed under the Apache License, Version 2.0.
+See META-INF/LICENSE for the full license text.
+
+Original art assets (textures, models, language files) created by moos233
+are licensed under the Creative Commons Attribution 4.0 International
+License (CC BY 4.0).
+See META-INF/LICENSE-ASSETS.txt for details.
+
+This mod includes code derived from Tinkers' Construct 2,
+Copyright (c) 2022 SlimeKnights, licensed under the MIT License.
+See META-INF/THIRD-PARTY-NOTICES.txt for details.

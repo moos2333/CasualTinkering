@@ -1,0 +1,15 @@
+{
+  "modifier": "magic_membrane",
+  "text": [
+    {
+      "text": "Some magically infused metal and leather make your Magic Device more resilient."
+    }
+  ],
+  "effects": [
+    "Provides damage reduction when equipped in the chestplate slot",
+    "Multiple levels"
+  ],
+  "demoTool": [
+    "casualtinkering:magicdevice"
+  ]
+}

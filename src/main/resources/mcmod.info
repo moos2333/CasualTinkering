@@ -9,5 +9,5 @@
 	"url": "${mod_url}",
 	"updateJSON": "${mod_update_json}",
 	"logoFile": "logo.png",
-	"license": "MIT"
+	"license": "Apache-2.0"
 }]
