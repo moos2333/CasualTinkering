@@ -32,7 +32,7 @@ See [LICENSE](LICENSE) for the full license text.
 
 **Original Art Assets**
 
-All original art assets created by moos233 (including textures, models, and
+All original art assets created by moos2333 (including textures, models, and
 language files) are licensed under the
 [Creative Commons Attribution 4.0 International License (CC BY 4.0)](LICENSE-ASSETS).
 
@@ -59,10 +59,6 @@ The mod JAR contains:
 > **Version note:** Versions from `0.2.12` onward are licensed under Apache-2.0
 > (code) and CC BY 4.0 (original art assets).
 > Versions prior to `0.2.12` were released under the MIT License.
-
-## Note
-
-Most of the code in this mod is AI-generated.
 
 ## Note
 
