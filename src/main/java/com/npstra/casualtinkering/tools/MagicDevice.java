@@ -102,26 +102,9 @@ public class MagicDevice extends SwordCore {
         if (!hasMagicLance(stack)) {
             float totalDamage = ToolHelper.getActualAttack(stack);
             float magicDamage = totalDamage * 0.35F;
-            Random rand = world.rand;
-            boolean fromPlayer = rand.nextBoolean();
+            boolean fromPlayer = world.rand.nextBoolean();
             for (int i = 0; i < 3; i++) {
-                double angle = rand.nextDouble() * 2 * Math.PI;
-                double radius = 2.0;
-                double offsetX = radius * Math.cos(angle);
-                double offsetZ = radius * Math.sin(angle);
-                double x, z;
-                boolean direct = false;
-                if (fromPlayer) {
-                    x = player.posX + offsetX * 0.75;
-                    z = player.posZ + offsetZ * 0.75;
-                    direct = true;
-                } else {
-                    x = target.posX + offsetX;
-                    z = target.posZ + offsetZ;
-                }
-                double y = target.posY + 1.5;
-                EntityMagicSword sword = new EntityMagicSword(world, player, (EntityLivingBase) target, magicDamage, x, y, z, bladeMaterialId, direct);
-                world.spawnEntity(sword);
+                spawnMagicSword(world, player, (EntityLivingBase) target, magicDamage, bladeMaterialId, fromPlayer);
             }
         } else {
             float baseDamage = ToolHelper.getActualAttack(stack);
@@ -181,17 +164,8 @@ public class MagicDevice extends SwordCore {
                 if (thePlayer.getCooledAttackStrength(0.0F) == 1.0F) {
                     float totalDamage = ToolHelper.getActualAttack(stack);
                     float magicDamage = totalDamage * 0.5F;
-                    Random rand = player.world.rand;
-                    double angle = rand.nextDouble() * 2 * Math.PI;
-                    double radius = 2.0;
-                    double offsetX = radius * Math.cos(angle);
-                    double offsetZ = radius * Math.sin(angle);
-                    double x = entity.posX + offsetX;
-                    double z = entity.posZ + offsetZ;
-                    double y = entity.posY + 1.5;
                     String bladeMaterialId = extractBladeMaterial(stack);
-                    EntityMagicSword sword = new EntityMagicSword(player.world, player, (EntityLivingBase) entity, magicDamage, x, y, z, bladeMaterialId, false);
-                    player.world.spawnEntity(sword);
+                    spawnMagicSword(player.world, player, (EntityLivingBase) entity, magicDamage, bladeMaterialId, false);
                 }
             }
         } else {
@@ -240,6 +214,26 @@ public class MagicDevice extends SwordCore {
         return bladeMaterialId;
     }
 
+    public static void spawnMagicSword(World world, EntityLivingBase shooter, EntityLivingBase target,
+                                       float damage, String materialId, boolean direct) {
+        Random rand = world.rand;
+        double angle = rand.nextDouble() * 2 * Math.PI;
+        double radius = 2.0;
+        double offsetX = radius * Math.cos(angle);
+        double offsetZ = radius * Math.sin(angle);
+        double x, z;
+        if (direct) {
+            x = shooter.posX + offsetX * 0.75;
+            z = shooter.posZ + offsetZ * 0.75;
+        } else {
+            x = target.posX + offsetX;
+            z = target.posZ + offsetZ;
+        }
+        double y = target.posY + 1.5;
+        EntityMagicSword sword = new EntityMagicSword(world, shooter, target, damage, x, y, z, materialId, direct);
+        world.spawnEntity(sword);
+    }
+
     @Mod.EventBusSubscriber
     public static class CoopHandler {
         private static final int COOP_COOLDOWN_TICKS = 10;
@@ -272,17 +266,8 @@ public class MagicDevice extends SwordCore {
             float totalDamage = ToolHelper.getActualAttack(deviceStack);
             float mainDamage = event.getAmount();
             float magicDamage = totalDamage * 0.33F + mainDamage * 0.1F;
-            Random rand = player.world.rand;
-            double angle = rand.nextDouble() * 2 * Math.PI;
-            double radius = 2.0;
-            double offsetX = radius * Math.cos(angle);
-            double offsetZ = radius * Math.sin(angle);
-            double x = event.getEntity().posX + offsetX;
-            double z = event.getEntity().posZ + offsetZ;
-            double y = event.getEntity().posY + 1.5;
             String bladeMaterialId = device.extractBladeMaterial(deviceStack);
-            EntityMagicSword sword = new EntityMagicSword(player.world, player, event.getEntityLiving(), magicDamage, x, y, z, bladeMaterialId, false);
-            player.world.spawnEntity(sword);
+            spawnMagicSword(player.world, player, event.getEntityLiving(), magicDamage, bladeMaterialId, false);
         }
     }
 }

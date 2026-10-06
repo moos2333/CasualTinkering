@@ -22,12 +22,10 @@ import slimeknights.tconstruct.library.tools.SwordCore;
 import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
-import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.tools.MagicDevice;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -35,7 +33,6 @@ import java.util.LinkedList;
 public class ModAutoDevice extends ModifierTrait {
     private static final int COOLDOWN_TICKS = 20;
     private static final int RADIUS = 6;
-    private static final Random RAND = new Random();
     private static final float[] DAMAGE_FACTORS = {0.25F, 0.4F, 0.5F};
 
     public ModAutoDevice() {
@@ -111,17 +108,8 @@ public class ModAutoDevice extends ModifierTrait {
         float magicDamage = ToolHelper.getActualAttack(tool) * getDamageFactor(level);
         if (magicDamage <= 0) return;
 
-        double angle = RAND.nextDouble() * 2 * Math.PI;
-        double radius = 2.0;
-        double offsetX = radius * Math.cos(angle);
-        double offsetZ = radius * Math.sin(angle);
-        double x = nearest.posX + offsetX;
-        double z = nearest.posZ + offsetZ;
-        double y = nearest.posY + 1.5;
-
         String bladeMaterialId = ((MagicDevice) tool.getItem()).extractBladeMaterial(tool);
-        EntityMagicSword sword = new EntityMagicSword(world, player, nearest, magicDamage, x, y, z, bladeMaterialId, false);
-        world.spawnEntity(sword);
+        MagicDevice.spawnMagicSword(world, player, nearest, magicDamage, bladeMaterialId, false);
 
         tag.setLong("auto_device_last_tick", currentTick);
         TagUtil.setToolTag(tool, tag);
