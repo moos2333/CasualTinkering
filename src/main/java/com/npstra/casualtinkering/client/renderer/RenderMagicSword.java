@@ -67,12 +67,13 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
         } else {
             float yaw = entity.rotationYaw;
             float pitch = entity.rotationPitch;
+            double yawRad = Math.toRadians(yaw);
+            float axisX = (float) -Math.sin(yawRad);
+            float axisZ = (float) Math.cos(yawRad);
+            GlStateManager.rotate(90.0F, axisX, 0.0F, axisZ);
             GlStateManager.rotate(-yaw, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(-pitch, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(-pitch + 90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(90.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
         }
 
         this.itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.NONE);
