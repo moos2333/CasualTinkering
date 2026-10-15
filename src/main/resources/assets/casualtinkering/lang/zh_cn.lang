@@ -12,3 +12,5 @@ modifier.magic_lance.name=魔法枪
 modifier.magic_lance.desc=§o咻——咚！§r\n右键蓄力召唤从天而降的魔法枪，造成范围伤害。
 modifier.magic_membrane.name=魔法膜
 modifier.magic_membrane.desc=§o“蓝越多，血越厚。”§r\n魔导具装备于胸甲栏时提供额外减伤。
+modifier.whirl.name=高速旋转
+modifier.whirl.desc=§o转圈圈!§r\n大幅提升横扫频率，但降低单次伤害。

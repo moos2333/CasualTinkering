@@ -2,6 +2,7 @@ package com.npstra.casualtinkering.tools;
 
 import com.npstra.casualtinkering.config.ModConfig;
 import com.npstra.casualtinkering.modifiers.ModOverclock;
+import com.npstra.casualtinkering.modifiers.ModWhirl;
 import com.npstra.casualtinkering.util.ParticlelessToolAttack;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -105,7 +106,8 @@ public class CircularSaw extends Hatchet {
     private int getAttackInterval(ItemStack stack) {
         float speed = ToolHelper.getAttackSpeedStat(stack);
         speed = MathHelper.clamp(speed, 1.0f, 4.0f);
-        return Math.max((int) (20.0f / speed), 4);
+        speed *= ModWhirl.getSpeedMultiplier(stack);
+        return Math.max((int) (20.0f / speed), 3);
     }
 
     private boolean attack(ItemStack stack, EntityPlayer player, EntityLivingBase target) {
@@ -144,7 +146,8 @@ public class CircularSaw extends Hatchet {
             AttributeModifier speedModifier = new AttributeModifier(SPEED_BOOST_UUID, "CircularSaw speed boost", 99.0, 0);
             IAttributeInstance speedAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
             speedAttr.applyModifier(speedModifier);
-            ModOverclock.applyDamageReduction(player, BASE_SWEEP_MODIFIER + ModOverclock.getSweepBonus(stack));
+            float sweepModifier = BASE_SWEEP_MODIFIER + ModOverclock.getSweepBonus(stack) - ModWhirl.getSweepPenalty(stack);
+            ModOverclock.applyDamageReduction(player, sweepModifier);
             for (int i = 1; i < targets.size(); i++) {
                 if (attack(stack, player, targets.get(i))) hitAny = true;
             }

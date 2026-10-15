@@ -48,6 +48,9 @@ public class CasualTinkering {
         if (ModConfig.enableMagicMembrane) {
             new ModMagicMembrane();
         }
+        if (ModConfig.enableWhirl) {
+            new ModWhirl();
+        }
     }
 
     @Mod.EventHandler

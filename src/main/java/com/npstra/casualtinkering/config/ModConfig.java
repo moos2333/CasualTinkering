@@ -40,6 +40,10 @@ public class ModConfig {
     @Config.RequiresMcRestart
     public static boolean enableOverclock = true;
 
+    @Config.Comment("Enable or disable the Whirl modifier")
+    @Config.RequiresMcRestart
+    public static boolean enableWhirl = true;
+
     @Config.Comment("Enable or disable the Magic Membrane modifier")
     @Config.RequiresMcRestart
     public static boolean enableMagicMembrane = true;

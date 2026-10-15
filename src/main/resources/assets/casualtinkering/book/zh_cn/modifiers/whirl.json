@@ -1,0 +1,17 @@
+{
+  "modifier": "whirl",
+  "text": [
+    {
+      "text": "红石比较器的频率很快，如果装在你的圆锯上呢？"
+    }
+  ],
+  "effects": [
+    "显著增加右键横扫攻击的速度",
+    "降低目标的无敌时间",
+    "降低单次横扫的伤害",
+    "多个等级"
+  ],
+  "demoTool": [
+    "casualtinkering:circular_saw"
+  ]
+}

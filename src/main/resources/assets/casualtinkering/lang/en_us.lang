@@ -12,3 +12,5 @@ modifier.magic_lance.name=Magic Lance
 modifier.magic_lance.desc=§oWhoosh—Thud!§r\nCharged right-click summons a falling lance that deals area damage.
 modifier.magic_membrane.name=Magic Membrane
 modifier.magic_membrane.desc=§o"More MP, thicker HP."§r\nProvides extra damage reduction when the Magic Device is equipped in the chestplate slot.
+modifier.whirl.name=Whirl
+modifier.whirl.desc=§oTime to twirl!§r\nGreatly increases sweep frequency, but reduces damage per hit.

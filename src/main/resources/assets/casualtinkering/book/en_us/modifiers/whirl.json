@@ -1,0 +1,17 @@
+{
+  "modifier": "whirl",
+  "text": [
+    {
+      "text": "Redstone comparators pulse fast. What if you put that on your Circular Saw?"
+    }
+  ],
+  "effects": [
+    "Significantly increases right-click sweep speed",
+    "Reduces target invulnerability time",
+    "Reduces damage per sweep",
+    "Multiple levels"
+  ],
+  "demoTool": [
+    "casualtinkering:circular_saw"
+  ]
+}
