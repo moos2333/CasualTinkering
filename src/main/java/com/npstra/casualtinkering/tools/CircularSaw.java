@@ -16,6 +16,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -48,6 +49,8 @@ public class CircularSaw extends Hatchet {
         addCategory(Category.HARVEST);
         setRegistryName("casualtinkering", "circular_saw");
         setTranslationKey("casual_tinkering.circular_saw");
+        addPropertyOverride(new ResourceLocation("casualtinkering", "charging"),
+                (stack, worldIn, entityIn) -> entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F);
     }
 
     @Override
