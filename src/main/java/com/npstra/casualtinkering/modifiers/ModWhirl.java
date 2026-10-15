@@ -22,7 +22,7 @@ import java.util.Set;
 
 public class ModWhirl extends ModifierTrait {
 
-    private static final String IDENTIFIER = "whirl";
+    private static final String IDENTIFIER = "ct_whirl";
     private static final float[] SPEED_BONUS = {0.0f, 1.0f, 2.0f, 3.0f};
     private static final float[] DAMAGE_PENALTY = {0.0f, 0.375f, 0.48f, 0.51f};
     private static final float[] SWEEP_PENALTY = {0.0f, 0.10f, 0.17f, 0.21f};
