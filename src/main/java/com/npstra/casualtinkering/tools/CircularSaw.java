@@ -107,7 +107,8 @@ public class CircularSaw extends Hatchet {
         float speed = ToolHelper.getAttackSpeedStat(stack);
         speed = MathHelper.clamp(speed, 1.0f, 4.0f);
         speed *= ModWhirl.getSpeedMultiplier(stack);
-        return Math.max((int) (20.0f / speed), 3);
+        int minInterval = 5 - ModWhirl.getLevel(stack);
+        return Math.max((int)(20.0f / speed), minInterval);
     }
 
     private boolean attack(ItemStack stack, EntityPlayer player, EntityLivingBase target) {
