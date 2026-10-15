@@ -55,10 +55,7 @@ public class CircularSaw extends Hatchet {
 
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
-        float speed = ToolHelper.getAttackSpeedStat(stack);
-        speed = MathHelper.clamp(speed, 1.0f, 4.0f);
-        float useTime = 20.0f / speed;
-        return Math.max((int) useTime, 5);
+        return 72000;
     }
 
     @Override
@@ -69,29 +66,30 @@ public class CircularSaw extends Hatchet {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
+        if (ToolHelper.isBroken(stack)) {
+            return new ActionResult<>(EnumActionResult.FAIL, stack);
+        }
         player.setActiveHand(hand);
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entity) {
-        if (!world.isRemote && entity instanceof EntityPlayer) {
-            performSweepAttack(stack, world, (EntityPlayer) entity);
+    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
+        if (player.getEntityWorld().isRemote || !(player instanceof EntityPlayer)) return;
+        if (ToolHelper.isBroken(stack)) return;
+
+        EntityPlayer entityPlayer = (EntityPlayer) player;
+        int useDuration = getMaxItemUseDuration(stack) - count;
+
+        if (useDuration % getAttackInterval(stack) == 0) {
+            performSweepAttack(stack, player.getEntityWorld(), entityPlayer);
         }
-        return super.onItemUseFinish(stack, world, entity);
     }
 
-    @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
-        if (world.isRemote || !(entity instanceof EntityPlayer)) {
-            return;
-        }
-        EntityPlayer player = (EntityPlayer) entity;
-        int maxDuration = getMaxItemUseDuration(stack);
-        int useDuration = maxDuration - timeLeft;
-        if (useDuration >= maxDuration * 0.9f) {
-            performSweepAttack(stack, world, player);
-        }
+    private int getAttackInterval(ItemStack stack) {
+        float speed = ToolHelper.getAttackSpeedStat(stack);
+        speed = MathHelper.clamp(speed, 1.0f, 4.0f);
+        return Math.max((int) (20.0f / speed), 4);
     }
 
     private float getSweepDamageModifier(ItemStack stack) {
