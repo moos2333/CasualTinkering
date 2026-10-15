@@ -86,6 +86,25 @@ public class CircularSaw extends Hatchet {
         }
     }
 
+    @Override
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
+        if (world.isRemote || !(entity instanceof EntityPlayer)) return;
+        EntityPlayer player = (EntityPlayer) entity;
+        int useDuration = getMaxItemUseDuration(stack) - timeLeft;
+        int attacks = useDuration / getAttackInterval(stack);
+        if (attacks > 0) {
+            ToolHelper.damageTool(stack, attacks, player);
+        }
+    }
+
+    @Override
+    public void reduceDurabilityOnHit(ItemStack stack, EntityPlayer player, float damage) {
+        if (player != null && player.isHandActive() && player.getActiveItemStack() == stack) {
+            return;
+        }
+        super.reduceDurabilityOnHit(stack, player, damage);
+    }
+
     private int getAttackInterval(ItemStack stack) {
         float speed = ToolHelper.getAttackSpeedStat(stack);
         speed = MathHelper.clamp(speed, 1.0f, 4.0f);
