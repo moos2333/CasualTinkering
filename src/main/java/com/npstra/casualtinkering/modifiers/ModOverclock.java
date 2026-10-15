@@ -1,16 +1,32 @@
 package com.npstra.casualtinkering.modifiers;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import slimeknights.mantle.util.RecipeMatch;
+import slimeknights.tconstruct.library.modifiers.ModifierNBT;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
+import slimeknights.tconstruct.library.utils.TinkerUtil;
 import com.npstra.casualtinkering.tools.CircularSaw;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 public class ModOverclock extends ModifierTrait {
+
+    private static final UUID DAMAGE_REDUCTION_UUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
+    private static final float[] SWEEP_BONUS = {0.0f, 0.23f, 0.42f, 0.57f};
 
     public ModOverclock() {
         super("overclock", 0xFF6600, 3, 0);
@@ -26,6 +42,26 @@ public class ModOverclock extends ModifierTrait {
     @Override
     public boolean canApplyCustom(ItemStack stack) {
         return com.npstra.casualtinkering.config.ModConfig.enableOverclock && stack.getItem() instanceof CircularSaw;
+    }
+
+    public static float getSweepBonus(ItemStack stack) {
+        int level = 0;
+        NBTTagCompound tag = TinkerUtil.getModifierTag(stack, "overclock");
+        if (tag != null && tag.getSize() > 0) {
+            level = ModifierNBT.readInteger(tag).level;
+        }
+        return SWEEP_BONUS[Math.min(level, 3)];
+    }
+
+    public static void applyDamageReduction(EntityPlayer player, float totalModifier) {
+        IAttributeInstance attr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        AttributeModifier modifier = new AttributeModifier(DAMAGE_REDUCTION_UUID, "CircularSaw reduced damage", totalModifier, 2);
+        attr.removeModifier(DAMAGE_REDUCTION_UUID);
+        attr.applyModifier(modifier);
+    }
+
+    public static void removeDamageReduction(EntityPlayer player) {
+        player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(DAMAGE_REDUCTION_UUID);
     }
 
     private static class ItemCombination extends RecipeMatch {

@@ -1,6 +1,7 @@
 package com.npstra.casualtinkering.tools;
 
 import com.npstra.casualtinkering.config.ModConfig;
+import com.npstra.casualtinkering.modifiers.ModOverclock;
 import com.npstra.casualtinkering.util.ParticlelessToolAttack;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -11,7 +12,6 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -22,11 +22,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import slimeknights.tconstruct.library.materials.*;
-import slimeknights.tconstruct.library.modifiers.ModifierNBT;
 import slimeknights.tconstruct.library.tinkering.Category;
 import slimeknights.tconstruct.library.tinkering.PartMaterialType;
 import slimeknights.tconstruct.library.tools.ToolNBT;
-import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 import slimeknights.tconstruct.tools.TinkerTools;
 import slimeknights.tconstruct.tools.tools.Hatchet;
@@ -37,8 +35,7 @@ import java.util.UUID;
 public class CircularSaw extends Hatchet {
 
     private static final UUID SPEED_BOOST_UUID = UUID.fromString("a1b2c3d4-e5f6-4789-9123-4567890abcde");
-    private static final UUID DAMAGE_REDUCTION_UUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
-    private static final float[] SWEEP_BONUS = {0.33f, 0.56f, 0.75f, 0.90f};
+    private static final float BASE_SWEEP_MODIFIER = 0.33f - 1.0f;
 
     public CircularSaw() {
         super(PartMaterialType.handle(TinkerTools.toughToolRod),
@@ -111,16 +108,6 @@ public class CircularSaw extends Hatchet {
         return Math.max((int) (20.0f / speed), 4);
     }
 
-    private float getSweepDamageModifier(ItemStack stack) {
-        int level = 0;
-        NBTTagCompound tag = TinkerUtil.getModifierTag(stack, "overclock");
-        if (tag != null && tag.getSize() > 0) {
-            level = ModifierNBT.readInteger(tag).level;
-        }
-        float bonus = SWEEP_BONUS[Math.min(level, 3)];
-        return bonus - 1.0f;
-    }
-
     private boolean attack(ItemStack stack, EntityPlayer player, EntityLivingBase target) {
         if (ModConfig.particlelessAttack) {
             return ParticlelessToolAttack.attackEntity(stack, this, player, target, null, true);
@@ -155,16 +142,14 @@ public class CircularSaw extends Hatchet {
         if (attack(stack, player, primary)) hitAny = true;
         if (targets.size() > 1) {
             AttributeModifier speedModifier = new AttributeModifier(SPEED_BOOST_UUID, "CircularSaw speed boost", 99.0, 0);
-            AttributeModifier damageModifier = new AttributeModifier(DAMAGE_REDUCTION_UUID, "CircularSaw reduced damage", getSweepDamageModifier(stack), 2);
             IAttributeInstance speedAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-            IAttributeInstance damageAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
             speedAttr.applyModifier(speedModifier);
-            damageAttr.applyModifier(damageModifier);
+            ModOverclock.applyDamageReduction(player, BASE_SWEEP_MODIFIER + ModOverclock.getSweepBonus(stack));
             for (int i = 1; i < targets.size(); i++) {
                 if (attack(stack, player, targets.get(i))) hitAny = true;
             }
             speedAttr.removeModifier(SPEED_BOOST_UUID);
-            damageAttr.removeModifier(DAMAGE_REDUCTION_UUID);
+            ModOverclock.removeDamageReduction(player);
         }
         if (hitAny) {
             player.playSound(net.minecraft.init.SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
