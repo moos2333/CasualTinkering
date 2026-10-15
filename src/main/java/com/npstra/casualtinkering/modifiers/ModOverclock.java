@@ -31,11 +31,11 @@ public class ModOverclock extends ModifierTrait {
     public ModOverclock() {
         super("overclock", 0xFF6600, 3, 0);
         addRecipeMatch(new ItemCombination(1,
-                new ItemStack(Items.COMPARATOR),
-                new ItemStack(Items.COMPARATOR),
-                new ItemStack(Items.COMPARATOR),
-                new ItemStack(Items.COMPARATOR),
-                new ItemStack(Items.COMPARATOR)
+                new ItemStack(Items.CLOCK),
+                new ItemStack(Items.CLOCK),
+                new ItemStack(Items.CLOCK),
+                new ItemStack(Items.CLOCK),
+                new ItemStack(Items.CLOCK)
         ));
     }
 
