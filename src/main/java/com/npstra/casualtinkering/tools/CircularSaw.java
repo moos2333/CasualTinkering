@@ -81,7 +81,7 @@ public class CircularSaw extends Hatchet {
         EntityPlayer entityPlayer = (EntityPlayer) player;
         int useDuration = getMaxItemUseDuration(stack) - count;
 
-        if (useDuration % getAttackInterval(stack) == 0) {
+        if (useDuration > 0 && useDuration % getAttackInterval(stack) == 0) {
             performSweepAttack(stack, player.getEntityWorld(), entityPlayer);
         }
     }
