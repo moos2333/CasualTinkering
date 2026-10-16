@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class ModOverclock extends ModifierTrait {
 
-    private static final float[] SWEEP_BONUS = {0.0f, 0.23f, 0.42f, 0.57f};
+    private static final float[] SWEEP_BONUS = {0.0f, 0.25f, 0.35f, 0.40f};
 
     public ModOverclock() {
         super("overclock", 0xFF6600, 3, 0);
