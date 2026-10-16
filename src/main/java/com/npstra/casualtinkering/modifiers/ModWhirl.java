@@ -24,7 +24,7 @@ public class ModWhirl extends ModifierTrait {
 
     private static final String IDENTIFIER = "ct_whirl";
     private static final float[] SPEED_BONUS = {0.0f, 1.0f, 2.0f, 3.0f};
-    private static final float[] DAMAGE_PENALTY = {0.0f, 0.375f, 0.52f, 0.65f};
+    private static final float[] DAMAGE_PENALTY = {0.0f, 0.375f, 0.53f, 0.65f};
     private static final float[] SWEEP_PENALTY = {0.0f, 0.11f, 0.18f, 0.22f};
 
     public ModWhirl() {

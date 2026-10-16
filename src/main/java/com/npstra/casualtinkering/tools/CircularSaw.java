@@ -38,6 +38,8 @@ public class CircularSaw extends Hatchet {
     private static final UUID SPEED_BOOST_UUID = UUID.fromString("a1b2c3d4-e5f6-4789-9123-4567890abcde");
     private static final float BASE_SWEEP_MODIFIER = 0.33f - 1.0f;
 
+    private float sweepMultiplier = 1.0f;
+
     public CircularSaw() {
         super(PartMaterialType.handle(TinkerTools.toughToolRod),
                 PartMaterialType.extra(TinkerTools.toughToolRod),
@@ -103,6 +105,14 @@ public class CircularSaw extends Hatchet {
         super.reduceDurabilityOnHit(stack, player, damage);
     }
 
+    @Override
+    public boolean dealDamage(ItemStack stack, EntityLivingBase player, Entity entity, float damage) {
+        if (sweepMultiplier != 1.0f) {
+            damage *= sweepMultiplier;
+        }
+        return super.dealDamage(stack, player, entity, damage);
+    }
+
     private int getAttackInterval(ItemStack stack) {
         float speed = ToolHelper.getAttackSpeedStat(stack);
         speed = MathHelper.clamp(speed, 1.0f, 4.0f);
@@ -140,24 +150,26 @@ public class CircularSaw extends Hatchet {
         }
         if (targets.isEmpty()) return;
         targets.sort((e1, e2) -> Double.compare(e1.getDistanceSq(player), e2.getDistanceSq(player)));
+
+        AttributeModifier speedModifier = new AttributeModifier(SPEED_BOOST_UUID, "CircularSaw speed boost", 99.0, 0);
+        IAttributeInstance speedAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+        speedAttr.applyModifier(speedModifier);
+
         boolean hitAny = false;
-        EntityLivingBase primary = targets.get(0);
-        if (attack(stack, player, primary)) hitAny = true;
-        if (targets.size() > 1) {
-            AttributeModifier speedModifier = new AttributeModifier(SPEED_BOOST_UUID, "CircularSaw speed boost", 99.0, 0);
-            IAttributeInstance speedAttr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-            speedAttr.applyModifier(speedModifier);
-            float sweepModifier = BASE_SWEEP_MODIFIER + ModOverclock.getSweepBonus(stack) - ModWhirl.getSweepPenalty(stack);
-            ModOverclock.applyDamageReduction(player, sweepModifier);
-            try {
+        try {
+            EntityLivingBase primary = targets.get(0);
+            if (attack(stack, player, primary)) hitAny = true;
+            if (targets.size() > 1) {
+                sweepMultiplier = 1.0f + BASE_SWEEP_MODIFIER + ModOverclock.getSweepBonus(stack) - ModWhirl.getSweepPenalty(stack);
                 for (int i = 1; i < targets.size(); i++) {
                     if (attack(stack, player, targets.get(i))) hitAny = true;
                 }
-            } finally {
-                speedAttr.removeModifier(SPEED_BOOST_UUID);
-                ModOverclock.removeDamageReduction(player);
             }
+        } finally {
+            sweepMultiplier = 1.0f;
+            speedAttr.removeModifier(SPEED_BOOST_UUID);
         }
+
         if (hitAny) {
             player.playSound(net.minecraft.init.SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
         }

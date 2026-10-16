@@ -1,10 +1,6 @@
 package com.npstra.casualtinkering.modifiers;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,11 +17,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 public class ModOverclock extends ModifierTrait {
 
-    private static final UUID DAMAGE_REDUCTION_UUID = UUID.fromString("c0f8a7b6-9e5d-4c3b-8a2f-1e6d9c8b7a5f");
     private static final float[] SWEEP_BONUS = {0.0f, 0.23f, 0.42f, 0.57f};
 
     public ModOverclock() {
@@ -51,17 +45,6 @@ public class ModOverclock extends ModifierTrait {
             level = ModifierNBT.readInteger(tag).level;
         }
         return SWEEP_BONUS[Math.min(level, 3)];
-    }
-
-    public static void applyDamageReduction(EntityPlayer player, float totalModifier) {
-        IAttributeInstance attr = player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        AttributeModifier modifier = new AttributeModifier(DAMAGE_REDUCTION_UUID, "CircularSaw reduced damage", totalModifier, 2);
-        attr.removeModifier(DAMAGE_REDUCTION_UUID);
-        attr.applyModifier(modifier);
-    }
-
-    public static void removeDamageReduction(EntityPlayer player) {
-        player.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(DAMAGE_REDUCTION_UUID);
     }
 
     private static class ItemCombination extends RecipeMatch {
