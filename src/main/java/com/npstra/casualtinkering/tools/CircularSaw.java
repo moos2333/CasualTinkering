@@ -149,11 +149,14 @@ public class CircularSaw extends Hatchet {
             speedAttr.applyModifier(speedModifier);
             float sweepModifier = BASE_SWEEP_MODIFIER + ModOverclock.getSweepBonus(stack) - ModWhirl.getSweepPenalty(stack);
             ModOverclock.applyDamageReduction(player, sweepModifier);
-            for (int i = 1; i < targets.size(); i++) {
-                if (attack(stack, player, targets.get(i))) hitAny = true;
+            try {
+                for (int i = 1; i < targets.size(); i++) {
+                    if (attack(stack, player, targets.get(i))) hitAny = true;
+                }
+            } finally {
+                speedAttr.removeModifier(SPEED_BOOST_UUID);
+                ModOverclock.removeDamageReduction(player);
             }
-            speedAttr.removeModifier(SPEED_BOOST_UUID);
-            ModOverclock.removeDamageReduction(player);
         }
         if (hitAny) {
             player.playSound(net.minecraft.init.SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
