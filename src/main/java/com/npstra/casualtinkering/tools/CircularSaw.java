@@ -31,13 +31,16 @@ import slimeknights.tconstruct.tools.TinkerTools;
 import slimeknights.tconstruct.tools.tools.Hatchet;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 public class CircularSaw extends Hatchet {
 
     private static final UUID SPEED_BOOST_UUID = UUID.fromString("a1b2c3d4-e5f6-4789-9123-4567890abcde");
     private static final float BASE_SWEEP_MODIFIER = 0.50f - 1.0f;
 
+    private final Map<EntityPlayer, Integer> hitCounts = new WeakHashMap<>();
     private float sweepMultiplier = 1.0f;
 
     public CircularSaw() {
@@ -69,6 +72,9 @@ public class CircularSaw extends Hatchet {
         if (ToolHelper.isBroken(stack)) {
             return new ActionResult<>(EnumActionResult.FAIL, stack);
         }
+        if (!world.isRemote) {
+            hitCounts.put(player, 0);
+        }
         player.setActiveHand(hand);
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
@@ -90,10 +96,9 @@ public class CircularSaw extends Hatchet {
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entity, int timeLeft) {
         if (world.isRemote || !(entity instanceof EntityPlayer)) return;
         EntityPlayer player = (EntityPlayer) entity;
-        int useDuration = getMaxItemUseDuration(stack) - timeLeft;
-        int attacks = useDuration / getAttackInterval(stack);
-        if (attacks > 0) {
-            ToolHelper.damageTool(stack, attacks, player);
+        Integer hits = hitCounts.remove(player);
+        if (hits != null && hits > 0) {
+            ToolHelper.damageTool(stack, hits, player);
         }
     }
 
@@ -172,6 +177,7 @@ public class CircularSaw extends Hatchet {
 
         if (hitAny) {
             player.playSound(net.minecraft.init.SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
+            hitCounts.merge(player, 1, Integer::sum);
         }
     }
 
