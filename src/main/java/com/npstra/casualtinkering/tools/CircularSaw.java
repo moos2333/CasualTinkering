@@ -197,11 +197,11 @@ public class CircularSaw extends Hatchet {
         List<String> info = super.getInformation(stack, detailed);
 
         float speed = getSawSpeed(stack);
-        String speedValue = TextFormatting.BLUE.toString() + String.format("%.2f", speed) + TextFormatting.RESET;
+        String speedValue = TextFormatting.DARK_AQUA.toString() + String.format("%.2f", speed) + TextFormatting.RESET;
         info.add(Util.translateFormatted("stat.circular_saw.speed", speedValue));
 
         float sweep = getSawSweep(stack);
-        String sweepValue = TextFormatting.BLUE.toString() + String.format("%.1f", sweep * 100) + "%" + TextFormatting.RESET;
+        String sweepValue = TextFormatting.DARK_AQUA.toString() + String.format("%.1f", sweep * 100) + "%" + TextFormatting.RESET;
         info.add(Util.translateFormatted("stat.circular_saw.sweep", sweepValue));
 
         return info;
