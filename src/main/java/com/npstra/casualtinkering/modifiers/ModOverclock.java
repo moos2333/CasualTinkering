@@ -1,6 +1,7 @@
 package com.npstra.casualtinkering.modifiers;
 
 import com.google.common.collect.ImmutableList;
+import com.npstra.casualtinkering.config.ModConfig;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,7 +36,7 @@ public class ModOverclock extends ModifierTrait {
 
     @Override
     public boolean canApplyCustom(ItemStack stack) {
-        return com.npstra.casualtinkering.config.ModConfig.enableOverclock && stack.getItem() instanceof CircularSaw;
+        return ModConfig.enableOverclock && stack.getItem() instanceof CircularSaw;
     }
 
     public static float getSweepBonus(ItemStack stack) {

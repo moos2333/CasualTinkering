@@ -21,7 +21,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.materials.*;
 import slimeknights.tconstruct.library.tinkering.Category;
 import slimeknights.tconstruct.library.tinkering.PartMaterialType;
@@ -118,12 +120,21 @@ public class CircularSaw extends Hatchet {
         return super.dealDamage(stack, player, entity, damage);
     }
 
-    private int getAttackInterval(ItemStack stack) {
+    public static float getSawSpeed(ItemStack stack) {
         float speed = ToolHelper.getAttackSpeedStat(stack);
         speed = MathHelper.clamp(speed, 1.0f, 4.0f);
-        speed *= ModWhirl.getSpeedMultiplier(stack);
+        return speed * ModWhirl.getSpeedMultiplier(stack);
+    }
+
+    public static int getAttackInterval(ItemStack stack) {
+        float speed = getSawSpeed(stack);
         int minInterval = 5 - ModWhirl.getLevel(stack);
         return Math.max((int)(20.0f / speed), minInterval);
+    }
+
+    public static float getSawSweep(ItemStack stack) {
+        float sweep = 0.50f + ModOverclock.getSweepBonus(stack) - ModWhirl.getSweepPenalty(stack);
+        return MathHelper.clamp(sweep, 0.05f, 1.0f);
     }
 
     private boolean attack(ItemStack stack, EntityPlayer player, EntityLivingBase target) {
@@ -165,7 +176,7 @@ public class CircularSaw extends Hatchet {
             EntityLivingBase primary = targets.get(0);
             if (attack(stack, player, primary)) hitAny = true;
             if (targets.size() > 1) {
-                sweepMultiplier = 1.0f + BASE_SWEEP_MODIFIER + ModOverclock.getSweepBonus(stack) - ModWhirl.getSweepPenalty(stack);
+                sweepMultiplier = getSawSweep(stack);
                 for (int i = 1; i < targets.size(); i++) {
                     if (attack(stack, player, targets.get(i))) hitAny = true;
                 }
@@ -179,6 +190,21 @@ public class CircularSaw extends Hatchet {
             player.playSound(net.minecraft.init.SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, 1.0F, 1.0F);
             hitCounts.merge(player, 1, Integer::sum);
         }
+    }
+
+    @Override
+    public List<String> getInformation(ItemStack stack, boolean detailed) {
+        List<String> info = super.getInformation(stack, detailed);
+
+        float speed = getSawSpeed(stack);
+        String speedValue = TextFormatting.AQUA.toString() + String.format("%.2f", speed) + TextFormatting.RESET;
+        info.add(TextFormatting.GRAY + Util.translateFormatted("stat.circular_saw.speed", speedValue));
+
+        float sweep = getSawSweep(stack);
+        String sweepValue = TextFormatting.AQUA.toString() + String.format("%.1f", sweep * 100) + "%" + TextFormatting.RESET;
+        info.add(TextFormatting.GRAY + Util.translateFormatted("stat.circular_saw.sweep", sweepValue));
+
+        return info;
     }
 
     @Override

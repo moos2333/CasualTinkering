@@ -57,32 +57,33 @@ public class ModWhirl extends ModifierTrait {
         return 1.0f + SPEED_BONUS[Math.min(level, 3)];
     }
 
+    public static float getSweepPenalty(ItemStack stack) {
+        int level = getLevel(stack);
+        if (level <= 0) return 0.0f;
+        return SWEEP_PENALTY[Math.min(level, 3)];
+    }
+
     @Override
     public float damage(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, float newDamage, boolean isCritical) {
+        int level = getLevel(tool);
+        if (level <= 0) return newDamage;
         if (!(player instanceof EntityPlayer)) return newDamage;
         EntityPlayer entityPlayer = (EntityPlayer) player;
         if (!entityPlayer.isHandActive() || entityPlayer.getActiveItemStack() != tool) return newDamage;
-        int level = getLevel(tool);
-        if (level <= 0) return newDamage;
         return newDamage * (1.0f - DAMAGE_PENALTY[Math.min(level, 3)]);
     }
 
     @Override
     public void afterHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damageDealt, boolean wasCritical, boolean wasHit) {
         if (!wasHit) return;
+        int level = getLevel(tool);
+        if (level <= 0) return;
         if (!(player instanceof EntityPlayer)) return;
         EntityPlayer entityPlayer = (EntityPlayer) player;
         if (!entityPlayer.isHandActive() || entityPlayer.getActiveItemStack() != tool) return;
-        if (getLevel(tool) <= 0) return;
         if (target.hurtResistantTime > 0) {
             target.hurtResistantTime = (int) (target.hurtResistantTime * 0.5f);
         }
-    }
-
-    public static float getSweepPenalty(ItemStack stack) {
-        int level = getLevel(stack);
-        if (level <= 0) return 0.0f;
-        return SWEEP_PENALTY[Math.min(level, 3)];
     }
 
     private static class ItemCombination extends RecipeMatch {
