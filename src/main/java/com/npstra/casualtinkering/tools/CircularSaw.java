@@ -154,7 +154,6 @@ public class CircularSaw extends Hatchet {
         List<EntityLivingBase> targets = new java.util.ArrayList<>();
         for (EntityLivingBase target : entities) {
             if (target == player) continue;
-            if (!ModConfig.allowCircularSawPvP && target instanceof EntityPlayer) continue;
             Vec3d targetPos = new Vec3d(target.posX, target.posY + target.height * 0.5, target.posZ);
             Vec3d toTarget = targetPos.subtract(playerPos);
             double distance = toTarget.length();
