@@ -79,6 +79,7 @@ public class RenderMagicSword extends Render<EntityMagicSword> {
         this.itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.NONE);
 
         GlStateManager.disableBlend();
+        GlStateManager.disableRescaleNormal();
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
     }
