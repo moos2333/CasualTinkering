@@ -28,7 +28,7 @@
   "modifier.thermal_ray.overheat": "Weapon overheated!",
   "modifier.thermal_ray.no_fuel": "Insufficient fuel!",
   "item.casualtinkering.throwing_knife": "Throwing Knife",
-  "item.casualtinkering.throwing_knife.description": "A throwing weapon with modest base stats but more component parts.\nSticks in blocks for retrieval.",
+  "item.casualtinkering.throwing_knife.description": "A throwing weapon with lower base stats but more component parts.\nSticks in blocks for retrieval.\nSneak with 3+ knives to throw a 3-way horizontal spread.",
   "modifier.casualtinkering.boomerang": "Boomerang",
   "modifier.casualtinkering.boomerang.flavor": "Comes back to you!",
   "modifier.casualtinkering.boomerang.description": "Right-click to throw the weapon; it returns after a short flight. Higher levels apply tool traits on hit.",
