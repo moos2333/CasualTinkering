@@ -1,9 +1,9 @@
-package com.npstra.casualtinkering.tools;
+package com.moos2333.casualtinkering.tools;
 
-import com.npstra.casualtinkering.config.ModConfig;
-import com.npstra.casualtinkering.modifiers.ModOverclock;
-import com.npstra.casualtinkering.modifiers.ModWhirl;
-import com.npstra.casualtinkering.util.ParticlelessToolAttack;
+import com.moos2333.casualtinkering.config.ModConfig;
+import com.moos2333.casualtinkering.modifiers.ModOverclock;
+import com.moos2333.casualtinkering.modifiers.ModWhirl;
+import com.moos2333.casualtinkering.util.ParticlelessToolAttack;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

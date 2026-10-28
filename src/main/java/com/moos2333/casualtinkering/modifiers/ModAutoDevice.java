@@ -1,4 +1,4 @@
-package com.npstra.casualtinkering.modifiers;
+package com.moos2333.casualtinkering.modifiers;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.Entity;
@@ -22,7 +22,7 @@ import slimeknights.tconstruct.library.tools.SwordCore;
 import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
-import com.npstra.casualtinkering.tools.MagicDevice;
+import com.moos2333.casualtinkering.tools.MagicDevice;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.npstra.casualtinkering.modifiers;
+package com.moos2333.casualtinkering.modifiers;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,7 +11,7 @@ import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.modifiers.ModifierNBT;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
-import com.npstra.casualtinkering.tools.CircularSaw;
+import com.moos2333.casualtinkering.tools.CircularSaw;
 
 import java.util.HashSet;
 import java.util.Iterator;

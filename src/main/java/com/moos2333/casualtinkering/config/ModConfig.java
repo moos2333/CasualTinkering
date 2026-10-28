@@ -1,6 +1,6 @@
-package com.npstra.casualtinkering.config;
+package com.moos2333.casualtinkering.config;
 
-import com.npstra.casualtinkering.CasualTinkering;
+import com.moos2333.casualtinkering.CasualTinkering;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;

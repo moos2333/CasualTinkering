@@ -1,21 +1,18 @@
-package com.npstra.casualtinkering.client;
+package com.moos2333.casualtinkering.client;
 
-import com.npstra.casualtinkering.client.renderer.RenderMagicLance;
-import com.npstra.casualtinkering.client.renderer.RenderMagicSword;
-import com.npstra.casualtinkering.common.CasualTinkeringCommonProxy;
-import com.npstra.casualtinkering.entity.EntityMagicLance;
-import com.npstra.casualtinkering.entity.EntityMagicSword;
+import com.moos2333.casualtinkering.client.renderer.RenderMagicLance;
+import com.moos2333.casualtinkering.client.renderer.RenderMagicSword;
+import com.moos2333.casualtinkering.common.CasualTinkeringCommonProxy;
+import com.moos2333.casualtinkering.entity.EntityMagicLance;
+import com.moos2333.casualtinkering.entity.EntityMagicSword;
 import net.minecraft.client.Minecraft;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import slimeknights.mantle.client.book.repository.FileRepository;
 import slimeknights.tconstruct.library.TinkerRegistryClient;
 import slimeknights.tconstruct.library.book.TinkerBook;
 import slimeknights.tconstruct.library.client.ToolBuildGuiInfo;
-import com.npstra.casualtinkering.tools.CasualTinkeringRegister;
+import com.moos2333.casualtinkering.tools.CasualTinkeringRegister;
 
 public class CasualTinkeringClientProxy extends CasualTinkeringCommonProxy {
-    private static final Logger LOGGER = LogManager.getLogger("CasualTinkeringClient");
     @Override
     public void initToolGuis() {
         if (CasualTinkeringRegister.circularSaw != null) {

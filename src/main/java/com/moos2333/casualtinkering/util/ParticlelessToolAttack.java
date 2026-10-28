@@ -1,4 +1,4 @@
-package com.npstra.casualtinkering.util;
+package com.moos2333.casualtinkering.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

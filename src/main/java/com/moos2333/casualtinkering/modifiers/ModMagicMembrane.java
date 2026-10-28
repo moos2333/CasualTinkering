@@ -1,7 +1,7 @@
-package com.npstra.casualtinkering.modifiers;
+package com.moos2333.casualtinkering.modifiers;
 
 import com.google.common.collect.ImmutableList;
-import com.npstra.casualtinkering.config.ModConfig;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,43 +9,41 @@ import net.minecraft.util.NonNullList;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.modifiers.ModifierNBT;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
-import slimeknights.tconstruct.library.utils.TinkerUtil;
-import com.npstra.casualtinkering.tools.CircularSaw;
+import slimeknights.tconstruct.library.utils.ToolBuilder;
+import com.moos2333.casualtinkering.tools.MagicDevice;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.LinkedList;
 
-public class ModOverclock extends ModifierTrait {
+public class ModMagicMembrane extends ModifierTrait {
 
-    private static final float[] SWEEP_BONUS = {0.0f, 0.25f, 0.35f, 0.40f};
-
-    public ModOverclock() {
-        super("overclock", 0xFF6600, 3, 0);
+    public ModMagicMembrane() {
+        super("magic_membrane", 0x00CCCC, 2, 0);
         addRecipeMatch(new ItemCombination(1,
-                new ItemStack(Items.CLOCK),
-                new ItemStack(Items.CLOCK),
-                new ItemStack(Items.CLOCK),
-                new ItemStack(Items.CLOCK),
-                new ItemStack(Items.CLOCK)
+                new ItemStack(Items.LEATHER),
+                new ItemStack(Items.LEATHER),
+                new ItemStack(Items.LEATHER),
+                new ItemStack(Items.GOLD_INGOT),
+                new ItemStack(Items.GOLD_INGOT)
         ));
     }
 
     @Override
     public boolean canApplyCustom(ItemStack stack) {
-        return ModConfig.enableOverclock && stack.getItem() instanceof CircularSaw;
+        return stack.getItem() instanceof MagicDevice;
     }
 
-    public static float getSweepBonus(ItemStack stack) {
-        int level = 0;
-        NBTTagCompound tag = TinkerUtil.getModifierTag(stack, "overclock");
-        if (tag != null && tag.getSize() > 0) {
-            level = ModifierNBT.readInteger(tag).level;
+    @Override
+    public void applyEffect(NBTTagCompound rootCompound, NBTTagCompound modifierTag) {
+        super.applyEffect(rootCompound, modifierTag);
+        int level = ModifierNBT.readInteger(modifierTag).level;
+        int targetLevel = Math.min(level * 2, Enchantments.PROTECTION.getMaxLevel());
+        while (ToolBuilder.getEnchantmentLevel(rootCompound, Enchantments.PROTECTION) < targetLevel) {
+            ToolBuilder.addEnchantment(rootCompound, Enchantments.PROTECTION);
         }
-        return SWEEP_BONUS[Math.min(level, 3)];
     }
 
     private static class ItemCombination extends RecipeMatch {
@@ -77,7 +75,7 @@ public class ModOverclock extends ModifierTrait {
                 }
             }
             for (ItemStack stack : stacks) {
-                Iterator<Integer> iter = needed.iterator();
+                java.util.Iterator<Integer> iter = needed.iterator();
                 while (iter.hasNext()) {
                     int index = iter.next();
                     ItemStack template = this.itemStacks.get(index);

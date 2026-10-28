@@ -1,7 +1,7 @@
-package com.npstra.casualtinkering.tools;
+package com.moos2333.casualtinkering.tools;
 
-import com.npstra.casualtinkering.config.ModConfig;
-import com.npstra.casualtinkering.util.ParticlelessToolAttack;
+import com.moos2333.casualtinkering.config.ModConfig;
+import com.moos2333.casualtinkering.util.ParticlelessToolAttack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,8 +33,8 @@ import slimeknights.tconstruct.library.utils.TagUtil;
 import slimeknights.tconstruct.library.utils.TinkerUtil;
 import slimeknights.tconstruct.library.utils.ToolHelper;
 import slimeknights.tconstruct.tools.TinkerTools;
-import com.npstra.casualtinkering.entity.EntityMagicLance;
-import com.npstra.casualtinkering.entity.EntityMagicSword;
+import com.moos2333.casualtinkering.entity.EntityMagicLance;
+import com.moos2333.casualtinkering.entity.EntityMagicSword;
 
 import java.util.List;
 import java.util.Random;

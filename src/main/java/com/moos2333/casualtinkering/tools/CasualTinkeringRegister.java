@@ -1,6 +1,6 @@
-package com.npstra.casualtinkering.tools;
+package com.moos2333.casualtinkering.tools;
 
-import com.npstra.casualtinkering.config.ModConfig;
+import com.moos2333.casualtinkering.config.ModConfig;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;

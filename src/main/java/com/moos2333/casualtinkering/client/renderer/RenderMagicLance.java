@@ -1,6 +1,6 @@
-package com.npstra.casualtinkering.client.renderer;
+package com.moos2333.casualtinkering.client.renderer;
 
-import com.npstra.casualtinkering.entity.EntityMagicLance;
+import com.moos2333.casualtinkering.entity.EntityMagicLance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;

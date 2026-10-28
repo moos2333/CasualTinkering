@@ -1,4 +1,4 @@
-package com.npstra.casualtinkering.entity;
+package com.moos2333.casualtinkering.entity;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;

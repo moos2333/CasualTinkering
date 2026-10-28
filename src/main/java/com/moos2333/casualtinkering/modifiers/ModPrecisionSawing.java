@@ -1,4 +1,4 @@
-package com.npstra.casualtinkering.modifiers;
+package com.moos2333.casualtinkering.modifiers;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
@@ -16,7 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 import slimeknights.tconstruct.library.utils.ToolHelper;
-import com.npstra.casualtinkering.tools.CircularSaw;
+import com.moos2333.casualtinkering.tools.CircularSaw;
 
 import java.util.List;
 import java.util.Map;

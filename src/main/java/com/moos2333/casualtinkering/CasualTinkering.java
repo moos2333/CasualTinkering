@@ -1,11 +1,11 @@
-package com.npstra.casualtinkering;
+package com.moos2333.casualtinkering;
 
-import com.npstra.casualtinkering.client.CasualTinkeringClientProxy;
-import com.npstra.casualtinkering.common.CasualTinkeringCommonProxy;
-import com.npstra.casualtinkering.config.ModConfig;
-import com.npstra.casualtinkering.entity.EntityMagicLance;
-import com.npstra.casualtinkering.entity.EntityMagicSword;
-import com.npstra.casualtinkering.modifiers.*;
+import com.moos2333.casualtinkering.common.CasualTinkeringCommonProxy;
+import com.moos2333.casualtinkering.config.ModConfig;
+import com.moos2333.casualtinkering.entity.EntityMagicLance;
+import com.moos2333.casualtinkering.entity.EntityMagicSword;
+import com.moos2333.casualtinkering.modifiers.*;
+import com.npstra.casualtinkering.Tags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -25,8 +25,8 @@ public class CasualTinkering {
     public static final String NAME = Tags.MOD_NAME;
     public static final String VERSION = Tags.VERSION;
 
-    @SidedProxy(clientSide = "com.npstra.casualtinkering.client.CasualTinkeringClientProxy",
-            serverSide = "com.npstra.casualtinkering.common.CasualTinkeringCommonProxy")
+    @SidedProxy(clientSide = "com.moos2333.casualtinkering.client.CasualTinkeringClientProxy",
+            serverSide = "com.moos2333.casualtinkering.common.CasualTinkeringCommonProxy")
     public static CasualTinkeringCommonProxy proxy;
 
     @Mod.EventHandler
