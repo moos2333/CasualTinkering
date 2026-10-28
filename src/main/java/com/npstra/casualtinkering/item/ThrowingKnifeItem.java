@@ -16,6 +16,8 @@ import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 
 public class ThrowingKnifeItem extends ModifiableShurikenItem {
+    private static final float SCATTER_ANGLE = 15.0F;
+
     public ThrowingKnifeItem(Properties properties, ToolDefinition toolDefinition) {
         super(properties, toolDefinition);
     }
@@ -23,20 +25,41 @@ public class ThrowingKnifeItem extends ModifiableShurikenItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), Sounds.SHURIKEN_THROW.getSound(), SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                Sounds.SHURIKEN_THROW.getSound(), SoundSource.NEUTRAL,
+                0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
         player.getCooldowns().addCooldown(stack.getItem(), 10);
+
+        boolean tripleShot = player.isShiftKeyDown() && stack.getCount() >= 3;
+
         if (!level.isClientSide()) {
-            ThrownKnife knife = new ThrownKnife(level, player);
-            IToolStackView tool = knife.onCreate(stack, player);
-            float velocity = ConditionalStatModifierHook.getModifiedStat(tool, player, ToolStats.VELOCITY);
-            knife.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, 1.0F);
-            level.addFreshEntity(knife);
+            if (tripleShot) {
+                for (float offset : new float[]{-SCATTER_ANGLE, 0.0F, SCATTER_ANGLE}) {
+                    spawnKnife(level, player, stack, offset);
+                }
+            } else {
+                spawnKnife(level, player, stack, 0.0F);
+            }
         }
+
         player.awardStat(Stats.ITEM_USED.get(this));
         if (!player.getAbilities().instabuild) {
-            stack.shrink(1);
+            stack.shrink(tripleShot ? 3 : 1);
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+
+    private void spawnKnife(Level level, Player player, ItemStack stack, float yawOffset) {
+        ThrownKnife knife = new ThrownKnife(level, player);
+        IToolStackView tool = knife.onCreate(stack, player);
+        float velocity = ConditionalStatModifierHook.getModifiedStat(tool, player, ToolStats.VELOCITY);
+        knife.shootFromRotation(player,
+                player.getXRot(),
+                player.getYRot() + yawOffset,
+                0.0F,
+                velocity,
+                1.0F);
+        level.addFreshEntity(knife);
     }
 
     @Override
