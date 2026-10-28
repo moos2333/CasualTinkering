@@ -14,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 import slimeknights.tconstruct.library.modifiers.ModifierNBT;
@@ -44,7 +43,6 @@ public class ModAutoDevice extends ModifierTrait {
                 new ItemStack(Items.REPEATER),
                 new ItemStack(Blocks.REDSTONE_TORCH)
         ));
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
