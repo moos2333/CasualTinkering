@@ -8,7 +8,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,8 +16,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
@@ -74,6 +71,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
 
     private void setStack(ItemStack stack) {
         this.toolStack = stack;
+        this.tool = ToolStack.from(stack);
         this.entityData.set(STACK, stack);
     }
 
@@ -91,10 +89,8 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
 
     @Override
     public void tick() {
-        if (this.level().isClientSide) {
-            super.tick();
-            return;
-        }
+        super.tick();
+        if (this.level().isClientSide) return;
         if (this.life++ > 600) {
             this.discard();
             return;
@@ -145,14 +141,12 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         double d0 = vec3.horizontalDistance();
         this.setXRot((float) (Math.atan2(vec3.y, d0) * 180.0 / Math.PI));
         this.setYRot((float) (Math.atan2(vec3.x, vec3.z) * 180.0 / Math.PI));
-        this.xRotO = this.getXRot();
-        this.yRotO = this.getYRot();
     }
 
     @Override
     protected void onHit(HitResult hit) {
         if (hit.getType() == HitResult.Type.ENTITY) {
-            EntityHitResult entityHit = (EntityHitResult) hit;
+            var entityHit = (net.minecraft.world.phys.EntityHitResult) hit;
             Entity target = entityHit.getEntity();
             if (target == this.getOwner()) return;
             boolean inherit = this.entityData.get(INHERIT_TRAITS);
@@ -198,7 +192,6 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         super.readAdditionalSaveData(tag);
         if (tag.contains("stack")) {
             this.setStack(ItemStack.of(tag.getCompound("stack")));
-            this.tool = ToolStack.from(this.toolStack);
         }
         this.entityData.set(WATER_INERTIA, tag.getFloat("water_inertia"));
         this.returning = tag.getBoolean("returning");
@@ -228,7 +221,6 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile, IEnti
         this.initialSpeed = additionalData.readDouble();
         this.life = additionalData.readInt();
         this.entityData.set(INHERIT_TRAITS, additionalData.readBoolean());
-        this.tool = ToolStack.from(this.toolStack);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.npstra.casualtinkering.modifiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.LongTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -45,9 +47,16 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
     private static final float MAX_TEMP_BONUS = 1.5f;
     private static final int BASE_TEMP = 1000;
 
-    private static final ResourceLocation KEY_OVERHEATED = new ResourceLocation("casualtinkering", "thermal_ray_overheated");
-    private static final ResourceLocation KEY_OVERHEAT_TICKS = new ResourceLocation("casualtinkering", "thermal_ray_overheat_ticks");
+    private static final ResourceLocation KEY_OVERHEAT_END = new ResourceLocation("casualtinkering", "thermal_ray_overheat_end");
     private static final ResourceLocation KEY_SHOTS = new ResourceLocation("casualtinkering", "thermal_ray_shots");
+
+    private static long getOverheatEnd(ModDataNBT data) {
+        return data.get(KEY_OVERHEAT_END, CompoundTag::getLong);
+    }
+
+    private static void setOverheatEnd(ModDataNBT data, long value) {
+        data.put(KEY_OVERHEAT_END, LongTag.valueOf(value));
+    }
 
     private int getChargeTicks(IToolStackView tool) {
         float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
@@ -75,8 +84,7 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
     @Override
     public InteractionResult onToolUse(IToolStackView tool, ModifierEntry modifier, Player player, InteractionHand hand, InteractionSource source) {
         if (tool.isBroken() || source != InteractionSource.RIGHT_CLICK) return InteractionResult.PASS;
-        ModDataNBT data = tool.getPersistentData();
-        if (isOverheated(data)) {
+        if (isOverheated(tool, player.level())) {
             if (player.level().isClientSide) player.displayClientMessage(Component.translatable("modifier.thermal_ray.overheat").withStyle(ChatFormatting.RED), true);
             return InteractionResult.FAIL;
         }
@@ -119,14 +127,10 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
     public void onInventoryTick(IToolStackView tool, ModifierEntry modifier, Level world, LivingEntity holder, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         if (world.isClientSide) return;
         ModDataNBT data = tool.getPersistentData();
-        if (data.getBoolean(KEY_OVERHEATED)) {
-            int ticks = data.getInt(KEY_OVERHEAT_TICKS);
-            if (ticks > 0) {
-                data.putInt(KEY_OVERHEAT_TICKS, ticks - 1);
-                if (ticks - 1 <= 0) data.putBoolean(KEY_OVERHEATED, false);
-            } else {
-                data.putBoolean(KEY_OVERHEATED, false);
-            }
+        long end = getOverheatEnd(data);
+        if (end != 0L && end <= world.getGameTime()) {
+            setOverheatEnd(data, 0L);
+            data.putInt(KEY_SHOTS, 0);
         }
     }
 
@@ -136,8 +140,7 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
         int shots = data.getInt(KEY_SHOTS) + 1;
         data.putInt(KEY_SHOTS, shots);
         if (shots >= OVERHEAT_THRESHOLD) {
-            setOverheated(data, true);
-            data.putInt(KEY_SHOTS, 0);
+            setOverheated(data, level);
             if (level instanceof ServerLevel serverLevel) {
                 for (int i = 0; i < 8; i++)
                     serverLevel.sendParticles(ParticleTypes.SMOKE, player.getX() + (level.random.nextDouble() - 0.5) * 1.0, player.getY() + level.random.nextDouble() * 1.5, player.getZ() + (level.random.nextDouble() - 0.5) * 1.0, 0, 0, 0.1, 0, 0.1);
@@ -200,13 +203,13 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
         }
     }
 
-    private boolean isOverheated(ModDataNBT data) {
-        return data.getBoolean(KEY_OVERHEATED);
+    private boolean isOverheated(IToolStackView tool, Level level) {
+        return getOverheatEnd(tool.getPersistentData()) > level.getGameTime();
     }
 
-    private void setOverheated(ModDataNBT data, boolean overheated) {
-        data.putBoolean(KEY_OVERHEATED, overheated);
-        if (overheated) data.putInt(KEY_OVERHEAT_TICKS, OVERHEAT_TICKS);
+    private void setOverheated(ModDataNBT data, Level level) {
+        setOverheatEnd(data, level.getGameTime() + OVERHEAT_TICKS);
+        data.putInt(KEY_SHOTS, 0);
     }
 
     private float getFluidTemperatureBonus(IToolStackView tool) {

@@ -1,5 +1,6 @@
 package com.npstra.casualtinkering.modifiers;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,13 +28,12 @@ import slimeknights.tconstruct.library.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CircularSawAttackModifier extends Modifier implements GeneralInteractionModifierHook, UsingToolModifierHook {
 
-    private static final Map<Integer, Integer> LAST_ATTACK_TICK = new HashMap<>();
+    private static final String KEY_LAST_ATTACK_TICK = "casualtinkering:circular_saw_last_tick";
+    private static final double COS_HALF_ANGLE = Math.cos(Math.toRadians(45.0));
 
     @Override
     protected void registerHooks(Builder builder) {
@@ -43,8 +43,7 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
     @Override
     public InteractionResult onToolUse(IToolStackView tool, ModifierEntry modifier, Player player, InteractionHand hand, InteractionSource source) {
         if (!tool.isBroken() && source == InteractionSource.RIGHT_CLICK) {
-            float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
-            attackSpeed = Mth.clamp(attackSpeed, 1.0f, 4.0f);
+            float attackSpeed = Mth.clamp(tool.getStats().get(ToolStats.ATTACK_SPEED), 1.0f, 4.0f);
             float drawTime = 1.0f / attackSpeed;
             GeneralInteractionModifierHook.startUsingWithDrawtime(tool, modifier.getId(), player, hand, drawTime);
             return InteractionResult.SUCCESS;
@@ -66,19 +65,19 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
     public void onUsingTick(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int timeLeft) {
         if (entity.level().isClientSide || !(entity instanceof Player player)) return;
 
-        int currentTick = player.tickCount;
-        Integer lastTick = LAST_ATTACK_TICK.get(player.getId());
-        if (lastTick == null) {
-            LAST_ATTACK_TICK.put(player.getId(), currentTick);
+        long now = player.level().getGameTime();
+        CompoundTag pdata = player.getPersistentData();
+        long last = pdata.getLong(KEY_LAST_ATTACK_TICK);
+        if (last <= 0L || last > now) {
+            pdata.putLong(KEY_LAST_ATTACK_TICK, now);
             return;
         }
 
-        float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
-        attackSpeed = Mth.clamp(attackSpeed, 1.0f, 4.0f);
+        float attackSpeed = Mth.clamp(tool.getStats().get(ToolStats.ATTACK_SPEED), 1.0f, 4.0f);
         int intervalTicks = (int)(20.0f / attackSpeed);
-        if (currentTick - lastTick >= intervalTicks) {
+        if (now - last >= intervalTicks) {
             performSweepAttack(tool, player);
-            LAST_ATTACK_TICK.put(player.getId(), currentTick);
+            pdata.putLong(KEY_LAST_ATTACK_TICK, now);
         }
     }
 
@@ -87,18 +86,18 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
         if (entity.level().isClientSide || !(entity instanceof Player player)) return;
         if (!modifier.matches(activeModifier.getId())) return;
 
-        int currentTick = player.tickCount;
-        Integer lastTick = LAST_ATTACK_TICK.get(player.getId());
-        if (lastTick == null || currentTick - lastTick >= 1) {
+        long now = player.level().getGameTime();
+        CompoundTag pdata = player.getPersistentData();
+        long last = pdata.getLong(KEY_LAST_ATTACK_TICK);
+        if (last <= 0L || last > now || now - last >= 1) {
             performSweepAttack(tool, player);
         }
-        LAST_ATTACK_TICK.remove(player.getId());
+        pdata.remove(KEY_LAST_ATTACK_TICK);
     }
 
     private void performSweepAttack(IToolStackView tool, Player player) {
         Level level = player.level();
         float radius = 4.0f;
-        double halfAngleRad = Math.toRadians(45.0);
         Vec3 eyePos = player.getEyePosition();
         Vec3 lookVec = player.getViewVector(1.0F);
 
@@ -112,8 +111,7 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
             Vec3 toTarget = target.getBoundingBox().getCenter().subtract(eyePos);
             double dist = toTarget.length();
             if (dist > radius || dist < 0.5) continue;
-            double angle = Math.acos(Mth.clamp(lookVec.dot(toTarget.normalize()), -1.0, 1.0));
-            if (angle <= halfAngleRad) targets.add(target);
+            if (lookVec.dot(toTarget.normalize()) >= COS_HALF_ANGLE) targets.add(target);
         }
 
         if (targets.isEmpty()) return;

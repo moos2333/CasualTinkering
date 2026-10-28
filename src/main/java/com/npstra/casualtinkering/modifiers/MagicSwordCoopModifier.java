@@ -30,12 +30,11 @@ public class MagicSwordCoopModifier extends Modifier {
         if (event.getEntity().level().isClientSide) return;
 
         if (event.getSource().getDirectEntity() instanceof EntityMagicSword) return;
-        if (event.getSource().getMsgId().equals("magic_sword")) return;
 
         if (!(event.getSource().getEntity() instanceof Player player)) return;
 
         ItemStack offhand = player.getOffhandItem();
-        if (offhand.isEmpty()) return;
+        if (!ToolStack.isInitialized(offhand)) return;
 
         ToolStack tool = ToolStack.from(offhand);
         if (tool.isBroken()) return;
