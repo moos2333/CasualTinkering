@@ -36,6 +36,7 @@ public class CasualTinkeringClientProxy extends CasualTinkeringCommonProxy {
         Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityMagicSword.class, new RenderMagicSword(Minecraft.getMinecraft().getRenderManager()));
         Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityMagicLance.class, new RenderMagicLance(Minecraft.getMinecraft().getRenderManager()));
     }
+    @Override
     public void registerBookPages() {
         TinkerBook.INSTANCE.addRepository(new FileRepository("casualtinkering:book"));
     }
