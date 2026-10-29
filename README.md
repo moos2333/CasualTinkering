@@ -6,7 +6,7 @@ A Tinkers' Construct 2 addon that introduces new tools for combat and utility.
 
 **Circular Saw** — A heavy woodcutting tool with a spinning blade. Acts as an axe, and can be charged to unleash a wide sweeping attack that damages all enemies in a frontal cone.
 
-**Magic Device** — A ranged magic weapon. Charge it to summon flying magic swords that deal armor-piercing damage, or hold it in your off-hand to assist your main-hand attacks.
+**Magic Device** — A ranged magic weapon inspired by *Toram Online*. Charge it to summon flying magic swords that deal armor-piercing damage, or hold it in your off-hand to assist your main-hand attacks.
 
 ## Modifiers
 
