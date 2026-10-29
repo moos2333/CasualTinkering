@@ -40,7 +40,6 @@ import java.util.WeakHashMap;
 public class CircularSaw extends Hatchet {
 
     private static final UUID SPEED_BOOST_UUID = UUID.fromString("a1b2c3d4-e5f6-4789-9123-4567890abcde");
-    private static final float BASE_SWEEP_MODIFIER = 0.50f - 1.0f;
 
     private final Map<EntityPlayer, Integer> hitCounts = new WeakHashMap<>();
     private float sweepMultiplier = 1.0f;

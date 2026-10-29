@@ -5,7 +5,6 @@ import com.moos2333.casualtinkering.config.ModConfig;
 import com.moos2333.casualtinkering.entity.EntityMagicLance;
 import com.moos2333.casualtinkering.entity.EntityMagicSword;
 import com.moos2333.casualtinkering.modifiers.*;
-import com.npstra.casualtinkering.Tags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
