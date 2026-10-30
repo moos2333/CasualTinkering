@@ -120,13 +120,13 @@ public class CircularSaw extends Hatchet {
     }
 
     public static float getSawSpeed(ItemStack stack) {
-        float speed = ToolHelper.getAttackSpeedStat(stack);
-        speed = MathHelper.clamp(speed, 1.0f, 4.0f);
-        return speed * ModWhirl.getSpeedMultiplier(stack);
+        return 20.0f / getAttackInterval(stack);
     }
 
     public static int getAttackInterval(ItemStack stack) {
-        float speed = getSawSpeed(stack);
+        float speed = ToolHelper.getAttackSpeedStat(stack);
+        speed = MathHelper.clamp(speed, 1.0f, 4.0f);
+        speed *= ModWhirl.getSpeedMultiplier(stack);
         int minInterval = 5 - ModWhirl.getLevel(stack);
         return Math.max((int)(20.0f / speed), minInterval);
     }
