@@ -111,7 +111,7 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
                     .setDamageBypassesArmor()
                     .setMagicDamage();
             target.attackEntityFrom(source, damage);
-            target.hurtResistantTime = Math.max(hurtResistantTime, target.hurtResistantTime);
+            target.hurtResistantTime = Math.min(hurtResistantTime, target.hurtResistantTime);
             target.lastDamage = Math.max(lastDamage, target.lastDamage);
         }
     }

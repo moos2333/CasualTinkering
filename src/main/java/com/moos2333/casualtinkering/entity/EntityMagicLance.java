@@ -93,7 +93,7 @@ public class EntityMagicLance extends EntityProjectileBase {
         target.hurtResistantTime = 0;
         target.lastDamage = 0;
         target.attackEntityFrom(source, finalDamage);
-        target.hurtResistantTime = Math.max(oldHurt, target.hurtResistantTime);
+        target.hurtResistantTime = Math.min(oldHurt, target.hurtResistantTime);
         target.lastDamage = Math.max(oldLast, target.lastDamage);
     }
 
@@ -113,7 +113,7 @@ public class EntityMagicLance extends EntityProjectileBase {
             e.hurtResistantTime = 0;
             e.lastDamage = 0;
             e.attackEntityFrom(source, splashDamage);
-            e.hurtResistantTime = Math.max(oldHurt, e.hurtResistantTime);
+            e.hurtResistantTime = Math.min(oldHurt, e.hurtResistantTime);
             e.lastDamage = Math.max(oldLast, e.lastDamage);
         }
     }
