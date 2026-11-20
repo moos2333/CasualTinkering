@@ -1,5 +1,5 @@
 item.casual_tinkering.circular_saw.name=Circular Saw
-item.casual_tinkering.circular_saw.desc=A heavy woodcutting tool with a spinning blade. Charges up to unleash a wide sweeping attack.\nRight Click: Charge and unleash area attack. Hold right-click to keep attacking.
+item.casual_tinkering.circular_saw.desc=A heavy woodcutting tool with a spinning blade. Can keep cutting targets in front while spinning.\nRight Click: Charge and unleash area attack. Hold right-click to keep attacking.
 stat.circular_saw.speed=Speed: %s
 stat.circular_saw.sweep=Sweep: %s
 item.casualtinkering.magicdevice.name=Magic Device
