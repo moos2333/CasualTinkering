@@ -5,8 +5,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -65,16 +63,13 @@ public class MagicSwordControlModifier extends Modifier implements GeneralIntera
         int level = (int) Math.min(modifier.getEffectiveLevel(), 3);
         if (level < 1) return;
 
-        float damagePercent = 0.25f - (level - 1) * 0.025f;
-        float baseDamage = tool.getStats().get(ToolStats.ATTACK_DAMAGE);
-        float magicDamage = baseDamage * damagePercent;
+        float magicDamage = tool.getStats().get(ToolStats.ATTACK_DAMAGE) * (0.25f - (level - 1) * 0.025f);
         if (magicDamage <= 0) return;
 
         LivingEntity target = findTarget(player, 8.0);
         if (target == null) return;
 
-        ItemStack renderSword = new ItemStack(Items.DIAMOND_SWORD);
-        MagicSwordHelper.spawnMagicSwords(player.level(), player, target, level, magicDamage, renderSword);
+        MagicSwordHelper.spawnMagicSwords(player.level(), player, target, level, magicDamage);
         ToolDamageUtil.damageAnimated(tool, 1, player, InteractionHand.MAIN_HAND);
     }
 

@@ -26,7 +26,6 @@ import com.npstra.casualtinkering.entity.ThrownBoomerang;
 import com.npstra.casualtinkering.init.ModEntities;
 
 public class BoomerangModifier extends Modifier implements GeneralInteractionModifierHook, UsingToolModifierHook {
-    private static final int BASE_CHARGE_TICKS = 10;
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {

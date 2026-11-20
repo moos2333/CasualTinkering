@@ -23,6 +23,8 @@ public class Modifiers {
 
     public static final StaticModifier<BoomerangModifier> BOOMERANG = MODIFIERS.register("boomerang", BoomerangModifier::new);
 
+    public static final StaticModifier<TripleShotModifier> TRIPLE_SHOT = MODIFIERS.register("triple_shot", TripleShotModifier::new);
+
     public static void register(IEventBus bus) {
         MODIFIERS.register(bus);
     }

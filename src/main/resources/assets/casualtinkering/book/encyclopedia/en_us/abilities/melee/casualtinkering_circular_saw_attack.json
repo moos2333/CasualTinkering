@@ -2,7 +2,7 @@
   "modifier_id": "casualtinkering:circular_saw_attack",
   "text": [
     {
-      "text": "Hold right-click to continuously attack enemies within a 4-block radius in a 90-degree cone in front of you. Attack speed affects the frequency."
+      "text": "Hold right-click to spin rapidly, slicing enemies in a 90-degree cone within a 4-block radius. Each hit deals little damage, but the cutting frequency is very high and scales with attack speed."
     }
   ],
   "more_text_space": true,

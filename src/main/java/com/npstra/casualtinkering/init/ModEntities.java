@@ -3,8 +3,6 @@ package com.npstra.casualtinkering.init;
 import com.npstra.casualtinkering.CasualTinkering;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.entity.ThrownBoomerang;
-import com.npstra.casualtinkering.entity.ThrownKnife;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,21 +18,18 @@ public class ModEntities {
                     .sized(0.5f, 0.5f)
                     .clientTrackingRange(64)
                     .updateInterval(1)
-                    .build(new ResourceLocation(CasualTinkering.MODID, "magic_sword").toString()));
-
-    public static final RegistryObject<EntityType<ThrownKnife>> THROWN_KNIFE = ENTITIES.register("thrown_knife",
-            () -> EntityType.Builder.<ThrownKnife>of(ThrownKnife::new, MobCategory.MISC)
-                    .sized(0.5f, 0.5f)
-                    .clientTrackingRange(4)
-                    .updateInterval(20)
-                    .build(new ResourceLocation(CasualTinkering.MODID, "thrown_knife").toString()));
+                    .build(id("magic_sword")));
 
     public static final RegistryObject<EntityType<ThrownBoomerang>> THROWN_BOOMERANG = ENTITIES.register("thrown_boomerang",
             () -> EntityType.Builder.<ThrownBoomerang>of(ThrownBoomerang::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
                     .clientTrackingRange(4)
                     .updateInterval(1)
-                    .build(new ResourceLocation(CasualTinkering.MODID, "thrown_boomerang").toString()));
+                    .build(id("thrown_boomerang")));
+
+    private static String id(String name) {
+        return CasualTinkering.MODID + ":" + name;
+    }
 
     public static void register(IEventBus bus) {
         ENTITIES.register(bus);

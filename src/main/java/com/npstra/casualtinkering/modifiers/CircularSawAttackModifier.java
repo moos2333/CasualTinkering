@@ -1,7 +1,6 @@
 package com.npstra.casualtinkering.modifiers;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -21,6 +20,7 @@ import slimeknights.tconstruct.library.modifiers.hook.interaction.GeneralInterac
 import slimeknights.tconstruct.library.modifiers.hook.interaction.InteractionSource;
 import slimeknights.tconstruct.library.modifiers.hook.interaction.UsingToolModifierHook;
 import slimeknights.tconstruct.library.module.ModuleHookMap.Builder;
+import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
 import slimeknights.tconstruct.library.tools.helper.ToolAttackUtil;
 import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
@@ -34,7 +34,9 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
 
     private static final String KEY_LAST_ATTACK_TICK = "casualtinkering:circular_saw_last_tick";
     private static final double COS_HALF_ANGLE = Math.cos(Math.toRadians(45.0));
-    private static final ModifierId SWEEPING_EDGE_ID = new ModifierId(new ResourceLocation("tconstruct", "sweeping_edge"));
+    private static final ModifierId SWEEPING_EDGE_ID = new ModifierId("tconstruct", "sweeping_edge");
+    private static final float SWEEP_SPEED_MULTIPLIER = 2.0f;
+    private static final float SWEEP_DAMAGE_RATIO = 0.25f;
     private static final float SECONDARY_BASE_RATIO = 0.50f;
     private static final float SECONDARY_RATIO_PER_LEVEL = 0.15f;
 
@@ -43,11 +45,15 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
         builder.addHook(this, ModifierHooks.GENERAL_INTERACT, ModifierHooks.TOOL_USING);
     }
 
+    private static int getSweepInterval(IToolStackView tool) {
+        float attackSpeed = Mth.clamp(tool.getStats().get(ToolStats.ATTACK_SPEED), 0.5f, 4.0f) * SWEEP_SPEED_MULTIPLIER;
+        return Math.max(1, (int) (20.0f / attackSpeed));
+    }
+
     @Override
     public InteractionResult onToolUse(IToolStackView tool, ModifierEntry modifier, Player player, InteractionHand hand, InteractionSource source) {
         if (!tool.isBroken() && source == InteractionSource.RIGHT_CLICK) {
-            float attackSpeed = Mth.clamp(tool.getStats().get(ToolStats.ATTACK_SPEED), 1.0f, 4.0f);
-            GeneralInteractionModifierHook.startUsingWithDrawtime(tool, modifier.getId(), player, hand, 1.0f / attackSpeed);
+            GeneralInteractionModifierHook.startUsingWithDrawtime(tool, modifier.getId(), player, hand, getSweepInterval(tool) / 20.0f);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
@@ -75,8 +81,7 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
             return;
         }
 
-        float attackSpeed = Mth.clamp(tool.getStats().get(ToolStats.ATTACK_SPEED), 1.0f, 4.0f);
-        int intervalTicks = (int)(20.0f / attackSpeed);
+        int intervalTicks = getSweepInterval(tool);
         if (now - last >= intervalTicks) {
             performSweepAttack(tool, player);
             pdata.putLong(KEY_LAST_ATTACK_TICK, now);
@@ -123,8 +128,15 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
         targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(player)));
 
         LivingEntity primary = targets.get(0);
+        float sweepDamage = tool.getStats().get(ToolStats.ATTACK_DAMAGE) * SWEEP_DAMAGE_RATIO;
+        ToolAttackContext context = ToolAttackContext.attacker(player)
+                .target(primary)
+                .hand(InteractionHand.MAIN_HAND)
+                .baseDamage(sweepDamage)
+                .cooldown(1.0f)
+                .build();
         float oldHealth = primary.getHealth();
-        boolean hit = ToolAttackUtil.attackEntity(tool, player, primary);
+        boolean hit = ToolAttackUtil.performAttack(tool, context);
         float primaryDamage = oldHealth - primary.getHealth();
 
         if (primaryDamage > 0 && targets.size() > 1) {

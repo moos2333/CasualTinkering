@@ -1,9 +1,7 @@
 package com.npstra.casualtinkering;
 
 import com.npstra.casualtinkering.init.ModEntities;
-import com.npstra.casualtinkering.init.ModItems;
 import com.npstra.casualtinkering.init.Modifiers;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -11,9 +9,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class CasualTinkering {
     public static final String MODID = "casualtinkering";
 
-    public CasualTinkering() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModItems.ITEMS.register(bus);
+    public CasualTinkering(FMLJavaModLoadingContext context) {
+        var bus = context.getModEventBus();
         Modifiers.register(bus);
         ModEntities.register(bus);
     }

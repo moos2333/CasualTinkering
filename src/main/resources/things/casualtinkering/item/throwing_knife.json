@@ -1,0 +1,5 @@
+{
+  "type": "tconstruct:shuriken",
+  "max_stack_size": 16,
+  "color_handler": "tconstruct:tool"
+}

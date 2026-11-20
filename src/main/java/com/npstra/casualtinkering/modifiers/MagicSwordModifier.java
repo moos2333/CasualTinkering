@@ -1,11 +1,8 @@
 package com.npstra.casualtinkering.modifiers;
 
-import com.npstra.casualtinkering.init.ModEntities;
-import com.npstra.casualtinkering.entity.EntityMagicSword;
+import com.npstra.casualtinkering.util.MagicSwordHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
@@ -35,14 +32,9 @@ public class MagicSwordModifier extends Modifier implements MeleeHitModifierHook
         int level = (int) Math.min(modifier.getEffectiveLevel(), 3);
         if (level < 1) return;
 
-        float damagePercent = 0.2f - (level - 1) * 0.025f;
-        float magicDamage = damageDealt * damagePercent;
+        float magicDamage = damageDealt * (0.2f - (level - 1) * 0.025f);
         if (magicDamage <= 0) return;
 
-        ItemStack renderSword = new ItemStack(Items.DIAMOND_SWORD);
-        for (int i = 0; i < level; i++) {
-            EntityMagicSword sword = new EntityMagicSword(ModEntities.MAGIC_SWORD.get(), context.getLevel(), attacker, target, magicDamage, renderSword);
-            context.getLevel().addFreshEntity(sword);
-        }
+        MagicSwordHelper.spawnMagicSwords(context.getLevel(), attacker, target, level, magicDamage);
     }
 }

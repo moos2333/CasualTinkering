@@ -5,5 +5,6 @@
   "casualtinkering:magic_sword_auto": "tconstruct:normal",
   "casualtinkering:magic_sword_control": "tconstruct:normal",
   "casualtinkering:thermal_ray": "tconstruct:normal",
-  "casualtinkering:boomerang" : "tconstruct:normal"
+  "casualtinkering:boomerang" : "tconstruct:normal",
+  "casualtinkering:triple_shot": "tconstruct:normal"
 }

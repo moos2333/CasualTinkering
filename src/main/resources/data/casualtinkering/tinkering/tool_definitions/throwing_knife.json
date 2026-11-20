@@ -29,6 +29,12 @@
       "multipliers": {
         "tconstruct:projectile_damage": 2.0
       }
+    },
+    {
+      "type": "tconstruct:traits",
+      "traits": [
+        { "name": "casualtinkering:triple_shot", "level": 1 }
+      ]
     }
   ]
 }

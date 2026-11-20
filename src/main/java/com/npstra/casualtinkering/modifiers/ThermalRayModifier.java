@@ -47,8 +47,8 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
     private static final float MAX_TEMP_BONUS = 1.5f;
     private static final int BASE_TEMP = 1000;
 
-    private static final ResourceLocation KEY_OVERHEAT_END = new ResourceLocation("casualtinkering", "thermal_ray_overheat_end");
-    private static final ResourceLocation KEY_SHOTS = new ResourceLocation("casualtinkering", "thermal_ray_shots");
+    private static final ResourceLocation KEY_OVERHEAT_END = ResourceLocation.tryBuild("casualtinkering", "thermal_ray_overheat_end");
+    private static final ResourceLocation KEY_SHOTS = ResourceLocation.tryBuild("casualtinkering", "thermal_ray_shots");
 
     private static long getOverheatEnd(ModDataNBT data) {
         return data.get(KEY_OVERHEAT_END, CompoundTag::getLong);
