@@ -41,7 +41,7 @@ public class ModAutoDevice extends ModifierTrait {
                 new ItemStack(Items.REPEATER),
                 new ItemStack(Items.REPEATER),
                 new ItemStack(Items.REPEATER),
-                new ItemStack(Blocks.REDSTONE_TORCH)
+                new ItemStack(Blocks.LEVER)
         ));
     }
 
