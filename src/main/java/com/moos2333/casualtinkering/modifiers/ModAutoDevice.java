@@ -32,7 +32,7 @@ import java.util.LinkedList;
 public class ModAutoDevice extends ModifierTrait {
     private static final int COOLDOWN_TICKS = 20;
     private static final int RADIUS = 6;
-    private static final float[] DAMAGE_FACTORS = {0.25F, 0.4F, 0.5F};
+    private static final float[] DAMAGE_FACTORS = {0.35F, 0.6F, 0.75F};
 
     public ModAutoDevice() {
         super("auto_device", 0xCC64FF, 3, 0);
