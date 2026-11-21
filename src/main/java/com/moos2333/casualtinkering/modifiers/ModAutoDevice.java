@@ -32,10 +32,10 @@ import java.util.LinkedList;
 public class ModAutoDevice extends ModifierTrait {
     private static final int COOLDOWN_TICKS = 20;
     private static final int RADIUS = 6;
-    private static final float[] DAMAGE_FACTORS = {0.35F, 0.65F, 0.9F};
+    private static final float[] DAMAGE_FACTORS = {0.35F, 0.55F, 0.75F, 0.9F, 1.0F};
 
     public ModAutoDevice() {
-        super("auto_device", 0xCC64FF, 3, 0);
+        super("auto_device", 0xCC64FF, 5, 0);
         addRecipeMatch(new ItemCombination(1,
                 new ItemStack(Items.REPEATER),
                 new ItemStack(Items.REPEATER),
@@ -51,8 +51,8 @@ public class ModAutoDevice extends ModifierTrait {
     }
 
     private float getDamageFactor(int level) {
-        if (level >= 1 && level <= 3) return DAMAGE_FACTORS[level - 1];
-        return 0.25F;
+        if (level >= 1 && level <= 5) return DAMAGE_FACTORS[level - 1];
+        return 0.35F;
     }
 
     @Override
