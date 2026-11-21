@@ -1,0 +1,22 @@
+{
+    "textures": {
+      "bane_of_arthopods": "casualtinkering:items/tools/circular_saw/mod_bane_spider",
+      "beheading": "casualtinkering:items/tools/circular_saw/mod_beheading",
+      "diamond": "casualtinkering:items/tools/circular_saw/mod_diamond",
+      "emerald": "casualtinkering:items/tools/circular_saw/mod_emerald",
+      "fiery": "casualtinkering:items/tools/circular_saw/mod_fiery",
+      "glowing": "casualtinkering:items/tools/circular_saw/mod_glowing",
+      "haste": "casualtinkering:items/tools/circular_saw/mod_haste",
+      "knockback": "casualtinkering:items/tools/circular_saw/mod_knockback",
+      "luck": "casualtinkering:items/tools/circular_saw/mod_luck",
+      "mending_moss": "casualtinkering:items/tools/circular_saw/mod_mending_moss",
+      "necrotic": "casualtinkering:items/tools/circular_saw/mod_necrotic",
+      "reinforced": "casualtinkering:items/tools/circular_saw/mod_reinforced",
+      "sharpness": "casualtinkering:items/tools/circular_saw/mod_sharpness",
+      "shulking": "casualtinkering:items/tools/circular_saw/mod_shulking",
+      "silktouch": "casualtinkering:items/tools/circular_saw/mod_silk",
+      "smite": "casualtinkering:items/tools/circular_saw/mod_smite",
+      "soulbound": "casualtinkering:items/tools/circular_saw/mod_soulbound",
+      "webbed": "casualtinkering:items/tools/circular_saw/mod_web"
+    }
+}

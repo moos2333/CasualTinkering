@@ -1,0 +1,22 @@
+{
+    "textures": {
+      "bane_of_arthopods": "casualtinkering:items/tools/magicdevice/mod_bane_spider",
+      "beheading": "casualtinkering:items/tools/magicdevice/mod_beheading",
+      "diamond": "casualtinkering:items/tools/magicdevice/mod_diamond",
+      "emerald": "casualtinkering:items/tools/magicdevice/mod_emerald",
+      "fiery": "casualtinkering:items/tools/magicdevice/mod_fiery",
+      "glowing": "casualtinkering:items/tools/magicdevice/mod_glowing",
+      "haste": "casualtinkering:items/tools/magicdevice/mod_haste",
+      "knockback": "casualtinkering:items/tools/magicdevice/mod_knockback",
+      "luck": "casualtinkering:items/tools/magicdevice/mod_luck",
+      "mending_moss": "casualtinkering:items/tools/magicdevice/mod_mending_moss",
+      "necrotic": "casualtinkering:items/tools/magicdevice/mod_necrotic",
+      "reinforced": "casualtinkering:items/tools/magicdevice/mod_reinforced",
+      "sharpness": "casualtinkering:items/tools/magicdevice/mod_sharpness",
+      "shulking": "casualtinkering:items/tools/magicdevice/mod_shulking",
+      "silktouch": "casualtinkering:items/tools/magicdevice/mod_silk",
+      "smite": "casualtinkering:items/tools/magicdevice/mod_smite",
+      "soulbound": "casualtinkering:items/tools/magicdevice/mod_soulbound",
+      "webbed": "casualtinkering:items/tools/magicdevice/mod_web"
+    }
+}
