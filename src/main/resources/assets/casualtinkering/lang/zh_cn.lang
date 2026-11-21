@@ -1,5 +1,5 @@
 item.casual_tinkering.circular_saw.name=圆锯
-item.casual_tinkering.circular_saw.desc=一种重型伐木工具，带有旋转锯片。拉锯时持续切割前方目标。\n右键：蓄力并发动范围攻击，按住右键持续发动
+item.casual_tinkering.circular_saw.desc=重型伐木工具，带有旋转锯片。拉锯时持续切割前方目标。\n右键：蓄力并发动范围攻击，按住右键持续发动
 stat.circular_saw.speed=转速：%s
 stat.circular_saw.sweep=溅射：%s
 item.casualtinkering.magicdevice.name=魔导具
