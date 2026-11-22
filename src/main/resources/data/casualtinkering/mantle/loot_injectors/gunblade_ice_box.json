@@ -1,0 +1,27 @@
+{
+  "name": "minecraft:chests/ancient_city_ice_box",
+  "pools": [
+    {
+      "name": "gunblade",
+      "conditions": [
+        { "condition": "minecraft:random_chance", "chance": 0.3 }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "tconstruct:add_tool_data",
+              "materials": [
+                { "type": "tconstruct:ancient" },
+                { "type": "tconstruct:ancient" },
+                { "type": "tconstruct:ancient" }
+              ]
+            }
+          ],
+          "name": "casualtinkering:gunblade"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "loader": "tconstruct:tool",
+  "parent": "forge:item/default-tool",
+  "textures": {
+    "head":   "casualtinkering:item/tool/gunblade/blade_broken",
+    "handle": "casualtinkering:item/tool/gunblade/handle",
+    "limb":   "casualtinkering:item/tool/gunblade/barrel"
+  },
+  "parts": [
+    { "name": "handle", "index": 1 },
+    { "name": "head",   "index": 0 },
+    { "name": "limb",   "index": 2 }
+  ],
+  "modifier_maps": [ "casualtinkering:gunblade" ]
+}

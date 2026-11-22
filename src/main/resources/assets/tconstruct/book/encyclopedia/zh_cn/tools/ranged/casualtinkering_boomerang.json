@@ -1,0 +1,14 @@
+{
+  "tool": "casualtinkering:boomerang",
+  "text": [
+    { "text": "命中或飞到最远后会自动飞回主人手中的投掷斧，去回程都继承工具特性。" },
+    { "text": "右键投掷，自带回旋 II。", "paragraph": true }
+  ],
+  "properties": [
+    "+1.1 攻击伤害",
+    "1.8 攻击速度",
+    "回旋 II",
+    "3 升级槽",
+    "1 能力槽"
+  ]
+}

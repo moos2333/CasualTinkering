@@ -1,0 +1,15 @@
+{
+  "tool": "casualtinkering:heat_ray_gun",
+  "text": [
+    { "text": "A sustained-beam weapon that burns through fuel to scorch anything in its path. Hold right-click to fire." },
+    { "text": "Overheats if fired too long; let it cool before firing again. Thermal Ray and Tank II are built in.", "paragraph": true }
+  ],
+  "properties": [
+    "+2.4 Attack Damage",
+    "1.5 Attack Speed",
+    "Thermal Ray",
+    "Tank II",
+    "2 Upgrade Slots",
+    "1 Ability Slot"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "modifier_id": "casualtinkering:boomerang",
+  "text": [
+    { "text": "Right-click to throw the tool. It returns to you after a short flight or on impact. Higher levels apply the tool's traits on hit." }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Requires 1 ability slot",
+    "Maximum of 2 levels"
+  ]
+}

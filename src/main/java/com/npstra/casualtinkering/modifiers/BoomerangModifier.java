@@ -1,5 +1,7 @@
 package com.npstra.casualtinkering.modifiers;
 
+import com.npstra.casualtinkering.entity.ThrownBoomerang;
+import com.npstra.casualtinkering.init.ModEntities;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -22,8 +24,6 @@ import slimeknights.tconstruct.library.tools.helper.ModifierUtil;
 import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
-import com.npstra.casualtinkering.entity.ThrownBoomerang;
-import com.npstra.casualtinkering.init.ModEntities;
 
 public class BoomerangModifier extends Modifier implements GeneralInteractionModifierHook, UsingToolModifierHook {
 
@@ -43,7 +43,7 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
         return UseAnim.SPEAR;
     }
 
-    private int getChargeTicks(IToolStackView tool) {
+    private static int getChargeTicks(IToolStackView tool) {
         float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
         if (attackSpeed >= 2.0f) return 10;
         if (attackSpeed <= 0.5f) return 40;
@@ -82,8 +82,8 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
         int used = useDuration - timeLeft;
         int required = getChargeTicks(tool);
         if (used < required) return;
-        ItemStack stack = player.getMainHandItem();
-        if (stack.isEmpty() || stack != player.getUseItem()) return;
+        ItemStack stack = player.getUseItem();
+        if (stack.isEmpty()) return;
 
         if (!player.getAbilities().instabuild) {
             boolean broken = ToolDamageUtil.damage(tool, 1, player, stack);
@@ -107,7 +107,4 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
             if (stack.isEmpty()) player.getInventory().removeItem(stack);
         }
     }
-
-    @Override
-    public void onStoppedUsing(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int timeLeft) {}
 }

@@ -43,7 +43,7 @@ public class MagicSwordCoopModifier extends Modifier {
 
         LivingEntity target = event.getEntity();
         Level level = player.level();
-        MagicSwordHelper.spawnMagicSwords(level, player, target, SWORD_COUNTS[coopLevel], magicDamage);
-        ToolDamageUtil.damageAnimated(tool, 1, player, InteractionHand.MAIN_HAND);
+        MagicSwordHelper.spawnMagicSwords(level, player, tool, target, SWORD_COUNTS[coopLevel], magicDamage);
+        ToolDamageUtil.damageAnimated(tool, 1, player, InteractionHand.OFF_HAND);
     }
 }

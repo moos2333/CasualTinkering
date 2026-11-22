@@ -3,7 +3,6 @@ package com.npstra.casualtinkering.modifiers;
 import com.npstra.casualtinkering.CasualTinkering;
 import com.npstra.casualtinkering.util.MagicSwordHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,9 +15,8 @@ import slimeknights.tconstruct.library.modifiers.hook.interaction.InventoryTickM
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
+import slimeknights.tconstruct.library.tools.nbt.ModDataNBT;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
-
-import java.util.Optional;
 
 public class MagicSwordAutoModifier extends Modifier implements InventoryTickModifierHook {
 
@@ -37,32 +35,37 @@ public class MagicSwordAutoModifier extends Modifier implements InventoryTickMod
         int autoLevel = (int) Math.min(modifier.getEffectiveLevel(), 3);
         if (autoLevel < 1) return;
 
+        ModDataNBT data = tool.getPersistentData();
         int currentTick = player.tickCount;
-        int lastTick = tool.getPersistentData().getInt(LAST_TICK_KEY);
-        if (lastTick == 0 || lastTick > currentTick) {
-            tool.getPersistentData().putInt(LAST_TICK_KEY, currentTick);
+        int lastTick = data.getInt(LAST_TICK_KEY);
+        if (lastTick <= 0 || lastTick > currentTick) {
+            data.putInt(LAST_TICK_KEY, currentTick);
             return;
         }
-
         if (currentTick - lastTick < INTERVALS[autoLevel]) return;
+        data.putInt(LAST_TICK_KEY, currentTick);
 
-        Optional<LivingEntity> nearest = findNearestEnemy(player, 9);
-        if (nearest.isPresent()) {
+        LivingEntity nearest = findNearestEnemy(player, 9);
+        if (nearest != null) {
             float magicDamage = tool.getStats().get(ToolStats.ATTACK_DAMAGE) * (0.15f - (autoLevel - 1) * 0.025f);
             if (magicDamage > 0) {
-                MagicSwordHelper.spawnMagicSwords(level, player, nearest.get(), 1, magicDamage);
-                ToolDamageUtil.damageAnimated(tool, 1, player, InteractionHand.MAIN_HAND);
+                MagicSwordHelper.spawnMagicSwords(level, player, tool, nearest, 1, magicDamage);
+                ToolDamageUtil.damageAnimated(tool, 1, player);
             }
         }
-        tool.getPersistentData().putInt(LAST_TICK_KEY, currentTick);
     }
 
-    private Optional<LivingEntity> findNearestEnemy(Player player, int range) {
-        AABB aabb = new AABB(player.getX() - range, player.getY() - range, player.getZ() - range,
-                player.getX() + range, player.getY() + range, player.getZ() + range);
-        return player.level().getEntitiesOfClass(LivingEntity.class, aabb,
-                        e -> e != player && e.isAlive() && player.hasLineOfSight(e))
-                .stream()
-                .min((e1, e2) -> Double.compare(e1.distanceToSqr(player), e2.distanceToSqr(player)));
+    private LivingEntity findNearestEnemy(Player player, int range) {
+        AABB area = player.getBoundingBox().inflate(range);
+        LivingEntity nearest = null;
+        double nearestDistance = Double.MAX_VALUE;
+        for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, area, e -> e != player && e.isAlive() && player.hasLineOfSight(e))) {
+            double distanceSq = target.distanceToSqr(player);
+            if (distanceSq < nearestDistance) {
+                nearestDistance = distanceSq;
+                nearest = target;
+            }
+        }
+        return nearest;
     }
 }

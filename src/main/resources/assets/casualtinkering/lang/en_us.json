@@ -33,10 +33,19 @@
   "modifier.casualtinkering.boomerang.flavor": "Comes back to you!",
   "modifier.casualtinkering.boomerang.description": "Right-click to throw the weapon; it returns after a short flight. Higher levels apply tool traits on hit.",
   "modifier.casualtinkering.triple_shot": "Triple Shot",
-  "modifier.casualtinkering.triple_shot.flavor": "Three blades, one throw",
-  "modifier.casualtinkering.triple_shot.description": "Sneak and throw with at least 3 knives to release a three-way horizontal spread.",
+  "modifier.casualtinkering.triple_shot.flavor": "Three for one",
+  "modifier.casualtinkering.triple_shot.description": "Sneak and throw with at least 3 of the same ammo to release a horizontal three-way spread.",
   "item.casualtinkering.boomerang": "Boomerang",
   "item.casualtinkering.boomerang.description": "A balanced throwing weapon that returns to the thrower. Effective for both melee and ranged combat.\nRight Click: Throw – returns after hitting a foe, a block, or traveling a short distance.",
   "item.casualtinkering.heat_ray_gun": "Heat Ray Gun",
-  "item.casualtinkering.heat_ray_gun.description": "A high-tech energy weapon that consumes hot fluids to fire a devastating beam.\nCharge up with right click – overheat after 10 shots."
+  "item.casualtinkering.heat_ray_gun.description": "A high-tech energy weapon that consumes hot fluids to fire a devastating beam.\nCharge up with right click – overheat after 10 shots.",
+  "item.casualtinkering.gunblade": "Gunblade",
+  "item.casualtinkering.gunblade.description": "An ancient weapon forged in one piece: a sword blade with a barrel running through its spine.\nRecovered only from the chests of ancient cities.",
+  "modifier.casualtinkering.gunblade": "Gunshot",
+  "modifier.casualtinkering.gunblade.flavor": "Cut first, shoot second",
+  "modifier.casualtinkering.gunblade.description": "Melee hits load 1 bullet, up to 3. Right-click fires fast bullets inheriting tool traits; each shot costs 1 durability. Has a 1-slot chamber for Tinkers throwables and arrows: throws the ammo itself when loaded. Sneak-use to open the chamber.",
+  "modifier.casualtinkering.gunblade.charges": "Loaded: %s / %s",
+  "modifier.casualtinkering.gunblade.chamber": "Chamber: %s",
+  "modifier.casualtinkering.gunblade.chamber.empty": "Empty",
+  "modifier.casualtinkering.gunblade.chamber.hint": "Sneak-use to open the chamber"
 }

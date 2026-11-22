@@ -1,0 +1,16 @@
+{
+  "modifiers": {
+    "tconstruct:necrotic": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_necrotic",
+    "tconstruct:reinforced": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_reinforced",
+    "tconstruct:luck": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_luck",
+    "tconstruct:overforced": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_overforced",
+    "tconstruct:unbreakable": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_unbreakable",
+    "tconstruct:diamond": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_diamond",
+    "tconstruct:sharpness": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_sharpness",
+    "tconstruct:emerald": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_emerald",
+    "tconstruct:haste": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_haste",
+    "tconstruct:netherite": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_netherite",
+    "tconstruct:fiery": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_fiery",
+    "tconstruct:experienced": "casualtinkering:item/tool/circular_saw/modifiers/tconstruct_experienced"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "modifiers": {
+    "tconstruct:diamond": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_diamond",
+    "tconstruct:netherite": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_netherite",
+    "tconstruct:sharpness": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_sharpness",
+    "tconstruct:reinforced": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_reinforced",
+    "tconstruct:overforced": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_overforced",
+    "tconstruct:unbreakable": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_unbreakable",
+    "tconstruct:luck": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_luck",
+    "tconstruct:severing": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_severing",
+    "tconstruct:necrotic": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_necrotic",
+    "tconstruct:fiery": {
+      "luminosity": 10,
+      "texture": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_fiery"
+    },
+    "tconstruct:emerald": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_emerald",
+    "tconstruct:experienced": "casualtinkering:item/tool/gunblade/modifiers/tconstruct_experienced"
+  }
+}

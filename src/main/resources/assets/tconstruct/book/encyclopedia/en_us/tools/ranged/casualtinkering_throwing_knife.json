@@ -1,0 +1,13 @@
+{
+  "tool": "casualtinkering:throwing_knife",
+  "text": [
+    { "text": "A light, fast-thrown knife that comes in stacks. Right-click to throw, or use it as shuriken ammunition." },
+    { "text": "Triple Shot I is built in, letting each throw release three knives.", "paragraph": true }
+  ],
+  "properties": [
+    "1.0 Projectile Damage",
+    "2.0 Projectile Velocity",
+    "Triple Shot",
+    "0.8 Water Inertia"
+  ]
+}

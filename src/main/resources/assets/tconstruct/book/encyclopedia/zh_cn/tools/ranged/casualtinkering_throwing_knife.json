@@ -1,0 +1,13 @@
+{
+  "tool": "casualtinkering:throwing_knife",
+  "text": [
+    { "text": "可堆叠的轻型投掷飞刀。右键投出，也可作为手里剑弹药使用。" },
+    { "text": "自带三连发 I，每次投掷放出三把飞刀。", "paragraph": true }
+  ],
+  "properties": [
+    "1.0 投射物伤害",
+    "2.0 投射物速度",
+    "三连发",
+    "0.8 水中惯性"
+  ]
+}

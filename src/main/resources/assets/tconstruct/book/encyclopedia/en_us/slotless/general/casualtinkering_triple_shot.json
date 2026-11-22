@@ -1,0 +1,12 @@
+{
+  "modifier_id": "casualtinkering:triple_shot",
+  "text": [
+    { "text": "Sneak and throw with at least three of the same ammo to fire a horizontal three-way spread instead of a single projectile." }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Maximum of 1 level",
+    "Slotless",
+    "Requires at least 3 matching ammo"
+  ]
+}

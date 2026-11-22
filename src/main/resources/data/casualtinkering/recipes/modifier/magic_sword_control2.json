@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:modifier",
   "inputs": [
-    { "item": "tconstruct:small_blade" },
+    { "type": "tconstruct:material", "item": "tconstruct:small_blade" },
     { "item": "minecraft:compass" },
     { "item": "minecraft:diamond" },
     { "item": "minecraft:diamond" },

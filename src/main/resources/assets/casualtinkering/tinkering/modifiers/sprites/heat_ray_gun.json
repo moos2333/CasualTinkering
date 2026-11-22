@@ -1,0 +1,15 @@
+{
+  "modifiers": {
+    "tconstruct:emerald": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_emerald",
+    "tconstruct:fiery": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_fiery",
+    "tconstruct:luck": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_luck",
+    "tconstruct:necrotic": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_necrotic",
+    "tconstruct:diamond": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_diamond",
+    "tconstruct:netherite": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_netherite",
+    "tconstruct:sharpness": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_sharpness",
+    "tconstruct:reinforced": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_reinforced",
+    "tconstruct:overforced": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_overforced",
+    "tconstruct:unbreakable": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_unbreakable",
+    "tconstruct:experienced": "casualtinkering:item/tool/heat_ray_gun/modifiers/tconstruct_experienced"
+  }
+}

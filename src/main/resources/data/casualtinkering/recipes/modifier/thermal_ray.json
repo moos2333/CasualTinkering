@@ -1,6 +1,5 @@
 {
   "type": "tconstruct:modifier",
-  "conditions": [],
   "inputs": [
     { "item": "minecraft:nether_bricks" },
     { "item": "minecraft:dispenser" },

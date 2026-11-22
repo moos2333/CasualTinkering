@@ -1,0 +1,13 @@
+{
+  "modifier_id": "casualtinkering:gunblade",
+  "text": [
+    {
+      "text": "Melee hits load 1 bullet into the chamber, up to 3. Right-click to fire loaded bullets as fast projectiles inheriting tool traits; each shot costs 1 durability; fire cooldown shrinks with attack speed. The gunblade has a 1-slot chamber holding any throwable item (Tinkers throwables, arrows): chamber ammo is thrown directly on fire (shuriken, throwing axes, snowballs, arrows), with a slightly longer cooldown. Sneak-use to open the chamber GUI and load or eject ammo."
+    }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Max 1 level",
+    "Built into the gunblade"
+  ]
+}

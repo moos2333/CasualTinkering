@@ -1,0 +1,12 @@
+{
+  "modifier_id": "casualtinkering:magic_sword_auto",
+  "text": [
+    { "text": "Periodically summons a magical sword to strike the nearest enemy within 9 blocks. Higher levels shorten the interval." }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Requires 1 ability slot for first level",
+    "Consecutive levels require 1 upgrade slot",
+    "Maximum of 3 levels"
+  ]
+}

@@ -2,6 +2,7 @@ package com.npstra.casualtinkering.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.npstra.casualtinkering.entity.ThrownBoomerang;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -10,7 +11,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemDisplayContext;
-import com.npstra.casualtinkering.entity.ThrownBoomerang;
 
 public class ThrownBoomerangRenderer extends EntityRenderer<ThrownBoomerang> {
     private final ItemRenderer itemRenderer;

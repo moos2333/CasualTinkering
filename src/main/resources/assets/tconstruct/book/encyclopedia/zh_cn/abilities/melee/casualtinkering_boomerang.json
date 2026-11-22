@@ -1,0 +1,11 @@
+{
+  "modifier_id": "casualtinkering:boomerang",
+  "text": [
+    { "text": "右键投出工具，飞行一段距离或命中后返回。等级越高，命中时应用的工具特性越多。" }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "需要1个能力槽",
+    "最高2级"
+  ]
+}

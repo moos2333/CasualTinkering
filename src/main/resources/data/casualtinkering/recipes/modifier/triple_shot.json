@@ -1,0 +1,11 @@
+{
+  "type": "tconstruct:modifier",
+  "inputs": [
+    { "item": "minecraft:flint" },
+    { "item": "minecraft:string" },
+    { "item": "minecraft:flint" }
+  ],
+  "tools": { "tag": "tconstruct:modifiable/ammo/thrown" },
+  "result": "casualtinkering:triple_shot",
+  "level": 1
+}

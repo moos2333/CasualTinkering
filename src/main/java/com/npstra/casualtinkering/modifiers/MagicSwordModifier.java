@@ -35,6 +35,6 @@ public class MagicSwordModifier extends Modifier implements MeleeHitModifierHook
         float magicDamage = damageDealt * (0.2f - (level - 1) * 0.025f);
         if (magicDamage <= 0) return;
 
-        MagicSwordHelper.spawnMagicSwords(context.getLevel(), attacker, target, level, magicDamage);
+        MagicSwordHelper.spawnMagicSwords(context.getLevel(), attacker, tool, target, level, magicDamage);
     }
 }

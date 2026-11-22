@@ -1,28 +1,67 @@
 {
   "loader": "tconstruct:tool",
   "parent": "forge:item/default-tool",
+  "modifier_maps": [
+    "casualtinkering:heat_ray_gun"
+  ],
   "textures": {
     "handle1": "casualtinkering:item/tool/heat_ray_gun/handle",
     "handle2": "casualtinkering:item/tool/heat_ray_gun/plate",
-    "head1":   "casualtinkering:item/tool/heat_ray_gun/fuel_tank",
-    "head2":   "casualtinkering:item/tool/heat_ray_gun/emitter"
+    "head1": "casualtinkering:item/tool/heat_ray_gun/fuel_tank",
+    "head2": "casualtinkering:item/tool/heat_ray_gun/emitter"
   },
   "parts": [
-    { "name": "handle1", "index": 0 },
-    { "name": "handle2", "index": 1 },
-    { "name": "head1",   "index": 2 },
-    { "name": "head2",   "index": 3 }
+    {
+      "name": "handle1",
+      "index": 0
+    },
+    {
+      "name": "handle2",
+      "index": 1
+    },
+    {
+      "name": "head1",
+      "index": 2
+    },
+    {
+      "name": "head2",
+      "index": 3
+    }
   ],
   "display": {
-  "thirdperson_righthand": {
-    "rotation": [ 0, -90, 55 ],
-    "translation": [ 0, 0.5, -2.5 ],
-    "scale": [ 1.0, 1.0, 1.0 ]
-  },
-  "thirdperson_lefthand": {
-    "rotation": [ 0, 90, -55 ],
-    "translation": [ 0, 0.5, -2.5 ],
-    "scale": [ 1.0, 1.0, 1.0 ]
+    "thirdperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        55
+      ],
+      "translation": [
+        0,
+        0.5,
+        -2.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        -55
+      ],
+      "translation": [
+        0,
+        0.5,
+        -2.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
   }
-}
 }

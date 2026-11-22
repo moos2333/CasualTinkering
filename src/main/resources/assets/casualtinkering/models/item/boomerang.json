@@ -10,5 +10,6 @@
     { "name": "binding", "index": 0 },
     { "name": "blade1",  "index": 1 },
     { "name": "blade2",  "index": 2 }
-  ]
+  ],
+  "modifier_maps": [ "casualtinkering:boomerang" ]
 }

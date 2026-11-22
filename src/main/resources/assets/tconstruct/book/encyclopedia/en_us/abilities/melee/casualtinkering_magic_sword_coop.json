@@ -1,0 +1,13 @@
+{
+  "modifier_id": "casualtinkering:magic_sword_coop",
+  "text": [
+    { "text": "When held in the offhand, your mainhand attacks summon magical swords to assist. Higher levels summon more swords." }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Requires 1 ability slot for first level",
+    "Consecutive levels require 1 upgrade slot",
+    "Maximum of 3 levels",
+    "Must be held in the offhand"
+  ]
+}

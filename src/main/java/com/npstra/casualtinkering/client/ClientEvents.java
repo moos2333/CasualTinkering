@@ -1,6 +1,7 @@
 package com.npstra.casualtinkering.client;
 
 import com.npstra.casualtinkering.CasualTinkering;
+import com.npstra.casualtinkering.client.renderer.GunbladeBulletRenderer;
 import com.npstra.casualtinkering.client.renderer.RenderMagicSword;
 import com.npstra.casualtinkering.client.renderer.ThrownBoomerangRenderer;
 import com.npstra.casualtinkering.init.ModEntities;
@@ -15,5 +16,6 @@ public class ClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.MAGIC_SWORD.get(), RenderMagicSword::new);
         event.registerEntityRenderer(ModEntities.THROWN_BOOMERANG.get(), ThrownBoomerangRenderer::new);
+        event.registerEntityRenderer(ModEntities.GUNBLADE_BULLET.get(), GunbladeBulletRenderer::new);
     }
 }

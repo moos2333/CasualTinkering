@@ -1,0 +1,12 @@
+{
+  "modifier_id": "casualtinkering:thermal_ray",
+  "text": [
+    { "text": "消耗储罐中的高温流体持续喷射光束，连续射击10次后过热，需冷却后才能再次发射。" }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "最高1级",
+    "需要2个能力槽",
+    "需要流体储罐与高温流体"
+  ]
+}

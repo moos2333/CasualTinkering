@@ -1,0 +1,20 @@
+{
+  "modifiers": {
+    "tconstruct:diamond": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_diamond",
+    "tconstruct:netherite": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_netherite",
+    "tconstruct:sharpness": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_sharpness",
+    "tconstruct:reinforced": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_reinforced",
+    "tconstruct:overforced": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_overforced",
+    "tconstruct:unbreakable": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_unbreakable",
+    "tconstruct:luck": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_luck",
+    "tconstruct:necrotic": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_necrotic",
+    "tconstruct:fiery": {
+      "luminosity": 10,
+      "texture": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_fiery"
+    },
+    "tconstruct:emerald": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_emerald",
+    "tconstruct:cooling": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_cooling",
+    "tconstruct:bane_of_sssss": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_bane_of_sssss",
+    "tconstruct:experienced": "casualtinkering:item/tool/boomerang/modifiers/tconstruct_experienced"
+  }
+}

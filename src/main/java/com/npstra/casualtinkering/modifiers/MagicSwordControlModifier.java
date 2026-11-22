@@ -21,8 +21,6 @@ import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.List;
 
 public class MagicSwordControlModifier extends Modifier implements GeneralInteractionModifierHook, UsingToolModifierHook {
 
@@ -69,8 +67,8 @@ public class MagicSwordControlModifier extends Modifier implements GeneralIntera
         LivingEntity target = findTarget(player, 8.0);
         if (target == null) return;
 
-        MagicSwordHelper.spawnMagicSwords(player.level(), player, target, level, magicDamage);
-        ToolDamageUtil.damageAnimated(tool, 1, player, InteractionHand.MAIN_HAND);
+        MagicSwordHelper.spawnMagicSwords(player.level(), player, tool, target, level, magicDamage);
+        ToolDamageUtil.damageAnimated(tool, 1, player, player.getUsedItemHand());
     }
 
     @Nullable
@@ -78,19 +76,20 @@ public class MagicSwordControlModifier extends Modifier implements GeneralIntera
         Level level = player.level();
         Vec3 eyePos = player.getEyePosition();
         Vec3 lookVec = player.getViewVector(1.0F);
-        AABB aabb = new AABB(eyePos.x - range, eyePos.y - range, eyePos.z - range,
-                eyePos.x + range, eyePos.y + range, eyePos.z + range);
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, aabb,
-                e -> e != player && e.isAlive());
-        return entities.stream()
-                .filter(e -> {
-                    Vec3 toTarget = e.getBoundingBox().getCenter().subtract(eyePos);
-                    double dist = toTarget.length();
-                    if (dist > range) return false;
-                    double angle = lookVec.dot(toTarget.normalize());
-                    return angle > 0.5;
-                })
-                .min(Comparator.comparingDouble(e -> e.distanceToSqr(player)))
-                .orElse(null);
+        AABB area = new AABB(eyePos, eyePos).inflate(range);
+
+        LivingEntity nearest = null;
+        double nearestDistance = Double.MAX_VALUE;
+        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && e.isAlive())) {
+            Vec3 toTarget = target.getBoundingBox().getCenter().subtract(eyePos);
+            double distance = toTarget.length();
+            if (distance > range || lookVec.dot(toTarget.normalize()) <= 0.5) continue;
+            double distanceSq = target.distanceToSqr(player);
+            if (distanceSq < nearestDistance) {
+                nearestDistance = distanceSq;
+                nearest = target;
+            }
+        }
+        return nearest;
     }
 }

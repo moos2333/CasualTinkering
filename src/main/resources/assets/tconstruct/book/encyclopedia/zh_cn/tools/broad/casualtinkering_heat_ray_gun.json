@@ -1,0 +1,15 @@
+{
+  "tool": "casualtinkering:heat_ray_gun",
+  "text": [
+    { "text": "持续喷射热射线的武器，消耗燃料灼烧前方目标。按住右键发射。" },
+    { "text": "持续射击会过热，冷却后才能再次发射。自带热射线与 Tank II。", "paragraph": true }
+  ],
+  "properties": [
+    "+2.4 攻击伤害",
+    "1.5 攻击速度",
+    "热射线",
+    "Tank II",
+    "2 升级槽",
+    "1 能力槽"
+  ]
+}

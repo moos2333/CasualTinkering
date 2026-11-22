@@ -1,0 +1,17 @@
+{
+  "modifier_id": "casualtinkering:circular_saw_attack",
+  "text": [
+    {
+      "text": "按住右键高速旋转切割前方4格半径、90度扇形范围内的敌人。单次伤害较低，但切割频率很高，且受攻击速度影响。"
+    },
+    {
+      "text": "每级“横扫之刃”额外扩大10度扇形，并提升对副目标的伤害。",
+      "paragraph": true
+    }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "最高1级",
+    "需要1个能力槽"
+  ]
+}

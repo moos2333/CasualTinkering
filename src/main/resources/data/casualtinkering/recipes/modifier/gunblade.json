@@ -1,0 +1,14 @@
+{
+  "type": "tconstruct:modifier",
+  "inputs": [
+    { "tag": "casualtinkering:gunblades" },
+    { "item": "minecraft:dispenser" },
+    { "item": "minecraft:netherite_ingot" },
+    { "item": "minecraft:blaze_rod" },
+    { "item": "minecraft:comparator" }
+  ],
+  "tools": { "tag": "tconstruct:modifiable/melee" },
+  "slots": { "abilities": 2 },
+  "result": "casualtinkering:gunblade",
+  "level": 1
+}

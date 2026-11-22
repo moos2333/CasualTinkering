@@ -6,5 +6,6 @@
   "casualtinkering:magic_sword_control": ["casualtinkering:gui/modifiers/magic_sword", "tconstruct:gui/modifiers/book"],
   "casualtinkering:thermal_ray": ["casualtinkering:gui/modifiers/thermal_ray", "tconstruct:gui/modifiers/plus"],
   "casualtinkering:boomerang" : ["casualtinkering:gui/modifiers/boomerang", "tconstruct:gui/modifiers/plus"],
-  "casualtinkering:triple_shot": ["tconstruct:gui/modifiers/multishot", "tconstruct:gui/modifiers/plus"]
+  "casualtinkering:triple_shot": ["tconstruct:gui/modifiers/ranged/multishot", "tconstruct:gui/modifiers/plus"],
+  "casualtinkering:gunblade": ["casualtinkering:gui/modifiers/gunblade", "tconstruct:gui/modifiers/plus"]
 }

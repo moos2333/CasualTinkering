@@ -1,0 +1,13 @@
+{
+  "modifier_id": "casualtinkering:magic_sword_coop",
+  "text": [
+    { "text": "置于副手时，主手攻击会召唤魔法剑协同作战，等级越高召唤数量越多。" }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "第一级需要1个能力槽",
+    "后续等级各需要1个升级槽",
+    "最高3级",
+    "必须置于副手"
+  ]
+}

@@ -1,6 +1,6 @@
 package com.npstra.casualtinkering.modifiers;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -27,17 +27,21 @@ import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class CircularSawAttackModifier extends Modifier implements GeneralInteractionModifierHook, UsingToolModifierHook {
 
-    private static final String KEY_LAST_ATTACK_TICK = "casualtinkering:circular_saw_last_tick";
-    private static final double COS_HALF_ANGLE = Math.cos(Math.toRadians(45.0));
+    private static final float[] SWEEP_COS_HALF_ANGLE = {
+            (float) Math.cos(Math.toRadians(45.0)),
+            (float) Math.cos(Math.toRadians(50.0)),
+            (float) Math.cos(Math.toRadians(55.0)),
+            (float) Math.cos(Math.toRadians(60.0))
+    };
     private static final ModifierId SWEEPING_EDGE_ID = new ModifierId("tconstruct", "sweeping_edge");
-    private static final float SWEEP_SPEED_MULTIPLIER = 2.0f;
-    private static final float SWEEP_DAMAGE_RATIO = 0.25f;
-    private static final float SECONDARY_BASE_RATIO = 0.50f;
+    private static final float RADIUS = 4.0f;
+    private static final float SWEEP_SPEED_MULTIPLIER = 4.0f;
+    private static final float SWEEP_DAMAGE_RATIO = 0.20f;
+    private static final float SECONDARY_BASE_RATIO = 0.40f;
     private static final float SECONDARY_RATIO_PER_LEVEL = 0.15f;
 
     @Override
@@ -45,9 +49,14 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
         builder.addHook(this, ModifierHooks.GENERAL_INTERACT, ModifierHooks.TOOL_USING);
     }
 
-    private static int getSweepInterval(IToolStackView tool) {
-        float attackSpeed = Mth.clamp(tool.getStats().get(ToolStats.ATTACK_SPEED), 0.5f, 4.0f) * SWEEP_SPEED_MULTIPLIER;
-        return Math.max(1, (int) (20.0f / attackSpeed));
+    @Override
+    public Component getDisplayName(int level) {
+        return getDisplayName();
+    }
+
+    private static float getSweepInterval(IToolStackView tool) {
+        float attackSpeed = Mth.clamp(tool.getStats().get(ToolStats.ATTACK_SPEED), 0.5f, 2.5f) * SWEEP_SPEED_MULTIPLIER;
+        return Math.max(1.0f, 20.0f / attackSpeed);
     }
 
     @Override
@@ -72,67 +81,45 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
     @Override
     public void onUsingTick(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int timeLeft) {
         if (entity.level().isClientSide || !(entity instanceof Player player)) return;
-
-        long now = player.level().getGameTime();
-        CompoundTag pdata = player.getPersistentData();
-        long last = pdata.getLong(KEY_LAST_ATTACK_TICK);
-        if (last <= 0L || last > now) {
-            pdata.putLong(KEY_LAST_ATTACK_TICK, now);
-            return;
-        }
-
-        int intervalTicks = getSweepInterval(tool);
-        if (now - last >= intervalTicks) {
-            performSweepAttack(tool, player);
-            pdata.putLong(KEY_LAST_ATTACK_TICK, now);
-        }
+        int elapsed = getUseDuration(tool, modifier) - timeLeft - 1;
+        float interval = getSweepInterval(tool);
+        if ((int) (elapsed / interval) > (int) ((elapsed - 1) / interval)) performSweepAttack(tool, player);
     }
 
     @Override
     public void beforeReleaseUsing(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int useDuration, int timeLeft, ModifierEntry activeModifier) {
-        if (entity.level().isClientSide || !(entity instanceof Player player)) return;
-        if (!modifier.matches(activeModifier.getId())) return;
-
-        long now = player.level().getGameTime();
-        CompoundTag pdata = player.getPersistentData();
-        long last = pdata.getLong(KEY_LAST_ATTACK_TICK);
-        if (last <= 0L || last > now || now - last >= 1) {
-            performSweepAttack(tool, player);
-        }
-        pdata.remove(KEY_LAST_ATTACK_TICK);
+        if (entity.level().isClientSide || !modifier.matches(activeModifier.getId())) return;
+        if (entity instanceof Player player) performSweepAttack(tool, player);
     }
 
     private void performSweepAttack(IToolStackView tool, Player player) {
         Level level = player.level();
-        float radius = 4.0f;
         Vec3 eyePos = player.getEyePosition();
         Vec3 lookVec = player.getViewVector(1.0F);
+        AABB area = new AABB(eyePos, eyePos).inflate(RADIUS);
+        int sweepingLevel = tool.getModifierLevel(SWEEPING_EDGE_ID);
+        double cosHalfAngle = SWEEP_COS_HALF_ANGLE[Math.min(sweepingLevel, SWEEP_COS_HALF_ANGLE.length - 1)];
 
-        AABB aabb = new AABB(
-                eyePos.x - radius, eyePos.y - radius, eyePos.z - radius,
-                eyePos.x + radius, eyePos.y + radius, eyePos.z + radius
-        );
-        List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, aabb,
-                e -> e != player && !(e instanceof Player));
         List<LivingEntity> targets = new ArrayList<>();
-
-        for (LivingEntity target : entities) {
+        LivingEntity primary = null;
+        double nearest = Double.MAX_VALUE;
+        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && !(e instanceof Player))) {
             Vec3 toTarget = target.getBoundingBox().getCenter().subtract(eyePos);
-            double dist = toTarget.length();
-            if (dist > radius || dist < 0.5) continue;
-            if (lookVec.dot(toTarget.normalize()) >= COS_HALF_ANGLE) targets.add(target);
+            double distance = toTarget.length();
+            if (distance > RADIUS || distance < 0.5 || lookVec.dot(toTarget.normalize()) < cosHalfAngle) continue;
+            targets.add(target);
+            double distanceSq = target.distanceToSqr(player);
+            if (distanceSq < nearest) {
+                nearest = distanceSq;
+                primary = target;
+            }
         }
+        if (primary == null) return;
 
-        if (targets.isEmpty()) return;
-
-        targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(player)));
-
-        LivingEntity primary = targets.get(0);
-        float sweepDamage = tool.getStats().get(ToolStats.ATTACK_DAMAGE) * SWEEP_DAMAGE_RATIO;
         ToolAttackContext context = ToolAttackContext.attacker(player)
                 .target(primary)
                 .hand(InteractionHand.MAIN_HAND)
-                .baseDamage(sweepDamage)
+                .baseDamage(tool.getStats().get(ToolStats.ATTACK_DAMAGE) * SWEEP_DAMAGE_RATIO)
                 .cooldown(1.0f)
                 .build();
         float oldHealth = primary.getHealth();
@@ -140,14 +127,12 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
         float primaryDamage = oldHealth - primary.getHealth();
 
         if (primaryDamage > 0 && targets.size() > 1) {
-            int sweepingLevel = tool.getModifierLevel(SWEEPING_EDGE_ID);
-            float secondaryRatio = Math.min(SECONDARY_BASE_RATIO + SECONDARY_RATIO_PER_LEVEL * sweepingLevel, 1.0f);
-            float secondaryDamage = primaryDamage * secondaryRatio;
+            float secondaryDamage = primaryDamage * Math.min(SECONDARY_BASE_RATIO + SECONDARY_RATIO_PER_LEVEL * sweepingLevel, 1.0f);
             DamageSource source = player.damageSources().playerAttack(player);
-
-            for (int i = 1; i < targets.size(); i++) {
-                LivingEntity secondary = targets.get(i);
-                ToolAttackUtil.attackEntitySecondary(source, secondaryDamage, secondary, secondary, false);
+            for (LivingEntity secondary : targets) {
+                if (secondary != primary) {
+                    ToolAttackUtil.attackEntitySecondary(source, secondaryDamage, secondary, secondary, false);
+                }
             }
         }
 

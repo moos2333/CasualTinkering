@@ -1,0 +1,12 @@
+{
+  "modifier_id": "casualtinkering:magic_sword_control",
+  "text": [
+    { "text": "Hold right-click to charge, then release to summon magical swords at a target within 8 blocks. Higher levels summon more swords." }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Requires 1 ability slot for first level",
+    "Consecutive levels require 1 upgrade slot",
+    "Maximum of 3 levels"
+  ]
+}

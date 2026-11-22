@@ -2,6 +2,7 @@ package com.npstra.casualtinkering.init;
 
 import com.npstra.casualtinkering.CasualTinkering;
 import com.npstra.casualtinkering.entity.EntityMagicSword;
+import com.npstra.casualtinkering.entity.GunbladeBullet;
 import com.npstra.casualtinkering.entity.ThrownBoomerang;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -16,7 +17,7 @@ public class ModEntities {
     public static final RegistryObject<EntityType<EntityMagicSword>> MAGIC_SWORD = ENTITIES.register("magic_sword",
             () -> EntityType.Builder.<EntityMagicSword>of(EntityMagicSword::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
-                    .clientTrackingRange(64)
+                    .clientTrackingRange(4)
                     .updateInterval(1)
                     .build(id("magic_sword")));
 
@@ -26,6 +27,13 @@ public class ModEntities {
                     .clientTrackingRange(4)
                     .updateInterval(1)
                     .build(id("thrown_boomerang")));
+
+    public static final RegistryObject<EntityType<GunbladeBullet>> GUNBLADE_BULLET = ENTITIES.register("gunblade_bullet",
+            () -> EntityType.Builder.<GunbladeBullet>of(GunbladeBullet::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(1)
+                    .build(id("gunblade_bullet")));
 
     private static String id(String name) {
         return CasualTinkering.MODID + ":" + name;

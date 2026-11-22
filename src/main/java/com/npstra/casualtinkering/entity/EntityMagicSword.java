@@ -2,65 +2,47 @@ package com.npstra.casualtinkering.entity;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.IEntityAdditionalSpawnData;
-import net.minecraftforge.network.NetworkHooks;
 
-public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnData {
-    private static final EntityDataAccessor<ItemStack> DATA_RENDER_STACK = SynchedEntityData.defineId(EntityMagicSword.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<Integer> DATA_SHOOTER_ID = SynchedEntityData.defineId(EntityMagicSword.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(EntityMagicSword.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> DATA_DAMAGE = SynchedEntityData.defineId(EntityMagicSword.class, EntityDataSerializers.FLOAT);
-
+public class EntityMagicSword extends Entity {
+    private static final EntityDataAccessor<String> MATERIAL = SynchedEntityData.defineId(EntityMagicSword.class, EntityDataSerializers.STRING);
     private static final int MAX_LIFE = 100;
-    private int life = MAX_LIFE;
-    private LivingEntity target;
-    private LivingEntity shooter;
+    private static final double SPAWN_RADIUS = 2.0;
+    private static final double LAUNCH_SPEED = 0.6;
+    private static final double CHASE_SPEED = 0.5;
 
-    public EntityMagicSword(EntityType<? extends EntityMagicSword> type, Level world) {
-        super(type, world);
+    private float damage;
+    private int life = MAX_LIFE;
+    private LivingEntity shooter;
+    private LivingEntity target;
+
+    public EntityMagicSword(EntityType<? extends EntityMagicSword> type, Level level) {
+        super(type, level);
         this.setNoGravity(true);
     }
 
-    public EntityMagicSword(EntityType<? extends EntityMagicSword> type, Level world, LivingEntity shooter, LivingEntity target, float damage, ItemStack renderStack) {
-        this(type, world);
+    public EntityMagicSword(EntityType<? extends EntityMagicSword> type, Level level, LivingEntity shooter, LivingEntity target, float damage, String material) {
+        this(type, level);
         this.shooter = shooter;
         this.target = target;
-        this.getEntityData().set(DATA_SHOOTER_ID, shooter == null ? -1 : shooter.getId());
-        this.getEntityData().set(DATA_TARGET_ID, target == null ? -1 : target.getId());
-        this.getEntityData().set(DATA_DAMAGE, damage);
-        this.getEntityData().set(DATA_RENDER_STACK, renderStack.copy());
+        this.damage = damage;
+        this.entityData.set(MATERIAL, material);
 
-        double angle = world.random.nextDouble() * 2 * Math.PI;
-        double radius = 2.0;
-        double x = target.getX() + radius * Math.cos(angle);
-        double z = target.getZ() + radius * Math.sin(angle);
-        double y = target.getY() + 1.5;
-        this.setPos(x, y, z);
-
-        Vec3 dir = target.position().subtract(this.position()).normalize();
-        this.setDeltaMovement(dir.scale(0.6));
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        this.entityData.define(DATA_RENDER_STACK, ItemStack.EMPTY);
-        this.entityData.define(DATA_SHOOTER_ID, -1);
-        this.entityData.define(DATA_TARGET_ID, -1);
-        this.entityData.define(DATA_DAMAGE, 0.0f);
+        double angle = level.random.nextDouble() * Mth.TWO_PI;
+        this.setPos(
+                target.getX() + SPAWN_RADIUS * Math.cos(angle),
+                target.getY() + 1.5,
+                target.getZ() + SPAWN_RADIUS * Math.sin(angle));
+        this.setDeltaMovement(target.position().subtract(this.position()).normalize().scale(LAUNCH_SPEED));
     }
 
     @Override
@@ -70,87 +52,46 @@ public class EntityMagicSword extends Entity implements IEntityAdditionalSpawnDa
             if (this.tickCount % 5 == 0) {
                 this.level().addParticle(ParticleTypes.ENCHANT, this.getX(), this.getY() + 0.5, this.getZ(), 0, 0, 0);
             }
-        } else {
-            if (this.life-- <= 0) {
-                this.discard();
-                return;
-            }
-            if (this.target == null || !this.target.isAlive()) {
-                this.discard();
-                return;
-            }
-            if (this.getBoundingBox().intersects(this.target.getBoundingBox())) {
-                this.attack();
-                this.discard();
-                return;
-            }
-            this.moveTowardsTarget();
+            return;
         }
-    }
-
-    private void moveTowardsTarget() {
-        Vec3 direction = this.target.position().subtract(this.position()).normalize();
-        this.setDeltaMovement(direction.scale(0.5));
+        if (this.life-- <= 0 || this.target == null || !this.target.isAlive()) {
+            this.discard();
+            return;
+        }
+        if (this.getBoundingBox().intersects(this.target.getBoundingBox())) {
+            this.attack();
+            this.discard();
+            return;
+        }
+        this.setDeltaMovement(this.target.position().subtract(this.position()).normalize().scale(CHASE_SPEED));
         this.move(MoverType.SELF, this.getDeltaMovement());
     }
 
     private void attack() {
-        if (this.level().isClientSide) return;
+        DamageSource source = this.level().damageSources().indirectMagic(this, this.shooter);
         LivingEntity target = this.target;
-        if (target == null) return;
-        float damage = this.getEntityData().get(DATA_DAMAGE);
-        int shooterId = this.getEntityData().get(DATA_SHOOTER_ID);
-        LivingEntity shooter = shooterId == -1 ? null : (LivingEntity) this.level().getEntity(shooterId);
-        DamageSource source = this.level().damageSources().indirectMagic(this, shooter);
-        int oldHurtResistant = target.invulnerableTime;
+        int invulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
-        target.hurt(source, damage);
-        target.invulnerableTime = oldHurtResistant;
+        target.hurt(source, this.damage);
+        target.invulnerableTime = invulnerableTime;
     }
 
-    public ItemStack getRenderStack() {
-        return this.getEntityData().get(DATA_RENDER_STACK);
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {}
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {}
-
-    @Override
-    public void writeSpawnData(FriendlyByteBuf buffer) {
-        buffer.writeInt(this.getEntityData().get(DATA_SHOOTER_ID));
-        buffer.writeInt(this.getEntityData().get(DATA_TARGET_ID));
-        buffer.writeFloat(this.getEntityData().get(DATA_DAMAGE));
-        buffer.writeItem(this.getEntityData().get(DATA_RENDER_STACK));
-        buffer.writeDouble(this.getX());
-        buffer.writeDouble(this.getY());
-        buffer.writeDouble(this.getZ());
+    public String getMaterial() {
+        return this.entityData.get(MATERIAL);
     }
 
     @Override
-    public void readSpawnData(FriendlyByteBuf buffer) {
-        int shooterId = buffer.readInt();
-        int targetId = buffer.readInt();
-        float damage = buffer.readFloat();
-        ItemStack stack = buffer.readItem();
-        double x = buffer.readDouble();
-        double y = buffer.readDouble();
-        double z = buffer.readDouble();
-
-        this.getEntityData().set(DATA_SHOOTER_ID, shooterId);
-        this.getEntityData().set(DATA_TARGET_ID, targetId);
-        this.getEntityData().set(DATA_DAMAGE, damage);
-        this.getEntityData().set(DATA_RENDER_STACK, stack);
-        this.setPos(x, y, z);
-
-        if (shooterId != -1) this.shooter = (LivingEntity) this.level().getEntity(shooterId);
-        if (targetId != -1) this.target = (LivingEntity) this.level().getEntity(targetId);
+    protected void defineSynchedData() {
+        this.entityData.define(MATERIAL, "");
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        this.entityData.set(MATERIAL, tag.getString("material"));
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.putString("material", getMaterial());
     }
 }

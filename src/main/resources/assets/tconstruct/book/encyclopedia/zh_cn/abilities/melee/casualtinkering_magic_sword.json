@@ -1,0 +1,12 @@
+{
+  "modifier_id": "casualtinkering:magic_sword",
+  "text": [
+    { "text": "蓄满力的近战攻击会召唤魔法剑刺穿目标，等级越高召唤数量越多。" }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "第一级需要1个能力槽",
+    "后续等级各需要1个升级槽",
+    "最高3级"
+  ]
+}

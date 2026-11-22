@@ -46,7 +46,7 @@
       "type": "tconstruct:traits",
       "traits": [
         { "name": "casualtinkering:circular_saw_attack", "level": 1 },
-        { "name": "tconstruct:padded", "level": 1 }
+        { "name": "tconstruct:padded", "level": 2 }
       ]
     },
     {

@@ -35,6 +35,10 @@
       "traits": [
         { "name": "casualtinkering:triple_shot", "level": 1 }
       ]
+    },
+    {
+      "type": "tconstruct:material_name",
+      "filter": "all"
     }
   ]
 }

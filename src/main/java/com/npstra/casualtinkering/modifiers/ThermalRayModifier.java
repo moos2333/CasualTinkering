@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -58,19 +59,9 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
         data.put(KEY_OVERHEAT_END, LongTag.valueOf(value));
     }
 
-    private int getChargeTicks(IToolStackView tool) {
+    private static int getChargeTicks(IToolStackView tool) {
         float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
-        if (attackSpeed >= 3.0f) return 20;
-        if (attackSpeed <= 0.5f) return 45;
-        float ticks;
-        if (attackSpeed >= 2.0f) {
-            ticks = 30 - (attackSpeed - 2.0f) * 10;
-        } else if (attackSpeed >= 1.0f) {
-            ticks = 40 - (attackSpeed - 1.0f) * 10;
-        } else {
-            ticks = 45 - (attackSpeed - 0.5f) * 10;
-        }
-        return Math.round(ticks);
+        return Mth.clamp(Math.round(45f - (attackSpeed - 0.5f) * 10f), 20, 45);
     }
 
     @Override
@@ -79,6 +70,11 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
         hookBuilder.addHook(this, ModifierHooks.GENERAL_INTERACT, ModifierHooks.TOOL_USING, ModifierHooks.INVENTORY_TICK);
         hookBuilder.addModule(ToolTankHelper.TANK_HANDLER);
         hookBuilder.addModule(StatBoostModule.add(ToolTankHelper.CAPACITY_STAT).eachLevel(1000));
+    }
+
+    @Override
+    public Component getDisplayName(int level) {
+        return getDisplayName();
     }
 
     @Override
@@ -142,8 +138,8 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
         if (shots >= OVERHEAT_THRESHOLD) {
             setOverheated(data, level);
             if (level instanceof ServerLevel serverLevel) {
-                for (int i = 0; i < 8; i++)
-                    serverLevel.sendParticles(ParticleTypes.SMOKE, player.getX() + (level.random.nextDouble() - 0.5) * 1.0, player.getY() + level.random.nextDouble() * 1.5, player.getZ() + (level.random.nextDouble() - 0.5) * 1.0, 0, 0, 0.1, 0, 0.1);
+                serverLevel.sendParticles(ParticleTypes.SMOKE, player.getX(), player.getY() + 0.75, player.getZ(), 8, 0.5, 0.75, 0.5, 0.05);
+                serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.PLAYERS, 0.7f, 0.6f);
             }
         }
 
@@ -154,11 +150,11 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
             else ToolTankHelper.TANK_HELPER.setFluid(tool, fluid);
         }
 
-        ToolDamageUtil.damage(tool, 1, player, player.getMainHandItem());
+        ToolDamageUtil.damage(tool, 1, player, player.getUseItem());
 
         float baseDamage = tool.getStats().get(ToolStats.ATTACK_DAMAGE);
         if (baseDamage <= 0) baseDamage = 1.0f;
-        float tempBonus = getFluidTemperatureBonus(tool);
+        float tempBonus = getFluidTemperatureBonus(fluid);
         float totalDamage = baseDamage * (BASE_DAMAGE_MULTIPLIER + tempBonus);
 
         Vec3 start = player.getEyePosition();
@@ -212,8 +208,7 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
         data.putInt(KEY_SHOTS, 0);
     }
 
-    private float getFluidTemperatureBonus(IToolStackView tool) {
-        FluidStack fluid = ToolTankHelper.TANK_HELPER.getFluid(tool);
+    private float getFluidTemperatureBonus(FluidStack fluid) {
         if (fluid.isEmpty()) return 0.0f;
         int temp = fluid.getFluid().getFluidType().getTemperature();
         if (temp <= BASE_TEMP) return 0.0f;

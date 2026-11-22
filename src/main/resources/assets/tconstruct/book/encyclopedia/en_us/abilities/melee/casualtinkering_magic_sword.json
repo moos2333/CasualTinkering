@@ -1,0 +1,12 @@
+{
+  "modifier_id": "casualtinkering:magic_sword",
+  "text": [
+    { "text": "A fully charged melee strike summons magical swords that pierce the target. Higher levels summon more swords." }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Requires 1 ability slot for first level",
+    "Consecutive levels require 1 upgrade slot",
+    "Maximum of 3 levels"
+  ]
+}

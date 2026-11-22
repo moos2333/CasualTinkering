@@ -1,0 +1,12 @@
+{
+  "modifier_id": "casualtinkering:thermal_ray",
+  "text": [
+    { "text": "Consumes hot fluids from an attached tank to fire a sustained beam. Overheats after 10 shots and must cool before firing again." }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Maximum of 1 level",
+    "Requires 2 ability slots",
+    "Needs a fluid tank and hot fluid"
+  ]
+}
