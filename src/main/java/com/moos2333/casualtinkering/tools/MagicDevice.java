@@ -13,6 +13,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.*;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -237,6 +238,7 @@ public class MagicDevice extends SwordCore {
     @Mod.EventBusSubscriber
     public static class CoopHandler {
         private static final int COOP_COOLDOWN_TICKS = 10;
+        private static final float BASE_ATTACK_SPEED = 1.8F;
 
         @SubscribeEvent
         public static void onLivingHurt(LivingHurtEvent event) {
@@ -260,7 +262,14 @@ public class MagicDevice extends SwordCore {
             boolean isSword = mainhand.getItem() instanceof ItemSword || mainhand.getItem() instanceof SwordCore;
             if (!isSword) return;
 
-            player.getCooldownTracker().setCooldown(deviceStack.getItem(), COOP_COOLDOWN_TICKS);
+            float actualSpeed = ToolHelper.getActualAttackSpeed(deviceStack);
+            float ratio = MathHelper.clamp((actualSpeed - BASE_ATTACK_SPEED) / BASE_ATTACK_SPEED, 0.0F, 1.0F);
+            int cooldownTicks = (int) (COOP_COOLDOWN_TICKS * (1.0F - 0.5F * ratio));
+            player.getCooldownTracker().setCooldown(deviceStack.getItem(), cooldownTicks);
+
+            if (!player.isCreative()) {
+                ToolHelper.damageTool(deviceStack, 1, player);
+            }
 
             MagicDevice device = (MagicDevice) deviceStack.getItem();
             float totalDamage = ToolHelper.getActualAttack(deviceStack);
