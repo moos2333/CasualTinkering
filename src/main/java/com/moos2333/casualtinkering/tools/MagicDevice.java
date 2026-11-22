@@ -40,7 +40,6 @@ import com.moos2333.casualtinkering.entity.EntityMagicSword;
 import java.util.List;
 import java.util.Random;
 
-@Mod.EventBusSubscriber
 public class MagicDevice extends SwordCore {
     public static final float DURABILITY_MODIFIER = 1.0F;
     private static final float MAGIC_DAMAGE_RATIO = 0.1F;
