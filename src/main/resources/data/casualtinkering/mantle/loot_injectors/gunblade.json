@@ -2,13 +2,12 @@
   "name": "minecraft:chests/ancient_city",
   "pools": [
     {
-      "name": "gunblade",
-      "conditions": [
-        { "condition": "minecraft:random_chance", "chance": 0.15 }
-      ],
+      "name": "main",
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "casualtinkering:gunblade",
+          "weight": 2,
           "functions": [
             {
               "function": "tconstruct:add_tool_data",
@@ -18,8 +17,7 @@
                 { "type": "tconstruct:ancient" }
               ]
             }
-          ],
-          "name": "casualtinkering:gunblade"
+          ]
         }
       ]
     }

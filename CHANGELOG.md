@@ -1,5 +1,54 @@
 # Changelog
 
+## 1.6.1
+
+- Quartziron now supports armour plating and chainmail, with the new Concealment trait: incoming damage is reduced by 0.5% per block of distance from the attacker, up to 5% per level.
+- Fixed the Sniping trait dealing no distance bonus damage in melee while knocking targets back much harder than intended.
+- The Molten Verdant Steel page in the encyclopedia now has its own description and lists its effects in the same wording as the other slime alloys.
+
+## 1.6.0
+
+- New tier 3 material: Quartziron. Cast molten quartz over iron parts, or molten iron over quartz. Its Sniping trait adds damage with hit distance.
+- New tier 3 material: Verdant Steel. Alloy molten copper with earth slime and molten clay. Its Oversiphon trait turns picked up experience into overslime.
+- Both materials come with their own ingots, and Molten Verdant Steel can be poured: it clings like slime and sets off small explosions that break no blocks and set nothing on fire.
+
+## 1.5.9
+
+- Heat Ray Gun fuel tiers: lava and blazing blood deal full damage, other hot fluids deal half damage and apply their fluid effects, fluids below 400K cannot fire.
+- Circular Saw rebalanced as a faster, lighter heavy tool.
+- Removing the Gunblade modifier now refunds its ability slots.
+
+## 1.5.8
+
+- Circular Saw no longer flickers between sawing and idle in third person.
+- Circular Saw reach in Better Combat raised to 3.
+
+## 1.5.7
+
+- Throwing Knife projectile damage and velocity raised to 1.25.
+- The Magic Sword Coop modifier no longer triggers from projectile hits.
+- Circular Saw sweep ignores taps shorter than one sweep interval.
+- Triple Shot can now be salvaged.
+- Boomerang charge time now scales continuously with attack speed.
+
+## 1.5.6
+
+- Broken textures for the Circular Saw, Heat Ray Gun and Boomerang.
+- Refined Throwing Knife material textures.
+
+## 1.5.5
+
+- The Gunblade barrel trait can now be upgraded by the Rebalanced modifier, matching other ancient tools.
+
+## 1.5.4
+
+- Added optional Epic Fight compatibility through datapack files; the Gunblade, Circular Saw, Heat Ray Gun and Boomerang use sword, axe, one-handed tool and dagger templates respectively, with the Boomerang keeping sword-length reach.
+- Corrected and standardized the encyclopedia entries for all tools.
+
+## 1.5.3
+
+- Fixed an issue that prevented the Gunblade from generating in ancient city chests.
+
 ## 1.5.2
 
 - Heat Ray Gun: Diamond, Netherite, Sharpness, Reinforced, Overforced, Unbreakable and Experienced overlays.

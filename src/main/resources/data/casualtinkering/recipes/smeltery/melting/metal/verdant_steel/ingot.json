@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "tag": "forge:ingots/verdant_steel"
+  },
+  "result": {
+    "amount": 90,
+    "fluid": "casualtinkering:molten_verdant_steel"
+  },
+  "temperature": 800,
+  "time": 63
+}

@@ -1,13 +1,19 @@
 {
   "tool": "casualtinkering:heat_ray_gun",
   "text": [
-    { "text": "A sustained-beam weapon that burns through fuel to scorch anything in its path. Hold right-click to fire." },
-    { "text": "Overheats if fired too long; let it cool before firing again. Thermal Ray and Tank II are built in.", "paragraph": true }
+    {
+      "text": "The Heat Ray Gun is a beam weapon that burns fluid from its tank. Smeltery fuels such as lava and blazing blood deal full damage; other molten fluids deal half damage but apply their fluid effects. Hold right-click to fire."
+    },
+    {
+      "text": "It overheats after 10 shots and must cool before firing again. Thermal Ray I and Tank II are built in.",
+      "paragraph": true
+    }
   ],
   "properties": [
-    "+2.4 Attack Damage",
+    "+2.0 Attack Damage",
+    "120% Attack Multiplier",
     "1.5 Attack Speed",
-    "Thermal Ray",
+    "Thermal Ray I",
     "Tank II",
     "2 Upgrade Slots",
     "1 Ability Slot"

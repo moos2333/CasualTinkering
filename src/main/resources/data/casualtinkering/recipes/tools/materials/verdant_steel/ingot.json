@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material",
+  "ingredient": {
+    "tag": "forge:ingots/verdant_steel"
+  },
+  "material": "casualtinkering:verdant_steel",
+  "needed": 1,
+  "value": 1
+}

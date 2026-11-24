@@ -1,0 +1,32 @@
+{
+  "default": [
+    {
+      "level": 1,
+      "name": "casualtinkering:sniping"
+    }
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "level": 1,
+        "name": "casualtinkering:concealment"
+      }
+    ],
+    "tconstruct:ranged": [
+      {
+        "level": 1,
+        "name": "casualtinkering:sniping"
+      }
+    ],
+    "tconstruct:arrow_head": [
+      {
+        "level": 1,
+        "name": "tconstruct:keen"
+      },
+      {
+        "level": 1,
+        "name": "casualtinkering:sniping"
+      }
+    ]
+  }
+}

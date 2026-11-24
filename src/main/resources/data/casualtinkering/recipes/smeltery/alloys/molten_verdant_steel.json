@@ -1,0 +1,22 @@
+{
+  "type": "tconstruct:alloy",
+  "inputs": [
+    {
+      "amount": 90,
+      "tag": "forge:molten_copper"
+    },
+    {
+      "amount": 250,
+      "tag": "tconstruct:earth_slime"
+    },
+    {
+      "amount": 250,
+      "tag": "tconstruct:molten_clay"
+    }
+  ],
+  "result": {
+    "amount": 180,
+    "fluid": "casualtinkering:molten_verdant_steel"
+  },
+  "temperature": 800
+}

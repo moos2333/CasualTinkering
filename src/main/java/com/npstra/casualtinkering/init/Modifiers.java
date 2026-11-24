@@ -27,6 +27,10 @@ public class Modifiers {
 
     public static final StaticModifier<GunbladeModifier> GUNBLADE = MODIFIERS.register("gunblade", GunbladeModifier::new);
 
+    public static final StaticModifier<OversiphonModifier> OVERSIPHON = MODIFIERS.register("oversiphon", OversiphonModifier::new);
+
+    public static final StaticModifier<ConcealmentModifier> CONCEALMENT = MODIFIERS.register("concealment", ConcealmentModifier::new);
+
     public static void register(IEventBus bus) {
         MODIFIERS.register(bus);
     }

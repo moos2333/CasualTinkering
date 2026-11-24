@@ -1,0 +1,10 @@
+{
+  "type": "tconstruct:material_fluid",
+  "fluid": {
+    "amount": 250,
+    "tag": "tconstruct:molten_quartz"
+  },
+  "input": "tconstruct:iron",
+  "output": "casualtinkering:quartziron",
+  "temperature": 937
+}

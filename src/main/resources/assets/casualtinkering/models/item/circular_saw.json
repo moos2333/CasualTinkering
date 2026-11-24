@@ -28,7 +28,13 @@
   "overrides": [
     {
       "predicate": {
-        "tconstruct:charging": 1
+        "tconstruct:broken": 1
+      },
+      "model": "casualtinkering:item/tool/circular_saw/broken"
+    },
+    {
+      "predicate": {
+        "casualtinkering:sawing": 1
       },
       "model": "casualtinkering:item/tool/circular_saw/sawing"
     }

@@ -5,6 +5,7 @@ import com.npstra.casualtinkering.entity.EntityMagicSword;
 import com.npstra.casualtinkering.init.Modifiers;
 import com.npstra.casualtinkering.util.MagicSwordHelper;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +29,8 @@ public class MagicSwordCoopModifier extends Modifier {
         if (event.getEntity().level().isClientSide) return;
         if (event.getSource().getDirectEntity() instanceof EntityMagicSword) return;
         if (!(event.getSource().getEntity() instanceof Player player)) return;
+        Entity direct = event.getSource().getDirectEntity();
+        if (direct != null && !(direct instanceof Player)) return;
 
         ItemStack offhand = player.getOffhandItem();
         if (!ToolStack.isInitialized(offhand)) return;

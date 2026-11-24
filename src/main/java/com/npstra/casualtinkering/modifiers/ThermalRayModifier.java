@@ -19,10 +19,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import slimeknights.tconstruct.library.modifiers.fluid.FluidEffectContext;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
@@ -34,6 +38,9 @@ import slimeknights.tconstruct.library.modifiers.modules.build.StatBoostModule;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.capability.fluid.ToolTankHelper;
 import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
+import slimeknights.tconstruct.fluids.TinkerFluids;
+import slimeknights.tconstruct.library.modifiers.fluid.FluidEffectManager;
+import slimeknights.tconstruct.library.modifiers.fluid.FluidEffects;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.nbt.ModDataNBT;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
@@ -42,11 +49,12 @@ import java.util.List;
 
 public class ThermalRayModifier extends Modifier implements GeneralInteractionModifierHook, UsingToolModifierHook, InventoryTickModifierHook {
     private static final int FLUID_COST_MB = 50;
-    private static final float BASE_DAMAGE_MULTIPLIER = 1.5f;
+    private static final int MIN_TEMP = 400;
+    private static final float BASE_MULTIPLIER = 1.5f;
+    private static final float MAX_MULTIPLIER = 10.0f;
+    private static final float EFFECT_FLUID_MULTIPLIER = 0.5f;
     private static final int OVERHEAT_THRESHOLD = 10;
     private static final int OVERHEAT_TICKS = 100;
-    private static final float MAX_TEMP_BONUS = 1.5f;
-    private static final int BASE_TEMP = 1000;
 
     private static final ResourceLocation KEY_OVERHEAT_END = ResourceLocation.tryBuild("casualtinkering", "thermal_ray_overheat_end");
     private static final ResourceLocation KEY_SHOTS = ResourceLocation.tryBuild("casualtinkering", "thermal_ray_shots");
@@ -84,7 +92,7 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
             if (player.level().isClientSide) player.displayClientMessage(Component.translatable("modifier.thermal_ray.overheat").withStyle(ChatFormatting.RED), true);
             return InteractionResult.FAIL;
         }
-        if (ToolTankHelper.TANK_HELPER.getFluid(tool).getAmount() < FLUID_COST_MB) {
+        if (!canFire(ToolTankHelper.TANK_HELPER.getFluid(tool))) {
             if (player.level().isClientSide) player.displayClientMessage(Component.translatable("modifier.thermal_ray.no_fuel").withStyle(ChatFormatting.RED), true);
             return InteractionResult.FAIL;
         }
@@ -132,6 +140,9 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
 
     private void executeShot(IToolStackView tool, Player player) {
         Level level = player.level();
+        FluidStack fluid = ToolTankHelper.TANK_HELPER.getFluid(tool);
+        if (!canFire(fluid)) return;
+
         ModDataNBT data = tool.getPersistentData();
         int shots = data.getInt(KEY_SHOTS) + 1;
         data.putInt(KEY_SHOTS, shots);
@@ -143,19 +154,17 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
             }
         }
 
-        FluidStack fluid = ToolTankHelper.TANK_HELPER.getFluid(tool);
-        if (!fluid.isEmpty() && fluid.getAmount() >= FLUID_COST_MB) {
-            fluid.shrink(FLUID_COST_MB);
-            if (fluid.isEmpty()) ToolTankHelper.TANK_HELPER.setFluid(tool, FluidStack.EMPTY);
-            else ToolTankHelper.TANK_HELPER.setFluid(tool, fluid);
-        }
+        FluidStack effectFluid = fluid.copy();
+        fluid.shrink(FLUID_COST_MB);
+        if (fluid.isEmpty()) ToolTankHelper.TANK_HELPER.setFluid(tool, FluidStack.EMPTY);
+        else ToolTankHelper.TANK_HELPER.setFluid(tool, fluid);
 
         ToolDamageUtil.damage(tool, 1, player, player.getUseItem());
 
         float baseDamage = tool.getStats().get(ToolStats.ATTACK_DAMAGE);
         if (baseDamage <= 0) baseDamage = 1.0f;
-        float tempBonus = getFluidTemperatureBonus(fluid);
-        float totalDamage = baseDamage * (BASE_DAMAGE_MULTIPLIER + tempBonus);
+        boolean fuel = isFuel(effectFluid);
+        float totalDamage = baseDamage * getDamageMultiplier(effectFluid);
 
         Vec3 start = player.getEyePosition();
         Vec3 look = player.getLookAngle();
@@ -180,16 +189,25 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
         if (target != null) {
             DamageSource source = new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MAGIC), player);
             target.hurt(source, totalDamage);
-            target.setSecondsOnFire(4);
-            if (level instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 10, 0.2, 0.2, 0.2, 0.0);
+            if (fuel) {
+                target.setSecondsOnFire(4);
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 10, 0.2, 0.2, 0.2, 0.0);
+                }
+            } else if (!level.isClientSide) {
+                FluidEffects effects = FluidEffectManager.INSTANCE.find(effectFluid.getFluid());
+                if (effects.hasEntityEffects()) {
+                    int dose = Math.min(effects.getAmount(effectFluid.getFluid()), FLUID_COST_MB);
+                    FluidEffectContext.Entity context = FluidEffectContext.builder(level).user(player).stack(player.getMainHandItem()).target(target);
+                    effects.applyToEntity(new FluidStack(effectFluid.getFluid(), dose), dose, context, IFluidHandler.FluidAction.EXECUTE);
+                }
             }
         }
 
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 1.0f, 1.0f);
             double distance = start.distanceTo(end);
-            int steps = (int) (distance * 0.5);
+            int steps = Math.max(1, (int) (distance * 0.5));
             for (int i = 0; i <= steps; i++) {
                 Vec3 pos = start.add(look.scale(distance * i / steps));
                 serverLevel.sendParticles(ParticleTypes.FLAME, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
@@ -208,11 +226,19 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
         data.putInt(KEY_SHOTS, 0);
     }
 
-    private float getFluidTemperatureBonus(FluidStack fluid) {
-        if (fluid.isEmpty()) return 0.0f;
+    private static boolean isFuel(FluidStack fluid) {
+        Fluid fluidType = fluid.getFluid();
+        return fluidType == Fluids.LAVA || fluidType == TinkerFluids.blazingBlood.get();
+    }
+
+    private static boolean canFire(FluidStack fluid) {
+        return !fluid.isEmpty() && fluid.getAmount() >= FLUID_COST_MB && fluid.getFluid().getFluidType().getTemperature() >= MIN_TEMP;
+    }
+
+    private static float getDamageMultiplier(FluidStack fluid) {
         int temp = fluid.getFluid().getFluidType().getTemperature();
-        if (temp <= BASE_TEMP) return 0.0f;
-        float bonus = (temp - BASE_TEMP) / 500.0f * MAX_TEMP_BONUS;
-        return Math.min(bonus, MAX_TEMP_BONUS);
+        float multiplier = BASE_MULTIPLIER * (1.0f + Math.max(0, temp - 1000) / 2000.0f);
+        if (!isFuel(fluid)) multiplier *= EFFECT_FLUID_MULTIPLIER;
+        return Math.min(multiplier, MAX_MULTIPLIER);
     }
 }

@@ -1,11 +1,12 @@
 {
   "tool": "casualtinkering:boomerang",
   "text": [
-    { "text": "A thrown axe that returns to its owner after striking or reaching its peak. Its traits apply on the way out and the way back." },
+    { "text": "The Boomerang is a thrown axe that returns to its owner after striking or reaching its peak, applying the tool's traits both ways." },
     { "text": "Right-click to throw. Boomerang II is built in.", "paragraph": true }
   ],
   "properties": [
-    "+1.1 Attack Damage",
+    "+1.5 Attack Damage",
+    "75% Attack Multiplier",
     "1.8 Attack Speed",
     "Boomerang II",
     "3 Upgrade Slots",

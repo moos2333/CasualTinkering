@@ -118,7 +118,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
         this.setPos(this.getX() + movement.x, this.getY() + movement.y, this.getZ() + movement.z);
         this.updateRotation();
         this.setDeltaMovement(movement.scale(this.isInWater() ? WATER_INERTIA : 0.99f));
-        if (!this.tasks.isEmpty()) {
+        if (!this.tasks.isEmpty() && this.tool != null) {
             ScheduledProjectileTaskModifierHook.checkSchedule(this.tool, this.toolStack, this, null, this.tasks);
         }
     }
@@ -135,18 +135,21 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
         if (hit.getType() == HitResult.Type.ENTITY) {
             Entity target = ((net.minecraft.world.phys.EntityHitResult) hit).getEntity();
             if (target == this.getOwner()) return;
-            if (this.inheritTraits && this.getOwner() instanceof Player player) {
+            if (this.inheritTraits && this.tool != null && this.getOwner() instanceof Player player) {
                 ItemStack originalMain = player.getMainHandItem();
-                player.setItemInHand(InteractionHand.MAIN_HAND, this.toolStack);
-                ToolAttackContext context = ToolAttackContext.attacker(player)
-                        .target(target)
-                        .hand(InteractionHand.MAIN_HAND)
-                        .baseDamage(this.damage)
-                        .cooldown(1.0f)
-                        .projectile(this)
-                        .build();
-                ToolAttackUtil.performAttack(this.tool, context);
-                player.setItemInHand(InteractionHand.MAIN_HAND, originalMain);
+                try {
+                    player.setItemInHand(InteractionHand.MAIN_HAND, this.toolStack);
+                    ToolAttackContext context = ToolAttackContext.attacker(player)
+                            .target(target)
+                            .hand(InteractionHand.MAIN_HAND)
+                            .baseDamage(this.damage)
+                            .cooldown(1.0f)
+                            .projectile(this)
+                            .build();
+                    ToolAttackUtil.performAttack(this.tool, context);
+                } finally {
+                    player.setItemInHand(InteractionHand.MAIN_HAND, originalMain);
+                }
             } else {
                 target.hurt(this.damageSources().thrown(this, this.getOwner()), this.damage);
             }
@@ -161,7 +164,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("stack", this.toolStack.save(new CompoundTag()));
+        if (!this.toolStack.isEmpty()) tag.put("stack", this.toolStack.save(new CompoundTag()));
         tag.putBoolean("returning", this.returning);
         tag.putBoolean("inheritTraits", this.inheritTraits);
         tag.putDouble("initialSpeed", this.initialSpeed);

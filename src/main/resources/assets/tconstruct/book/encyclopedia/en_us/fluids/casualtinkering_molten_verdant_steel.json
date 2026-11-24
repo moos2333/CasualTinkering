@@ -1,0 +1,11 @@
+{
+  "text": "Moss and molten metal settle their differences in a single furnace.",
+  "entity": [
+    "Power 1 explosion",
+    "2 Explosion Damage",
+    "Extra explosion knockback"
+  ],
+  "block": [
+    "Explosion ignores blocks"
+  ]
+}

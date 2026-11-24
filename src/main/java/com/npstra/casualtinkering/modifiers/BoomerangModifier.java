@@ -47,12 +47,9 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
         float attackSpeed = tool.getStats().get(ToolStats.ATTACK_SPEED);
         if (attackSpeed >= 2.0f) return 10;
         if (attackSpeed <= 0.5f) return 40;
-        float ticks;
-        if (attackSpeed >= 1.0f) {
-            ticks = 20 - (attackSpeed - 1.0f) * 10;
-        } else {
-            ticks = 30 - (attackSpeed - 0.5f) * 10;
-        }
+        float ticks = attackSpeed >= 1.0f
+                ? 20 - (attackSpeed - 1.0f) * 10
+                : 20 - (attackSpeed - 1.0f) * 40;
         return (int) ticks;
     }
 

@@ -1,0 +1,38 @@
+{
+  "block_effects": [
+    {
+      "type": "tconstruct:explosion",
+      "block_interaction": "keep",
+      "damage": {
+        "flat": 2.0
+      },
+      "knockback": {
+        "flat": 0.5
+      },
+      "place_fire": false,
+      "radius": {
+        "flat": 1.0
+      }
+    }
+  ],
+  "entity_effects": [
+    {
+      "type": "tconstruct:explosion",
+      "block_interaction": "keep",
+      "damage": {
+        "flat": 2.0
+      },
+      "knockback": {
+        "flat": 0.5
+      },
+      "place_fire": false,
+      "radius": {
+        "flat": 1.0
+      }
+    }
+  ],
+  "fluid": {
+    "amount": 20,
+    "tag": "casualtinkering:molten_verdant_steel"
+  }
+}

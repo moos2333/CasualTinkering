@@ -59,12 +59,11 @@ public class MagicSwordAutoModifier extends Modifier implements InventoryTickMod
         AABB area = player.getBoundingBox().inflate(range);
         LivingEntity nearest = null;
         double nearestDistance = Double.MAX_VALUE;
-        for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, area, e -> e != player && e.isAlive() && player.hasLineOfSight(e))) {
+        for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, area, e -> e != player && e.isAlive())) {
             double distanceSq = target.distanceToSqr(player);
-            if (distanceSq < nearestDistance) {
-                nearestDistance = distanceSq;
-                nearest = target;
-            }
+            if (distanceSq >= nearestDistance || !player.hasLineOfSight(target)) continue;
+            nearestDistance = distanceSq;
+            nearest = target;
         }
         return nearest;
     }

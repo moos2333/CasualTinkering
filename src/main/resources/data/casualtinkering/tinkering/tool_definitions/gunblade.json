@@ -18,6 +18,12 @@
       ]
     },
     {
+      "type": "tconstruct:material_traits",
+      "hooks": [ "tconstruct:rebalanced_trait" ],
+      "material_index": 2,
+      "stat_type": "tconstruct:limb"
+    },
+    {
       "type": "tconstruct:base_stats",
       "stats": {
         "tconstruct:attack_damage": 3.5,

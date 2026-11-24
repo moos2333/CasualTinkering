@@ -1,15 +1,16 @@
 {
   "tool": "casualtinkering:gunblade",
   "text": [
-    { "text": "An ancient weapon with a barrel in its blade. Melee hits load up to three rounds; right-click fires them as trait-carrying projectiles." },
-    { "text": "Found only in ancient city chests. Cannot be built at a Tinker Station.", "paragraph": true }
+    { "text": "The Gunblade is an ancient weapon with a barrel running through its blade. Melee hits load up to 3 rounds; right-click fires them as projectiles inheriting tool traits." },
+    { "text": "Found only in ancient city chests; it cannot be crafted.", "paragraph": true }
   ],
   "properties": [
     "+3.5 Attack Damage",
     "110% Attack Multiplier",
     "1.4 Attack Speed",
-    "Gunshot",
-    "Silky Shears",
+    "55% Durability Multiplier",
+    "Gunshot I",
+    "Silky Shears I",
     "3 Upgrade Slots",
     "1 Ability Slot"
   ]

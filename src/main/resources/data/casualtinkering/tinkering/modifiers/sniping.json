@@ -1,0 +1,13 @@
+{
+  "level_display": "tconstruct:default",
+  "modules": [
+    {
+      "type": "casualtinkering:sniping",
+      "bonus": {
+        "each_level": 0.01
+      },
+      "max_distance": 10
+    }
+  ],
+  "tooltip_display": "always"
+}

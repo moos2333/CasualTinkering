@@ -1,12 +1,14 @@
 {
   "modifier_id": "casualtinkering:thermal_ray",
   "text": [
-    { "text": "Consumes hot fluids from an attached tank to fire a sustained beam. Overheats after 10 shots and must cool before firing again." }
+    {
+      "text": "Fires a beam using the fluid in its tank. Smeltery fuels deal full damage and set targets ablaze. Other hot fluids deal half damage but apply their own fluid effects on impact. Fluids below 400K cannot be fired. Overheats after 10 shots."
+    }
   ],
   "more_text_space": true,
   "effects": [
     "Maximum of 1 level",
     "Requires 2 ability slots",
-    "Needs a fluid tank and hot fluid"
+    "Needs a fluid tank and fluid of at least 400K"
   ]
 }

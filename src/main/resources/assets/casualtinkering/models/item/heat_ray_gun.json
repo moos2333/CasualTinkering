@@ -63,5 +63,13 @@
         1.0
       ]
     }
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "tconstruct:broken": 1
+      },
+      "model": "casualtinkering:item/tool/heat_ray_gun/broken"
+    }
+  ]
 }

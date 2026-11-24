@@ -1,4 +1,8 @@
 {
+  "material.casualtinkering": {
+    "quartziron": "#CFC8B8",
+    "verdant_steel": "#34BF4C"
+  },
   "modifier.casualtinkering": {
     "circular_saw_attack": "#FFFACD",
     "magic_sword": "#00FFFF",
@@ -8,6 +12,9 @@
     "thermal_ray": "#FFA500",
     "boomerang": "#FFFF00",
     "triple_shot": "#ADFF2F",
-    "gunblade": "#B0C4DE"
+    "gunblade": "#B0C4DE",
+    "sniping": "#EFE9DC",
+    "concealment": "#AEA89B",
+    "oversiphon": "#63E374"
   }
 }

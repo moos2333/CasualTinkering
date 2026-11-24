@@ -1,13 +1,14 @@
 {
   "tool": "casualtinkering:throwing_knife",
   "text": [
-    { "text": "A light, fast-thrown knife that comes in stacks. Right-click to throw, or use it as shuriken ammunition." },
-    { "text": "Triple Shot I is built in, letting each throw release three knives.", "paragraph": true }
+    { "text": "The Throwing Knife is a light, stackable throwing blade. Right-click to throw, or use it as shuriken ammunition." },
+    { "text": "Triple Shot I is built in, releasing three knives per throw.", "paragraph": true }
   ],
   "properties": [
+    "2.0 Velocity",
     "1.0 Projectile Damage",
-    "2.0 Projectile Velocity",
-    "Triple Shot",
+    "200% Damage Multiplier",
+    "Triple Shot I",
     "0.8 Water Inertia"
   ]
 }

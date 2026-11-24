@@ -3,13 +3,32 @@
   "parent": "forge:item/default-tool",
   "textures": {
     "binding": "casualtinkering:item/tool/boomerang/binding",
-    "blade1":  "casualtinkering:item/tool/boomerang/blade1",
-    "blade2":  "casualtinkering:item/tool/boomerang/blade2"
+    "blade1": "casualtinkering:item/tool/boomerang/blade1",
+    "blade2": "casualtinkering:item/tool/boomerang/blade2"
   },
   "parts": [
-    { "name": "binding", "index": 0 },
-    { "name": "blade1",  "index": 1 },
-    { "name": "blade2",  "index": 2 }
+    {
+      "name": "binding",
+      "index": 0
+    },
+    {
+      "name": "blade1",
+      "index": 1
+    },
+    {
+      "name": "blade2",
+      "index": 2
+    }
   ],
-  "modifier_maps": [ "casualtinkering:boomerang" ]
+  "modifier_maps": [
+    "casualtinkering:boomerang"
+  ],
+  "overrides": [
+    {
+      "predicate": {
+        "tconstruct:broken": 1
+      },
+      "model": "casualtinkering:item/tool/boomerang/broken"
+    }
+  ]
 }

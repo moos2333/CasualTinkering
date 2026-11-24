@@ -81,15 +81,9 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
     @Override
     public void onUsingTick(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int timeLeft) {
         if (entity.level().isClientSide || !(entity instanceof Player player)) return;
-        int elapsed = getUseDuration(tool, modifier) - timeLeft - 1;
+        int elapsed = getUseDuration(tool, modifier) - timeLeft;
         float interval = getSweepInterval(tool);
-        if ((int) (elapsed / interval) > (int) ((elapsed - 1) / interval)) performSweepAttack(tool, player);
-    }
-
-    @Override
-    public void beforeReleaseUsing(IToolStackView tool, ModifierEntry modifier, LivingEntity entity, int useDuration, int timeLeft, ModifierEntry activeModifier) {
-        if (entity.level().isClientSide || !modifier.matches(activeModifier.getId())) return;
-        if (entity instanceof Player player) performSweepAttack(tool, player);
+        if (elapsed > 0 && (int) (elapsed / interval) > (int) ((elapsed - 1) / interval)) performSweepAttack(tool, player);
     }
 
     private void performSweepAttack(IToolStackView tool, Player player) {
@@ -103,7 +97,7 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
         List<LivingEntity> targets = new ArrayList<>();
         LivingEntity primary = null;
         double nearest = Double.MAX_VALUE;
-        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && !(e instanceof Player))) {
+        for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && e.isAlive() && !(e instanceof Player))) {
             Vec3 toTarget = target.getBoundingBox().getCenter().subtract(eyePos);
             double distance = toTarget.length();
             if (distance > RADIUS || distance < 0.5 || lookVec.dot(toTarget.normalize()) < cosHalfAngle) continue;

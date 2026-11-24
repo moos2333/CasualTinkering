@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "casualtinkering:verdant_steel",
+  "result": {
+    "amount": 90,
+    "fluid": "casualtinkering:molten_verdant_steel"
+  },
+  "temperature": 800
+}

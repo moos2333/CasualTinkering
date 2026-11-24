@@ -19,8 +19,8 @@
     {
       "type": "tconstruct:base_stats",
       "stats": {
-        "tconstruct:projectile_damage": 1.0,
-        "tconstruct:velocity": 1.0,
+        "tconstruct:projectile_damage": 1.25,
+        "tconstruct:velocity": 1.25,
         "tconstruct:water_inertia": 0.8
       }
     },

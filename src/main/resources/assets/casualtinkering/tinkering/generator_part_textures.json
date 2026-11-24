@@ -4,16 +4,19 @@
     { "path": "casualtinkering:item/tool/boomerang/binding", "stat_type": "tconstruct:head" },
     { "path": "casualtinkering:item/tool/boomerang/blade1", "stat_type": "tconstruct:handle" },
     { "path": "casualtinkering:item/tool/boomerang/blade2", "stat_type": "tconstruct:handle" },
+    { "path": "casualtinkering:item/tool/boomerang/blade1_broken", "stat_type": "tconstruct:handle" },
 
     { "path": "casualtinkering:item/tool/circular_saw/handle1", "stat_type": "tconstruct:handle" },
     { "path": "casualtinkering:item/tool/circular_saw/handle2", "stat_type": "tconstruct:handle" },
     { "path": "casualtinkering:item/tool/circular_saw/head1", "stat_type": "tconstruct:head" },
     { "path": "casualtinkering:item/tool/circular_saw/head2", "stat_type": "tconstruct:head" },
+    { "path": "casualtinkering:item/tool/circular_saw/head2_broken", "stat_type": "tconstruct:head" },
 
     { "path": "casualtinkering:item/tool/heat_ray_gun/handle", "stat_type": "tconstruct:handle" },
     { "path": "casualtinkering:item/tool/heat_ray_gun/plate", "stat_type": "tconstruct:handle" },
     { "path": "casualtinkering:item/tool/heat_ray_gun/fuel_tank", "stat_type": "tconstruct:head" },
     { "path": "casualtinkering:item/tool/heat_ray_gun/emitter", "stat_type": "tconstruct:head" },
+    { "path": "casualtinkering:item/tool/heat_ray_gun/fuel_tank_broken", "stat_type": "tconstruct:head" },
 
     { "path": "casualtinkering:item/tool/throwing_knife/handle", "stat_type": "tconstruct:arrow_shaft" },
     { "path": "casualtinkering:item/tool/throwing_knife/blade1", "stat_type": "tconstruct:arrow_head" },

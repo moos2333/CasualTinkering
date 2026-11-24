@@ -85,22 +85,25 @@ public class GunbladeBullet extends Projectile {
             return;
         }
         ItemStack original = player.getMainHandItem();
-        player.setItemInHand(InteractionHand.MAIN_HAND, this.toolStack);
-        ToolAttackContext context = ToolAttackContext.attacker(player)
-                .target(target)
-                .hand(InteractionHand.MAIN_HAND)
-                .baseDamage(this.damage)
-                .cooldown(1.0F)
-                .projectile(this)
-                .build();
-        ToolAttackUtil.performAttack(this.tool, context);
-        player.setItemInHand(InteractionHand.MAIN_HAND, original);
+        try {
+            player.setItemInHand(InteractionHand.MAIN_HAND, this.toolStack);
+            ToolAttackContext context = ToolAttackContext.attacker(player)
+                    .target(target)
+                    .hand(InteractionHand.MAIN_HAND)
+                    .baseDamage(this.damage)
+                    .cooldown(1.0F)
+                    .projectile(this)
+                    .build();
+            ToolAttackUtil.performAttack(this.tool, context);
+        } finally {
+            player.setItemInHand(InteractionHand.MAIN_HAND, original);
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("stack", this.toolStack.save(new CompoundTag()));
+        if (!this.toolStack.isEmpty()) tag.put("stack", this.toolStack.save(new CompoundTag()));
         tag.putFloat("damage", this.damage);
         tag.putInt("life", this.life);
     }
