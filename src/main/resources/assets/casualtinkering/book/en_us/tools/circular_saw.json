@@ -2,17 +2,17 @@
   "tool": "circular_saw",
   "text": [
     {
-      "text": "A heavy woodcutting tool with a spinning blade. Charges up to unleash a wide sweeping attack."
+      "text": "A heavy woodcutting tool designed for both harvesting and combat."
     },
     {
       "text": "\n"
     },
     {
-      "text": "Right-click to charge and unleash an area-of-effect sweep in front of you."
+      "text": "Hold right-click to continuously damage all targets in a frontal cone."
     }
   ],
   "properties": [
-    "Requires a Tool Station",
-    "Right-click: Charge and release for area damage"
+    "Requires a Tool Forge",
+    "Hold right-click: Continuous sawing"
   ]
 }
