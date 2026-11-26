@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.2
+
+- Fixed thrown boomerangs losing their damage and knockback when the game is saved and reloaded.
+
 ## 1.6.1
 
 - Quartziron now supports armour plating and chainmail, with the new Concealment trait: incoming damage is reduced by 0.5% per block of distance from the attacker, up to 5% per level.

@@ -66,6 +66,8 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
     private void setStack(ItemStack stack) {
         this.toolStack = stack;
         this.tool = ToolStack.from(stack);
+        this.damage = (float) this.tool.getStats().get(ToolStats.ATTACK_DAMAGE);
+        this.knockback = (float) this.tool.getStats().get(ToolStats.KNOCKBACK_RESISTANCE) * 0.5f;
         this.entityData.set(STACK, stack);
     }
 
@@ -165,6 +167,8 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (!this.toolStack.isEmpty()) tag.put("stack", this.toolStack.save(new CompoundTag()));
+        tag.putFloat("damage", this.damage);
+        tag.putFloat("knockback", this.knockback);
         tag.putBoolean("returning", this.returning);
         tag.putBoolean("inheritTraits", this.inheritTraits);
         tag.putDouble("initialSpeed", this.initialSpeed);
@@ -180,6 +184,8 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
         if (tag.contains("stack")) {
             this.setStack(ItemStack.of(tag.getCompound("stack")));
         }
+        if (tag.contains("damage")) this.damage = tag.getFloat("damage");
+        if (tag.contains("knockback")) this.knockback = tag.getFloat("knockback");
         this.returning = tag.getBoolean("returning");
         this.inheritTraits = tag.getBoolean("inheritTraits");
         this.initialSpeed = tag.getDouble("initialSpeed");
