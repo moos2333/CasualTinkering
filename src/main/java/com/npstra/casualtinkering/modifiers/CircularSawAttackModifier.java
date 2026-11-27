@@ -98,9 +98,13 @@ public class CircularSawAttackModifier extends Modifier implements GeneralIntera
         LivingEntity primary = null;
         double nearest = Double.MAX_VALUE;
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && e.isAlive() && !(e instanceof Player))) {
-            Vec3 toTarget = target.getBoundingBox().getCenter().subtract(eyePos);
-            double distance = toTarget.length();
-            if (distance > RADIUS || distance < 0.5 || lookVec.dot(toTarget.normalize()) < cosHalfAngle) continue;
+            AABB bb = target.getBoundingBox();
+            double cx = Mth.lerp(0.5D, bb.minX, bb.maxX) - eyePos.x;
+            double cy = Mth.lerp(0.5D, bb.minY, bb.maxY) - eyePos.y;
+            double cz = Mth.lerp(0.5D, bb.minZ, bb.maxZ) - eyePos.z;
+            double distance = Math.sqrt(cx * cx + cy * cy + cz * cz);
+            if (distance > RADIUS || distance < 0.5 ||
+                    lookVec.x * (cx / distance) + lookVec.y * (cy / distance) + lookVec.z * (cz / distance) < cosHalfAngle) continue;
             targets.add(target);
             double distanceSq = target.distanceToSqr(player);
             if (distanceSq < nearest) {

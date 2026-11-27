@@ -27,9 +27,9 @@ public class MagicSwordCoopModifier extends Modifier {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         if (event.getEntity().level().isClientSide) return;
-        if (event.getSource().getDirectEntity() instanceof EntityMagicSword) return;
-        if (!(event.getSource().getEntity() instanceof Player player)) return;
         Entity direct = event.getSource().getDirectEntity();
+        if (direct instanceof EntityMagicSword) return;
+        if (!(event.getSource().getEntity() instanceof Player player)) return;
         if (direct != null && !(direct instanceof Player)) return;
 
         ItemStack offhand = player.getOffhandItem();

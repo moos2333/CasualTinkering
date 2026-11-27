@@ -64,9 +64,13 @@ public class EntityMagicSword extends Entity {
             this.discard();
             return;
         }
-        Vec3 toTarget = this.target.position().subtract(this.position());
-        if (toTarget.lengthSqr() > 1.0E-4) {
-            this.setDeltaMovement(toTarget.normalize().scale(CHASE_SPEED));
+        Vec3 tp = this.target.position();
+        Vec3 sp = this.position();
+        double dx = tp.x - sp.x, dy = tp.y - sp.y, dz = tp.z - sp.z;
+        double lenSq = dx * dx + dy * dy + dz * dz;
+        if (lenSq > 1.0E-4) {
+            double len = Math.sqrt(lenSq);
+            this.setDeltaMovement(new Vec3(dx / len * CHASE_SPEED, dy / len * CHASE_SPEED, dz / len * CHASE_SPEED));
         }
         this.move(MoverType.SELF, this.getDeltaMovement());
     }

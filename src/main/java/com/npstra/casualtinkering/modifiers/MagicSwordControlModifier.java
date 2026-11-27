@@ -1,6 +1,7 @@
 package com.npstra.casualtinkering.modifiers;
 
 import com.npstra.casualtinkering.util.MagicSwordHelper;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -81,9 +82,15 @@ public class MagicSwordControlModifier extends Modifier implements GeneralIntera
         LivingEntity nearest = null;
         double nearestDistance = Double.MAX_VALUE;
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, area, e -> e != player && e.isAlive())) {
-            Vec3 toTarget = target.getBoundingBox().getCenter().subtract(eyePos);
-            double distance = toTarget.length();
-            if (distance > range || lookVec.dot(toTarget.normalize()) <= 0.5) continue;
+            AABB bb = target.getBoundingBox();
+            double cx = Mth.lerp(0.5D, bb.minX, bb.maxX) - eyePos.x;
+            double cy = Mth.lerp(0.5D, bb.minY, bb.maxY) - eyePos.y;
+            double cz = Mth.lerp(0.5D, bb.minZ, bb.maxZ) - eyePos.z;
+            double distance = Math.sqrt(cx * cx + cy * cy + cz * cz);
+            if (distance > range) continue;
+            double dot = distance < 1.0E-4D ? 0.0D
+                    : lookVec.x * (cx / distance) + lookVec.y * (cy / distance) + lookVec.z * (cz / distance);
+            if (dot <= 0.5) continue;
             double distanceSq = target.distanceToSqr(player);
             if (distanceSq < nearestDistance) {
                 nearestDistance = distanceSq;

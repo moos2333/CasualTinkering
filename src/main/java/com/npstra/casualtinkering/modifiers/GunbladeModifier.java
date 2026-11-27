@@ -54,6 +54,8 @@ public class GunbladeModifier extends Modifier implements GeneralInteractionModi
     private static final ResourceLocation KEY_CHARGES = ResourceLocation.tryBuild("casualtinkering", "gunblade_charges");
     private static final TagKey<Item> TAG_THROWABLE = TagKey.create(net.minecraft.core.registries.Registries.ITEM, ResourceLocation.tryBuild("tconstruct", "throwable"));
     private static final IJsonPredicate<Item> AMMO_FILTER = ItemPredicate.or(ItemPredicate.tag(TAG_THROWABLE), ItemPredicate.tag(ItemTags.ARROWS));
+    private static final Component EMPTY_CHAMBER = Component.translatable("modifier.casualtinkering.gunblade.chamber.empty").withStyle(ChatFormatting.DARK_GRAY);
+    private static final Component CHAMBER_HINT = Component.translatable("modifier.casualtinkering.gunblade.chamber.hint").withStyle(ChatFormatting.DARK_GRAY);
     private static final int BASE_CHARGES = 3;
     private static final int COOLDOWN_TICKS = 10;
     private static final float BASE_ATTACK_SPEED = 1.4F;
@@ -89,7 +91,6 @@ public class GunbladeModifier extends Modifier implements GeneralInteractionModi
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
-        super.registerHooks(hookBuilder);
         hookBuilder.addHook(this, ModifierHooks.GENERAL_INTERACT, ModifierHooks.MELEE_HIT, ModifierHooks.TOOLTIP);
         hookBuilder.addModule(InventoryModule.builder().filter(AMMO_FILTER).flatSlots(1));
         hookBuilder.addModule(InventoryMenuModule.SHIFT);
@@ -202,9 +203,9 @@ public class GunbladeModifier extends Modifier implements GeneralInteractionModi
         tooltip.add(Component.translatable("modifier.casualtinkering.gunblade.charges", charges, getMaxCharges(modifier)).withStyle(ChatFormatting.GRAY));
         ItemStack ammo = getChamberAmmo(tool, modifier);
         Component ammoName = ammo.isEmpty()
-                ? Component.translatable("modifier.casualtinkering.gunblade.chamber.empty").withStyle(ChatFormatting.DARK_GRAY)
+                ? EMPTY_CHAMBER
                 : Component.literal("").append(ammo.getHoverName()).append(" x" + ammo.getCount()).withStyle(ChatFormatting.GRAY);
         tooltip.add(Component.translatable("modifier.casualtinkering.gunblade.chamber", ammoName).withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("modifier.casualtinkering.gunblade.chamber.hint").withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(CHAMBER_HINT);
     }
 }

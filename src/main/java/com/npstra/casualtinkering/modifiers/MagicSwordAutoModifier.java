@@ -55,6 +55,7 @@ public class MagicSwordAutoModifier extends Modifier implements InventoryTickMod
         }
     }
 
+    @javax.annotation.Nullable
     private LivingEntity findNearestEnemy(Player player, int range) {
         AABB area = player.getBoundingBox().inflate(range);
         LivingEntity nearest = null;

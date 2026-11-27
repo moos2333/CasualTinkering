@@ -55,6 +55,7 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
     private static final float EFFECT_FLUID_MULTIPLIER = 0.5f;
     private static final int OVERHEAT_THRESHOLD = 10;
     private static final int OVERHEAT_TICKS = 100;
+    private static final double RAY_RANGE = 32.0;
 
     private static final ResourceLocation KEY_OVERHEAT_END = ResourceLocation.tryBuild("casualtinkering", "thermal_ray_overheat_end");
     private static final ResourceLocation KEY_SHOTS = ResourceLocation.tryBuild("casualtinkering", "thermal_ray_shots");
@@ -74,7 +75,6 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
-        super.registerHooks(hookBuilder);
         hookBuilder.addHook(this, ModifierHooks.GENERAL_INTERACT, ModifierHooks.TOOL_USING, ModifierHooks.INVENTORY_TICK);
         hookBuilder.addModule(ToolTankHelper.TANK_HANDLER);
         hookBuilder.addModule(StatBoostModule.add(ToolTankHelper.CAPACITY_STAT).eachLevel(1000));
@@ -168,10 +168,10 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
 
         Vec3 start = player.getEyePosition();
         Vec3 look = player.getLookAngle();
-        Vec3 end = start.add(look.scale(32));
+        Vec3 end = start.add(look.scale(RAY_RANGE));
 
         LivingEntity target = null;
-        double closest = 32.0;
+        double closest = RAY_RANGE;
         AABB searchBox = new AABB(start, end).inflate(1.0);
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, searchBox, e -> e != player && e.isAlive());
         for (LivingEntity entity : entities) {
@@ -194,7 +194,7 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
                 if (level instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(ParticleTypes.FLAME, target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 10, 0.2, 0.2, 0.2, 0.0);
                 }
-            } else if (!level.isClientSide) {
+            } else {
                 FluidEffects effects = FluidEffectManager.INSTANCE.find(effectFluid.getFluid());
                 if (effects.hasEntityEffects()) {
                     int dose = Math.min(effects.getAmount(effectFluid.getFluid()), FLUID_COST_MB);
@@ -209,10 +209,11 @@ public class ThermalRayModifier extends Modifier implements GeneralInteractionMo
             double distance = start.distanceTo(end);
             int steps = Math.max(1, (int) (distance * 0.5));
             for (int i = 0; i <= steps; i++) {
-                Vec3 pos = start.add(look.scale(distance * i / steps));
-                serverLevel.sendParticles(ParticleTypes.FLAME, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+                double f = distance * i / steps;
+                double px = start.x + look.x * f, py = start.y + look.y * f, pz = start.z + look.z * f;
+                serverLevel.sendParticles(ParticleTypes.FLAME, px, py, pz, 1, 0, 0, 0, 0);
                 if (i % 4 == 0 && level.random.nextInt(2) == 0)
-                    serverLevel.sendParticles(ParticleTypes.SMOKE, pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+                    serverLevel.sendParticles(ParticleTypes.SMOKE, px, py, pz, 1, 0, 0, 0, 0);
             }
         }
     }

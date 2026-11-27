@@ -31,6 +31,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
     private static final int MAX_LIFE = 600;
     private static final int RETURN_TICK = 30;
     private static final float WATER_INERTIA = 0.8f;
+    private static final float KNOCKBACK_RATIO = 0.5f;
 
     private ItemStack toolStack = ItemStack.EMPTY;
     private IToolStackView tool;
@@ -53,8 +54,7 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
         this.setOwner(shooter);
         this.toolStack = stack.copy();
         this.tool = tool;
-        this.damage = (float) tool.getStats().get(ToolStats.ATTACK_DAMAGE);
-        this.knockback = (float) tool.getStats().get(ToolStats.KNOCKBACK_RESISTANCE) * 0.5f;
+        this.applyToolStats(tool);
         this.initialSpeed = velocity;
         this.inheritTraits = inheritTraits;
         Vec3 pos = shooter.getEyePosition();
@@ -66,9 +66,13 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
     private void setStack(ItemStack stack) {
         this.toolStack = stack;
         this.tool = ToolStack.from(stack);
-        this.damage = (float) this.tool.getStats().get(ToolStats.ATTACK_DAMAGE);
-        this.knockback = (float) this.tool.getStats().get(ToolStats.KNOCKBACK_RESISTANCE) * 0.5f;
+        this.applyToolStats(this.tool);
         this.entityData.set(STACK, stack);
+    }
+
+    private void applyToolStats(IToolStackView tool) {
+        this.damage = (float) tool.getStats().get(ToolStats.ATTACK_DAMAGE);
+        this.knockback = (float) tool.getStats().get(ToolStats.KNOCKBACK_RESISTANCE) * KNOCKBACK_RATIO;
     }
 
     @Override
@@ -92,15 +96,17 @@ public class ThrownBoomerang extends Projectile implements ToolProjectile {
         if (!this.returning && this.life > RETURN_TICK) {
             this.returning = true;
         }
-        HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, e -> e != this.getOwner());
+        Entity hitOwner = this.getOwner();
+        HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, e -> e != hitOwner);
         if (hit.getType() != HitResult.Type.MISS) {
             this.onHit(hit);
         }
-        if (this.returning && this.getOwner() instanceof Player owner && owner.isAlive()) {
-            Vec3 target = owner.getEyePosition();
-            Vec3 toTarget = target.subtract(this.position());
-            if (toTarget.length() > 1.2) {
-                this.setDeltaMovement(toTarget.normalize().scale(Math.max(0.8, this.initialSpeed * 0.6)));
+        if (this.returning && hitOwner instanceof Player owner && owner.isAlive()) {
+            double dx = owner.getX() - this.getX(), dy = owner.getEyeY() - this.getY(), dz = owner.getZ() - this.getZ();
+            double len = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            if (len > 1.2) {
+                double speed = Math.max(0.8, this.initialSpeed * 0.6);
+                this.setDeltaMovement(new Vec3(dx / len * speed, dy / len * speed, dz / len * speed));
             } else {
                 if (!owner.getAbilities().instabuild) {
                     ItemStack toGive = this.toolStack.copy();

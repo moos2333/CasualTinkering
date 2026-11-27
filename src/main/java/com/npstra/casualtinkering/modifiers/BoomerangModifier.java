@@ -29,7 +29,6 @@ public class BoomerangModifier extends Modifier implements GeneralInteractionMod
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
-        super.registerHooks(hookBuilder);
         hookBuilder.addHook(this, ModifierHooks.GENERAL_INTERACT, ModifierHooks.TOOL_USING);
     }
 

@@ -67,7 +67,8 @@ public class GunbladeBullet extends Projectile {
             this.discard();
             return;
         }
-        HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, e -> e != this.getOwner());
+        Entity owner = this.getOwner();
+        HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, e -> e != owner);
         if (hit.getType() != HitResult.Type.MISS) {
             if (hit.getType() == HitResult.Type.ENTITY) this.hitEntity(((EntityHitResult) hit).getEntity());
             this.level().playSound(null, this.getX(), this.getY(), this.getZ(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.6F, 1.25F);
